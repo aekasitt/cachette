@@ -31,7 +31,9 @@ class Cachette(CachetteConfig):
     # TODO Check request headers if `Cache-Control`` is `no-store`
     if self._backend == 'dynamodb':
       from fastapi_cachette.backends.dynamodb import DynamoDBBackend
-      self.backend = DynamoDBBackend.init(self._table_name, self._expire, self._region, self._dynamodb_url)
+      self.backend = DynamoDBBackend.init(
+        self._table_name, self._expire, self._region, self._dynamodb_url
+      )
     elif self._backend == 'inmemory':
       from fastapi_cachette.backends.inmemory import InMemoryBackend
       self.backend = InMemoryBackend(self._expire)
@@ -40,7 +42,9 @@ class Cachette(CachetteConfig):
       self.backend = run(MemcachedBackend.init(self._memcached_host, self._expire))
     elif self._backend == 'mongodb':
       from fastapi_cachette.backends.mongodb import MongoDBBackend
-      self.backend = run(MongoDBBackend.init(self._table_name, self._mongodb_url))
+      self.backend = run(MongoDBBackend.init(
+        self._collection_name, self._expire, self._table_name, self._mongodb_url
+      ))
     elif self._backend == 'redis':
       from fastapi_cachette.backends.redis import RedisBackend
       self.backend = run(RedisBackend.init(self._redis_url, self._expire))

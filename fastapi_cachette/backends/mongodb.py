@@ -13,19 +13,24 @@
 from dataclasses import dataclass
 from typing import Optional, Tuple
 ### Third-Party Packages ###
+from pymongo.errors import CollectionInvalid
 from motor.motor_asyncio import AsyncIOMotorClient
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
 
 @dataclass
 class MongoDBBackend(Backend):
-  table_name: str
+  collection_name: str
+  expire: int
   mongodb: AsyncIOMotorClient
+  table_name: str
 
   @classmethod
-  async def init(cls, table_name: str, url: str) -> 'MongoDBBackend':
+  async def init(cls, collection_name: str, expire: int, table_name: str, url: str) -> 'MongoDBBackend':
     mongodb: AsyncIOMotorClient = AsyncIOMotorClient(url)
-    return MongoDBBackend(table_name, mongodb)
+    try: await mongodb[table_name].create_collection(collection_name)
+    except CollectionInvalid: pass
+    return MongoDBBackend(collection_name, expire, mongodb, table_name)
 
   async def fetch(self, key: str) -> str:
     pass
