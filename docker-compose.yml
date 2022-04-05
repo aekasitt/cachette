@@ -12,6 +12,13 @@ services:
     command: memcached
     ports:
       - "11211:11211"
+  
+  ### MongoDB ###
+  mongodb:
+    image: mongo:latest
+    command: mongod
+    ports:
+      - "27017:27017"
 
   ### Redis ###
   redis:
