@@ -76,8 +76,16 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
     'The "expire" value must between 1 or 3600 seconds.'                    \
   ),
   (
-    [('backend', 'dynamodb'), ('expire', 3601)],          \
-    'The "expire" value must between 1 or 3600 seconds.'  \
+    [('backend', 'dynamodb'), ('region', 'ap-southeast-1'), ('expire', 3601)], \
+    'The "expire" value must between 1 or 3600 seconds.'                       \
+  ),
+  (
+    [('backend', 'dynamodb'), ('dynamodb_url', 'http://localhost:8000'), ('expire', 0)], \
+    'The "expire" value must between 1 or 3600 seconds.'                                 \
+  ),
+  (
+    [('backend', 'dynamodb'), ('dynamodb_url', 'http://localhost:8000'), ('expire', 3601)], \
+    'The "expire" value must between 1 or 3600 seconds.'                                    \
   ),
   (
     [('backend', 'dynamodb'), ('region', 'not-valid')],       \
@@ -118,10 +126,9 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
 
   ### MongoDB ###
   (
-    [('backend', 'mongodb')], \
-    'The "mongodb_url" cannot be null when using MongoDB as backend.'        \
+    [('backend', 'mongodb')],                                         \
+    'The "mongodb_url" cannot be null when using MongoDB as backend.' \
   ),
-
   (
     [('backend', 'mongodb'), ('database_name', 'customized-database-name')], \
     'The "mongodb_url" cannot be null when using MongoDB as backend.'        \
