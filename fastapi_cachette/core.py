@@ -35,12 +35,15 @@ class Cachette(CachetteConfig):
     elif self._backend == 'inmemory':
       from fastapi_cachette.backends.inmemory import InMemoryBackend
       self.backend = InMemoryBackend(self._expire)
-    elif self._backend == 'redis':
-      from fastapi_cachette.backends.redis import RedisBackend
-      self.backend = run(RedisBackend.init(self._redis_url, self._expire))
+    elif self._backend == 'mongodb':
+      from fastapi_cachette.backends.mongodb import MongoDBBackend
+      self.backend = MongoDBBackend(self._table_name, self._mongodb_url)
     elif self._backend == 'memcached':
       from fastapi_cachette.backends.memcached import MemcachedBackend
       self.backend = run(MemcachedBackend.init(self._memcached_host, self._expire))
+    elif self._backend == 'redis':
+      from fastapi_cachette.backends.redis import RedisBackend
+      self.backend = run(RedisBackend.init(self._redis_url, self._expire))
 
   # When a method is not found, shortcuts it to instance's `backend` member method
   def __getattr__(self, name):

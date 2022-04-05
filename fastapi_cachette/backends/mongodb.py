@@ -19,9 +19,13 @@ from fastapi_cachette.backends import Backend
 
 @dataclass
 class MongoDBBackend(Backend):
+  table_name: str
   mongodb: AsyncIOMotorClient
-  def __init__(self):
-    pass
+
+  @classmethod
+  async def init(cls, table_name: str, url: str) -> 'MongoDBBackend':
+    mongodb: AsyncIOMotorClient = AsyncIOMotorClient(url)
+    return MongoDBBackend(table_name, mongodb)
 
   async def fetch(self, key: str) -> str:
     pass
