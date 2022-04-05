@@ -53,15 +53,15 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
   ),
   (
     [('backend', 'dynamodb'), ('region', 'not-valid')],       \
-    'The `region` provided does not exist under AWS Regions.' \
+    'The "region" provided does not exist under AWS Regions.' \
   ),
   (
     [('backend', 'redis')],                                       \
-    'The `redis_url` cannot be null when using redis as backend.' \
+    'The "redis_url" cannot be null when using redis as backend.' \
   ),
   (
     [('backend', 'memcached')],                                            \
-    'The `memcached_host` cannot be null when using memcached as backend.' \
+    'The "memcached_host" cannot be null when using memcached as backend.' \
   )
 ])
 def test_load_invalid_configs(configs: List[Tuple[str, Any]], reason: str) -> NoReturn:
