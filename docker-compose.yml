@@ -1,0 +1,21 @@
+version: '3'
+services:
+  ### AWS DynamoDB ###
+  dynamodb:
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+
+  ### AWS Memcached ###
+  memcached:
+    image: memcached:bullseye
+    command: memcached
+    ports:
+      - "11211:11211"
+
+  ### Redis ###
+  redis:
+    image: redis:bullseye
+    command: redis-server
+    ports:
+      - "6379:6379"
