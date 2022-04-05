@@ -25,6 +25,10 @@ from tests import client, Payload
   [('backend', 'dynamodb'), ('expire', 2), ('dynamodb_url', 'http://localhost:8000')],
   [('backend', 'inmemory'), ('expire', 2)],
   [('backend', 'memcached'), ('expire', 2), ('memcached_host', 'localhost')],
+  [
+    ('backend', 'mongodb'), ('collection_name', 'cachette-collection'), ('expire', 2), 
+    ('mongodb_url', 'mongodb://localhost:27017')
+  ],
   [('backend', 'redis'), ('expire', 2), ('redis_url', 'redis://localhost:6379')]
 ], indirect=True)
 def test_set_and_wait_til_expired(client: TestClient):
@@ -51,6 +55,10 @@ def test_set_and_wait_til_expired(client: TestClient):
   [('backend', 'dynamodb'), ('dynamodb_url', 'http://localhost:8000')],
   [('backend', 'inmemory')],
   [('backend', 'memcached'), ('memcached_host', 'localhost')],
+  [
+    ('backend', 'mongodb'), ('collection_name', 'cachette-collection'),
+    ('mongodb_url', 'mongodb://localhost:27017')
+  ],
   [('backend', 'redis'), ('redis_url', 'redis://localhost:6379')]
 ], indirect=True)
 def test_set_then_clear(client: TestClient):
