@@ -30,10 +30,15 @@ class CachetteConfig(object):
   ### Memcached ###
   _memcached_host: str = None
 
-  ### AWS DynamoDB ###
+  ### AWS DynamoDB & MongoDB ###
   _table_name: str     = 'fastapi-cachette'
+
+  ### AWS DynamoDB ###
   _region: str
   _dynamodb_url: str
+
+  ### MongoDB ###
+  _mongodb_url: str
 
   @classmethod
   def load_config(cls, settings: Callable[..., List[Tuple]]) -> 'CachetteConfig':
@@ -46,6 +51,7 @@ class CachetteConfig(object):
       cls._table_name     = config.table_name or cls._table_name
       cls._region         = config.region
       cls._dynamodb_url   = config.dynamodb_url
+      cls._mongodb_url    = config.mongodb_url
     except ValidationError: raise
     except Exception:
       raise TypeError('CachetteConfig must be pydantic "BaseSettings" or list of tuples')
