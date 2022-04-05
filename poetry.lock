@@ -571,13 +571,14 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [extras]
 dynamodb = ["aiobotocore"]
 examples = ["redis", "aiomcache", "aiobotocore", "uvicorn"]
-memcache = ["aiomcache"]
+memcached = ["aiomcache"]
+mongodb = ["motor"]
 redis = ["redis"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "2483fc79b87f0cc541ba036aa4556a0c077a295ea87dbdfc076951ac44acf0e1"
+content-hash = "96747e2f7359b8e30361e6a8cd21622c1bf043ab7532332f22815cb8acfd6c73"
 
 [metadata.files]
 aiobotocore = [
