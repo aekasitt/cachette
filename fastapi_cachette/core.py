@@ -31,9 +31,9 @@ class Cachette(CachetteConfig):
     # TODO Check request headers if `Cache-Control`` is `no-store`
     if self._backend == 'dynamodb':
       from fastapi_cachette.backends.dynamodb import DynamoDBBackend
-      self.backend = DynamoDBBackend.init(
+      self.backend = run(DynamoDBBackend.init(
         self._table_name, self._expire, self._region, self._dynamodb_url
-      )
+      ))
     elif self._backend == 'inmemory':
       from fastapi_cachette.backends.inmemory import InMemoryBackend
       self.backend = InMemoryBackend(self._expire)

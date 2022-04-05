@@ -19,19 +19,42 @@ from fastapi_cachette.backends import Backend
 
 @dataclass
 class DynamoDBBackend(Backend):
-  table_name: str
   expire: int
-  dynamodb: ClientCreatorContext
-   
+  region: str
+  table_name: str
+  url: str
+
   @classmethod
-  def init(cls,
+  async def init(cls,
     table_name: str, expire: Optional[int] = 60,            \
     region: Optional[str] = None, url: Optional[str] = None \
   ) -> 'DynamoDBBackend':
-    return DynamoDBBackend(
-      table_name=table_name, expire=expire,                                                    \
-        dynamodb=get_session().create_client('dynamodb', region_name=region, endpoint_url=url) \
-      )
+    dynamodb: ClientCreatorContext = get_session() \
+      .create_client('dynamodb', region_name=region, endpoint_url=url)
+    async with dynamodb as client:
+      ### Create Table if None Existed ###
+      table_names: list = (await client.list_tables()).get('TableNames', [])
+      if table_name not in table_names:
+        table_definition: dict = {
+          'AttributeDefinitions': [{
+            'AttributeName': 'key',
+            'AttributeType': 'S'
+          }],
+          'KeySchema': [{
+            'AttributeName': 'key',
+            'KeyType': 'HASH'
+          }],
+          'ProvisionedThroughput': {
+            'ReadCapacityUnits': 10,
+            'WriteCapacityUnits': 10
+          }
+        }
+        await client.create_table(TableName=table_name, **table_definition)
+    return cls(expire=expire , region=region, table_name=table_name, url=url)
+
+  @property
+  def dynamodb(self) -> ClientCreatorContext:
+    return get_session().create_client('dynamodb', region_name=self.region, endpoint_url=self.url)
 
   async def fetch_with_ttl(self, key: str) -> Tuple[int, str]:
     async with self.dynamodb as client:
