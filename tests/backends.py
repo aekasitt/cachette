@@ -22,16 +22,16 @@ from pytest import mark
 from tests import client, Payload
 
 @mark.parametrize('client', [
-  [('backend', 'dynamodb'), ('expire', 2), ('dynamodb_url', 'http://localhost:8000')],
-  [('backend', 'inmemory'), ('expire', 2)],
-  [('backend', 'memcached'), ('expire', 2), ('memcached_host', 'localhost')],
+  [('backend', 'dynamodb'), ('ttl', 2), ('dynamodb_url', 'http://localhost:8000')],
+  [('backend', 'inmemory'), ('ttl', 2)],
+  [('backend', 'memcached'), ('ttl', 2), ('memcached_host', 'localhost')],
   [
     ('backend', 'mongodb'), ('database_name', 'fastapi-cachette-database'),
-    ('expire', 2), ('mongodb_url', 'mongodb://localhost:27017')
+    ('ttl', 2), ('mongodb_url', 'mongodb://localhost:27017')
   ],
-  [('backend', 'redis'), ('expire', 2), ('redis_url', 'redis://localhost:6379')]
+  [('backend', 'redis'), ('ttl', 2), ('redis_url', 'redis://localhost:6379')]
 ], indirect=True)
-def test_set_and_wait_til_expired(client: TestClient):
+def test_set_and_wait_til_ttld(client: TestClient):
   ### Get key-value before setting anything ###
   response: Response = client.get('/cache')
   assert response.text == ''
@@ -42,9 +42,9 @@ def test_set_and_wait_til_expired(client: TestClient):
   ### Getting cached value within TTL ###
   response = client.get('/cache')
   assert response.text == 'cachable'
-  ### Sleeps on current thread until TTL expires ###
+  ### Sleeps on current thread until TTL ttls ###
   sleep(3)
-  ### Getting cached value after TTL expires ###
+  ### Getting cached value after TTL ttls ###
   response = client.get('/cache')
   assert response.text == ''
   ### Clear ###

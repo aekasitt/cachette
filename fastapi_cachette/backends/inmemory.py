@@ -19,30 +19,30 @@ from fastapi_cachette.backends import Backend
 @dataclass
 class Value:
   data: str
-  ttl: int
+  expires: int
 
 class InMemoryBackend(Backend):
   store: Dict[str, Value] = {}
 
-  def __init__(self, expire: Optional[int] = None):
-    self.expire = expire
+  def __init__(self, ttl: Optional[int] = None):
+    self.ttl = ttl
   
   async def fetch(self, key: str) -> str:
     value: Value = self.store.get(key)
     if not value: return
-    elif value.ttl < self.now: del self.store[key]
+    elif value.expires < self.now: del self.store[key]
     else: return value.data
   
   async def fetch_with_ttl(self, key: str) -> Tuple[int, str]:
     value: Value = self.store.get(key)
-    if value.ttl < self.now:
+    if value.expires < self.now:
       del self.store[key]
       return (0, None)
     else:
-      return (value.ttl - self.now, value.data)
+      return (value.expires - self.now, value.data)
   
-  async def put(self, key: str, value: str, expire: int = None):
-    self.store[key] = Value(value, self.now + (expire or self.expire))
+  async def put(self, key: str, value: str, ttl: int = None):
+    self.store[key] = Value(value, self.now + (ttl or self.ttl))
 
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     count: int = 0

@@ -22,7 +22,7 @@ from fastapi_cachette.load_config import LoadConfig
 class CachetteConfig(object):
   ### Basics ###
   _backend: str        = 'inmemory'
-  _expire: int         = 60
+  _ttl: int            = 60
 
   ### Redis ###
   _redis_url: str      = None
@@ -46,7 +46,7 @@ class CachetteConfig(object):
     try:
       config = LoadConfig(**{key.lower(): value for key, value in settings()})
       cls._backend        = config.backend or cls._backend
-      cls._expire         = config.expire or cls._expire
+      cls._ttl            = config.ttl or cls._ttl
       cls._redis_url      = config.redis_url
       cls._memcached_host = config.memcached_host
       cls._table_name     = config.table_name or cls._table_name

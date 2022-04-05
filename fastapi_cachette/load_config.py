@@ -19,7 +19,8 @@ from pydantic import BaseModel, validator, StrictInt, StrictStr
 
 class LoadConfig(BaseModel):
   backend: Optional[StrictStr] = 'inmemory'
-  expire: Optional[StrictInt]  = 60 # seconds
+  ttl: Optional[StrictInt]     = 60 # seconds
+
   ### Redis ###
   redis_url: Optional[StrictStr]
 
@@ -45,10 +46,10 @@ class LoadConfig(BaseModel):
       )
     return value.lower()
 
-  @validator('expire')
-  def validate_expire(cls, value: str):
+  @validator('ttl')
+  def validate_time_to_live(cls, value: str):
     if value <= 0 or value > 3600:
-      raise ValueError('The "expire" value must between 1 or 3600 seconds.')
+      raise ValueError('The "ttl" value must between 1 or 3600 seconds.')
     return value
 
   @validator('redis_url', always=True)

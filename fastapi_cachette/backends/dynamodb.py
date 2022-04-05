@@ -19,14 +19,14 @@ from fastapi_cachette.backends import Backend
 
 @dataclass
 class DynamoDBBackend(Backend):
-  expire: int
   region: str
   table_name: str
+  ttl: int
   url: str
 
   @classmethod
   async def init(cls,
-    table_name: str, expire: Optional[int] = 60,            \
+    table_name: str, ttl: int,                              \
     region: Optional[str] = None, url: Optional[str] = None \
   ) -> 'DynamoDBBackend':
     dynamodb: ClientCreatorContext = get_session() \
@@ -50,7 +50,7 @@ class DynamoDBBackend(Backend):
           }
         }
         await client.create_table(TableName=table_name, **table_definition)
-    return cls(expire=expire, region=region, table_name=table_name, url=url)
+    return cls(region=region, table_name=table_name, ttl=ttl, url=url)
 
   @property
   def dynamodb(self) -> ClientCreatorContext:
@@ -75,11 +75,11 @@ class DynamoDBBackend(Backend):
         if ttl < 0: return None
         return value
 
-  async def put(self, key: str, value: str, expire: Optional[int] = None):
-    expire = expire or self.expire
+  async def put(self, key: str, value: str, ttl: Optional[int] = None):
+    ttl = ttl or self.ttl
     async with self.dynamodb as client:
       expires_at: dict = {
-        'expires': { 'N': f'{ self.now + expire }' }
+        'expires': { 'N': f'{ self.now + ttl }' }
       }
       await client.put_item(
         TableName=self.table_name,

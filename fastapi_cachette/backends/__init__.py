@@ -45,14 +45,14 @@ class Backend:
     raise NotImplementedError
 
   @abstractmethod
-  async def put(self, key: str, value: str, expire: Optional[int] = None):
+  async def put(self, key: str, value: str, ttl: Optional[int] = None):
     '''
-    Puts the value within the cache with key signifier and expire time in seconds  
+    Puts the value within the cache with key and assigned time-to-live value
 
     ---
     :param:  key  `str` identifies key-value pair  
     :param:  value  `str` value to have stored identified by key  
-    :param:  expire  `int` time before value expires within cache; default: `None`
+    :param:  ttl  `int` time before value expires within cache; default: `None`
     '''
     raise NotImplementedError
 

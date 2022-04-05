@@ -20,8 +20,8 @@ from fastapi_cachette.backends import Backend
 @dataclass
 class MongoDBBackend(Backend):
   database_name: str
-  expire: int
   table_name: str
+  ttl: int
   url: str
 
   @property
@@ -34,14 +34,14 @@ class MongoDBBackend(Backend):
 
   @classmethod
   async def init(
-      cls, database_name: str, expire: int, table_name: str, url: str
+      cls, database_name: str, table_name: str, ttl: int, url: str
     ) -> 'MongoDBBackend':
     client: AsyncIOMotorClient = AsyncIOMotorClient(url)
     ### Create Collection if None existed ###
     names: list = await client[database_name].list_collection_names(filter={ 'name': table_name })
     if len(names) == 0:
       await client[database_name].create_collection(table_name)
-    return cls(database_name, expire, table_name, url)
+    return cls(database_name, table_name, ttl, url)
 
   async def fetch(self, key: str) -> str:
     document: dict = await self.collection.find_one({ 'key': key })
@@ -58,9 +58,9 @@ class MongoDBBackend(Backend):
       return ttl, value
     return -1, None
 
-  async def put(self, key: str, value: str, expire: Optional[int] = None):
-    expire = expire or self.expire
-    item: dict = { 'key': key, 'value': value, 'expires': self.now + expire }
+  async def put(self, key: str, value: str, ttl: Optional[int] = None):
+    ttl = ttl or self.ttl
+    item: dict = { 'key': key, 'value': value, 'expires': self.now + ttl }
     document: dict = await self.collection.find_one({ 'key': key })
     if document:
       await self.collection.update_one({'key': key}, {'$set': item })

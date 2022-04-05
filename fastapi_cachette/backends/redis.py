@@ -20,11 +20,11 @@ from fastapi_cachette.backends import Backend
 @dataclass
 class RedisBackend(Backend):
   redis: Redis
-  expire: int
+  ttl: int
 
   @classmethod
-  async def init(cls, redis_url: str, expire: Optional[int] = None) -> 'RedisBackend':
-    return cls(Redis.from_url(url=redis_url), expire)
+  async def init(cls, redis_url: str, ttl: int) -> 'RedisBackend':
+    return cls(Redis.from_url(url=redis_url), ttl)
 
   async def fetch(self, key) -> str:
     return await self.redis.get(key)
@@ -33,8 +33,8 @@ class RedisBackend(Backend):
     async with self.redis.pipeline(transaction=True) as pipe:
       return await (pipe.ttl(key).get(key).execute())
 
-  async def put(self, key: str, value: str, expire: Optional[int] = None):
-    return await self.redis.set(key, value, ex=expire or self.expire)
+  async def put(self, key: str, value: str, ttl: Optional[int] = None):
+    return await self.redis.set(key, value, ex=(ttl or self.ttl))
 
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     if namespace:
