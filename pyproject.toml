@@ -11,7 +11,8 @@ keywords = [
   "starlette", "fastapi", "cache",
   "redis", "aioredis", "dynamodb",
   "aiobotocore", "asynchronous", 
-  "memcache", "aiomemcache"
+  "memcache", "aiomemcache",
+  "mongodb", "motor", "pymongo"
 ]
 classifiers = [
   "Environment :: Web Environment",
