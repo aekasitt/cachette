@@ -11,7 +11,7 @@ keywords = [
   "starlette", "fastapi", "cache",
   "redis", "aioredis", "dynamodb",
   "aiobotocore", "asynchronous", 
-  "memcache", "aiomemcache",
+  "memcached", "aiomcache",
   "mongodb", "motor", "pymongo"
 ]
 classifiers = [
@@ -34,7 +34,7 @@ python = "^3.7"
 fastapi = "^0"
 pydantic = "^1.9.0"
 uvicorn = {version = "0.15.0", optional = true, extras = ["examples"]}
-aiomcache = {version = "^0.7.0", optional = true, extras = ["examples", "memcache"]}
+aiomcache = {version = "^0.7.0", optional = true, extras = ["examples", "memcached"]}
 aiobotocore = {version = "^2.2.0", optional = true, extras = ["dynamodb", "examples"]}
 redis = {version="^4.2.1", optional = true, extras = ["examples", "redis"]}
 motor = {version = "^2.5.1", optional = true, extras = ["examples", "mongodb"]}
@@ -45,7 +45,7 @@ requests = "^2.27.1"
 
 [tool.poetry.extras]
 redis = ["redis"]
-memcache = ["aiomcache"]
+memcached = ["aiomcache"]
 dynamodb = ["aiobotocore"]
 mongodb = ["motor"]
 examples = ["redis", "aiomcache", "aiobotocore", "uvicorn"]
