@@ -34,6 +34,7 @@ class LoadConfig(BaseModel):
   dynamodb_url: Optional[StrictStr]
 
   ### MongoDB ###
+  collection_name: Optional[StrictStr]
   mongodb_url: Optional[StrictStr]
 
   @validator('backend')
@@ -97,6 +98,14 @@ class LoadConfig(BaseModel):
       raise ValueError(
         'The "dynamodb_url" cannot be null when using DynamoDB as backend and no region defined.'
       )
+    ### TODO More Validations ###
+    return value
+
+  @validator('collection_name', always=True)
+  def validate_collection_name(cls, value: str, values: dict):
+    backend: str = values['backend'].lower()
+    if backend == 'mongodb' and not value:
+      raise ValueError('The "collection_name" cannot be null when using MongoDB as backend.')
     ### TODO More Validations ###
     return value
 

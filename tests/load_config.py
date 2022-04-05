@@ -41,9 +41,18 @@ from fastapi_cachette import Cachette
   [('backend', 'memcached'), ('memcached_host', 'localhost'), ('table_name', None)], \
 
   ### MongoDB ###
-  [('backend', 'mongodb'), ('mongodb_url', 'http://localhost:27017')],                   \
-  [('backend', 'mongodb'), ('expire', 1), ('mongodb_url', 'http://localhost:27017')],    \
-  [('backend', 'mongodb'), ('expire', 3600), ('mongodb_url', 'http://localhost:27017')], \
+  [
+    ('backend', 'mongodb'), ('collection_name', 'cachette-collection'), \
+    ('mongodb_url', 'mongodb://localhost:27017')                        \
+  ],                     \
+  [
+    ('backend', 'mongodb'), ('collection_name', 'cachette-collection'), ('expire', 1), \
+    ('mongodb_url', 'mongodb://localhost:27017')                                       \
+  ],
+  [
+    ('backend', 'mongodb'), ('collection_name', 'cachette-collection'), ('expire', 3600), \
+    ('mongodb_url', 'mongodb://localhost:27017')                                          \
+  ],
 
   ### Redis ###
   [('backend', 'redis'), ('redis_url', 'redis://localhost:6379')],                       \
@@ -109,12 +118,18 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
 
   ### MongoDB ###
   (
-    [('backend', 'mongodb')],                                         \
-    'The "mongodb_url" cannot be null when using MongoDB as backend.' \
+    [('backend', 'mongodb')],                                             \
+    'The "collection_name" cannot be null when using MongoDB as backend.' \
+    
   ),
   (
-    [('backend', 'mongodb'), ('mongodb_url', 'http://localhost:27017'), ('table_name', None)], \
-    'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.'                \
+    [('backend', 'mongodb'), ('collection_name', 'cachette-collection')], \
+    'The "mongodb_url" cannot be null when using MongoDB as backend.'     \
+  ),
+  (
+    [('backend', 'mongodb'), ('collection_name', 'cachette-collection'),         \
+      ('mongodb_url', 'http://localhost:27017'), ('table_name', None)],          \
+    'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.'  \
   ),
 
   ### Redis ###
