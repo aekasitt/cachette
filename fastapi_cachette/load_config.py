@@ -89,7 +89,7 @@ class LoadConfig(BaseModel):
       raise ValueError('The "region" provided does not exist under AWS Regions.')
     return value.lower()
 
-  @validator('dynamodb_url')
+  @validator('dynamodb_url', always=True)
   def validate_dynamodb_url(cls, value: str, values: dict):
     backend: str = values['backend'].lower()
     region: str  = values.get('region', None)
@@ -100,7 +100,7 @@ class LoadConfig(BaseModel):
     ### TODO More Validations ###
     return value
 
-  @validator('mongodb_url')
+  @validator('mongodb_url', always=True)
   def validate_mongodb_url(cls, value: str, values: dict):
     backend: str = values['backend'].lower()
     if backend == 'mongodb' and not value:
