@@ -22,14 +22,14 @@ from pytest import mark
 from tests import client, Payload
 
 @mark.parametrize('client', [
-  # [('backend', 'dynamodb'), ('expire', 2), ('dynamodb_url', 'http://localhost:8000')],
-  # [('backend', 'inmemory'), ('expire', 2)],
-  # [('backend', 'memcached'), ('expire', 2), ('memcached_host', 'localhost')],
+  [('backend', 'dynamodb'), ('expire', 2), ('dynamodb_url', 'http://localhost:8000')],
+  [('backend', 'inmemory'), ('expire', 2)],
+  [('backend', 'memcached'), ('expire', 2), ('memcached_host', 'localhost')],
   [
     ('backend', 'mongodb'), ('database_name', 'fastapi-cachette-database'),
     ('expire', 2), ('mongodb_url', 'mongodb://localhost:27017')
   ],
-  # [('backend', 'redis'), ('expire', 2), ('redis_url', 'redis://localhost:6379')]
+  [('backend', 'redis'), ('expire', 2), ('redis_url', 'redis://localhost:6379')]
 ], indirect=True)
 def test_set_and_wait_til_expired(client: TestClient):
   ### Get key-value before setting anything ###
