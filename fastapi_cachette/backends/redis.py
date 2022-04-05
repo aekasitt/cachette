@@ -38,7 +38,8 @@ class RedisBackend(Backend):
 
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     if namespace:
-      lua = f"for i, name in ipairs(redis.call('KEYS', '{namespace}:*')) do redis.call('DEL', name); end"
+      lua: str = \
+        f'for i, key in ipairs(redis.call("KEYS", "{namespace}:*")) do redis.call("DEL", key); end'
       return await self.redis.eval(lua, numkeys=0)
     elif key:
       return await self.redis.delete(key)
