@@ -34,7 +34,7 @@ class LoadConfig(BaseModel):
   dynamodb_url: Optional[StrictStr]
 
   ### MongoDB ###
-  collection_name: Optional[StrictStr]
+  database_name: Optional[StrictStr]
   mongodb_url: Optional[StrictStr]
 
   @validator('backend')
@@ -101,11 +101,11 @@ class LoadConfig(BaseModel):
     ### TODO More Validations ###
     return value
 
-  @validator('collection_name', always=True)
-  def validate_collection_name(cls, value: str, values: dict):
+  @validator('database_name', always=True)
+  def validate_database_name(cls, value: str, values: dict):
     backend: str = values['backend'].lower()
     if backend == 'mongodb' and not value:
-      raise ValueError('The "collection_name" cannot be null when using MongoDB as backend.')
+      raise ValueError('The "database_name" cannot be null when using MongoDB as backend.')
     ### TODO More Validations ###
     return value
 

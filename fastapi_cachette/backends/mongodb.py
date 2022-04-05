@@ -19,29 +19,29 @@ from fastapi_cachette.backends import Backend
 
 @dataclass
 class MongoDBBackend(Backend):
-  collection_name: str
+  database_name: str
   expire: int
   table_name: str
   url: str
 
   @property
   def db(self) -> AsyncIOMotorDatabase:
-    return AsyncIOMotorClient(self.url)[self.table_name]
+    return AsyncIOMotorClient(self.url)[self.database_name]
 
   @property
   def collection(self) -> AsyncIOMotorCollection:
-    return AsyncIOMotorClient(self.url)[self.table_name][self.collection_name]
+    return AsyncIOMotorClient(self.url)[self.database_name][self.table_name]
 
   @classmethod
   async def init(
-      cls, collection_name: str, expire: int, table_name: str, url: str
+      cls, database_name: str, expire: int, table_name: str, url: str
     ) -> 'MongoDBBackend':
     client: AsyncIOMotorClient = AsyncIOMotorClient(url)
     ### Create Collection if None existed ###
-    names: list = await client[table_name].list_collection_names(filter={ 'name': collection_name })
+    names: list = await client[database_name].list_collection_names(filter={ 'name': table_name })
     if len(names) == 0:
-      await client[table_name].create_collection(collection_name)
-    return cls(collection_name, expire, table_name, url)
+      await client[database_name].create_collection(table_name)
+    return cls(database_name, expire, table_name, url)
 
   async def fetch(self, key: str) -> str:
     document: dict = await self.collection.find_one({ 'key': key })

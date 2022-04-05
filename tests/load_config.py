@@ -42,16 +42,16 @@ from fastapi_cachette import Cachette
 
   ### MongoDB ###
   [
-    ('backend', 'mongodb'), ('collection_name', 'cachette-collection'), \
-    ('mongodb_url', 'mongodb://localhost:27017')                        \
+    ('backend', 'mongodb'), ('database_name', 'fastapi-cachette-database'), \
+    ('mongodb_url', 'mongodb://localhost:27017')                            \
   ],                     \
   [
-    ('backend', 'mongodb'), ('collection_name', 'cachette-collection'), ('expire', 1), \
-    ('mongodb_url', 'mongodb://localhost:27017')                                       \
+    ('backend', 'mongodb'), ('database_name', 'fastapi-cachette-database'), \
+    ('expire', 1), ('mongodb_url', 'mongodb://localhost:27017')             \
   ],
   [
-    ('backend', 'mongodb'), ('collection_name', 'cachette-collection'), ('expire', 3600), \
-    ('mongodb_url', 'mongodb://localhost:27017')                                          \
+    ('backend', 'mongodb'), ('database_name', 'fastapi-cachette-database'), \
+    ('expire', 3600), ('mongodb_url', 'mongodb://localhost:27017')          \
   ],
 
   ### Redis ###
@@ -118,16 +118,16 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
 
   ### MongoDB ###
   (
-    [('backend', 'mongodb')],                                             \
-    'The "collection_name" cannot be null when using MongoDB as backend.' \
+    [('backend', 'mongodb')],                                           \
+    'The "database_name" cannot be null when using MongoDB as backend.' \
     
   ),
   (
-    [('backend', 'mongodb'), ('collection_name', 'cachette-collection')], \
-    'The "mongodb_url" cannot be null when using MongoDB as backend.'     \
+    [('backend', 'mongodb'), ('database_name', 'cachette-collection')], \
+    'The "mongodb_url" cannot be null when using MongoDB as backend.'   \
   ),
   (
-    [('backend', 'mongodb'), ('collection_name', 'cachette-collection'),         \
+    [('backend', 'mongodb'), ('database_name', 'cachette-collection'),           \
       ('mongodb_url', 'http://localhost:27017'), ('table_name', None)],          \
     'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.'  \
   ),

@@ -38,22 +38,22 @@ class CachetteConfig(object):
   _dynamodb_url: str
 
   ### MongoDB ###
-  _collection_name: str
+  _database_name: str
   _mongodb_url: str
 
   @classmethod
   def load_config(cls, settings: Callable[..., List[Tuple]]) -> 'CachetteConfig':
     try:
       config = LoadConfig(**{key.lower(): value for key, value in settings()})
-      cls._backend         = config.backend or cls._backend
-      cls._expire          = config.expire or cls._expire
-      cls._redis_url       = config.redis_url
-      cls._memcached_host  = config.memcached_host
-      cls._table_name      = config.table_name or cls._table_name
-      cls._region          = config.region
-      cls._dynamodb_url    = config.dynamodb_url
-      cls._collection_name = config.collection_name
-      cls._mongodb_url     = config.mongodb_url
+      cls._backend        = config.backend or cls._backend
+      cls._expire         = config.expire or cls._expire
+      cls._redis_url      = config.redis_url
+      cls._memcached_host = config.memcached_host
+      cls._table_name     = config.table_name or cls._table_name
+      cls._region         = config.region
+      cls._dynamodb_url   = config.dynamodb_url
+      cls._database_name  = config.database_name
+      cls._mongodb_url    = config.mongodb_url
     except ValidationError: raise
     except Exception:
       raise TypeError('CachetteConfig must be pydantic "BaseSettings" or list of tuples')

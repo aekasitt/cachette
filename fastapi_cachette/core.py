@@ -43,7 +43,7 @@ class Cachette(CachetteConfig):
     elif self._backend == 'mongodb':
       from fastapi_cachette.backends.mongodb import MongoDBBackend
       self.backend = run(MongoDBBackend.init(
-        self._collection_name, self._expire, self._table_name, self._mongodb_url
+        self._database_name, self._expire, self._table_name, self._mongodb_url
       ))
     elif self._backend == 'redis':
       from fastapi_cachette.backends.redis import RedisBackend
