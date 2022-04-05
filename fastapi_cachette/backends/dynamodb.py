@@ -50,7 +50,7 @@ class DynamoDBBackend(Backend):
           }
         }
         await client.create_table(TableName=table_name, **table_definition)
-    return cls(expire=expire , region=region, table_name=table_name, url=url)
+    return cls(expire=expire, region=region, table_name=table_name, url=url)
 
   @property
   def dynamodb(self) -> ClientCreatorContext:
@@ -60,32 +60,30 @@ class DynamoDBBackend(Backend):
     async with self.dynamodb as client:
       response = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
       if 'Item' in response:
-        value: str      = response['Item'].get('value', {}).get('S')
-        created_at: int = int(response['Item'].get('created', {}).get('N', 0))
-        if not created_at:
-          return -1, value
-        if created_at < self.now:
-          return self.now - created_at, value
-      return 0, None
+        value: str = response['Item'].get('value', {}).get('S')
+        ttl: int   = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
+        if ttl < 0:
+          return 0, None
+        return ttl, value
 
   async def fetch(self, key: str) -> str:
     async with self.dynamodb as client:
       response = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
       if 'Item' in response:
         value: str = response['Item'].get('value', {}).get('S')
-        ttl: int   = int(response['Item'].get('ttl', {}).get('N', 0))
-        if ttl < self.now: return None
+        ttl: int   = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
+        if ttl < 0: return None
         return value
 
   async def put(self, key: str, value: str, expire: Optional[int] = None):
+    expire = expire or self.expire
     async with self.dynamodb as client:
-      expire: int      = expire or self.expire
-      created_at: dict = {
-        'created': { 'N': f'{ self.now + expire }' }
+      expires_at: dict = {
+        'expires': { 'N': f'{ self.now + expire }' }
       }
       await client.put_item(
         TableName=self.table_name,
-        Item={ **{ 'key': { 'S': key }, 'value': { 'S': value }}, **created_at }
+        Item={ **{ 'key': { 'S': key }, 'value': { 'S': value }}, **expires_at }
       )
 
   async def clear(self, namespace: str = None, key: str = None) -> int:
@@ -98,7 +96,7 @@ class DynamoDBBackend(Backend):
         response: dict = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
         ### Calculate Time-to-live ###
         ttl: int = -1
-        if 'Item' in response: ttl = int(response['Item'].get('created', {}).get('N', 0))-self.now
+        if 'Item' in response: ttl = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
         ### Sends Delete Item Request ###
         resp = await client.delete_item(TableName=self.table_name, Key={'key': {'S': key}})
         count += (0, 1)[ttl > 0 and resp['ResponseMetadata']['HTTPStatusCode'] == 200]
