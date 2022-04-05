@@ -38,7 +38,7 @@ class LoadConfig(BaseModel):
 
   @validator('backend')
   def validate_backend(cls, value: str):
-    if value.lower() not in { 'dynamodb', 'inmemory', 'memcached', 'redis' }:
+    if value.lower() not in { 'dynamodb', 'inmemory', 'memcached', 'redis', 'mongodb' }:
       raise ValueError(
         'The "backend" value must be one of "dynamodb", "inmemory", "memcached", or "redis".'
       )
