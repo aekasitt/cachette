@@ -16,3 +16,7 @@ FastAPI extension that provides Cache Implementation Support
 __version__ = '0.1.0'
 
 from .core import Cachette
+
+__all__ = [
+  'Cachette'
+]
