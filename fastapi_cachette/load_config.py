@@ -101,7 +101,7 @@ class LoadConfig(BaseModel):
     ### TODO More Validations ###
     return value
 
-  @validator('database_name', always=True)
+  @validator('database_name')
   def validate_database_name(cls, value: str, values: dict):
     backend: str = values['backend'].lower()
     if backend == 'mongodb' and not value:

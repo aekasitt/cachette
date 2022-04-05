@@ -79,10 +79,10 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
     [('backend', 'dynamodb'), ('expire', 3601)],          \
     'The "expire" value must between 1 or 3600 seconds.'  \
   ),
-  # (
-  #   [('backend', 'dynamodb'), ('region', 'not-valid')],       \
-  #   'The "region" provided does not exist under AWS Regions.' \
-  # ),
+  (
+    [('backend', 'dynamodb'), ('region', 'not-valid')],       \
+    'The "region" provided does not exist under AWS Regions.' \
+  ),
   (
     [('backend', 'dynamodb'), ('region', 'ap-southeast-1'), ('table_name', None)], \
     'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.'    \
@@ -118,16 +118,21 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
 
   ### MongoDB ###
   (
-    [('backend', 'mongodb')],                                           \
-    'The "database_name" cannot be null when using MongoDB as backend.' \
-    
+    [('backend', 'mongodb')], \
+    'The "mongodb_url" cannot be null when using MongoDB as backend.'        \
+  ),
+
+  (
+    [('backend', 'mongodb'), ('database_name', 'customized-database-name')], \
+    'The "mongodb_url" cannot be null when using MongoDB as backend.'        \
   ),
   (
-    [('backend', 'mongodb'), ('database_name', 'cachette-collection')], \
-    'The "mongodb_url" cannot be null when using MongoDB as backend.'   \
+    [('backend', 'mongodb'), ('mongodb_url', 'mongodb://localhost:27017'), \
+      ('database_name', None)],                                            \
+    'The "database_name" cannot be null when using MongoDB as backend.'    \
   ),
   (
-    [('backend', 'mongodb'), ('database_name', 'cachette-collection'),           \
+    [('backend', 'mongodb'), ('database_name', 'customized-database-name'),      \
       ('mongodb_url', 'http://localhost:27017'), ('table_name', None)],          \
     'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.'  \
   ),
@@ -147,9 +152,8 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
   ),
 ])
 def test_load_invalid_configs(invalid_configs: List[Tuple[str, Any]], reason: str) -> NoReturn:
-  with raises(ValidationError) as err:
+  with raises(ValidationError) as exc_info:
     @Cachette.load_config
     def load_cachette_configs():
       return invalid_configs
-  exc_info: str = str(err)
-  assert set(reason).issubset(set(exc_info))
+  assert exc_info.match(reason)

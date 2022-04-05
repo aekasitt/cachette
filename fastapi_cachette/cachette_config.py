@@ -38,7 +38,7 @@ class CachetteConfig(object):
   _dynamodb_url: str
 
   ### MongoDB ###
-  _database_name: str
+  _database_name: str  = 'fastapi-cachette-database'
   _mongodb_url: str
 
   @classmethod
@@ -52,7 +52,7 @@ class CachetteConfig(object):
       cls._table_name     = config.table_name or cls._table_name
       cls._region         = config.region
       cls._dynamodb_url   = config.dynamodb_url
-      cls._database_name  = config.database_name
+      cls._database_name  = config.database_name or cls._database_name
       cls._mongodb_url    = config.mongodb_url
     except ValidationError: raise
     except Exception:
