@@ -36,8 +36,8 @@ from fastapi_cachette import Cachette
   [('backend', 'inmemory'), ('table_name', None)], \
 
   ### Memcached ###
-  [('backend', 'memcached'), ('memcached_host', 'localhost')],                   \
-  [('backend', 'memcached'), ('expire', 1), ('memcached_host', 'localhost')],    \
+  [('backend', 'memcached'), ('memcached_host', 'localhost')],                       \
+  [('backend', 'memcached'), ('expire', 1), ('memcached_host', 'localhost')],        \
   [('backend', 'memcached'), ('memcached_host', 'localhost'), ('table_name', None)], \
 
   ### MongoDB ###
