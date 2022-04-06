@@ -11,7 +11,6 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from time import time
 from typing import Dict, List, Optional, Tuple
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
