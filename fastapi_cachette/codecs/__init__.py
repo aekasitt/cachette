@@ -16,7 +16,7 @@ from typing import Any
 class Codec:
 
   @abstractmethod
-  def dumps(self, obj: Any) -> str:
+  def dumps(self, obj: Any) -> bytes:
     '''
     ...
     '''

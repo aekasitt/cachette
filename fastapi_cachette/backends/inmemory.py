@@ -11,14 +11,14 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
 
 @dataclass
 class Value:
-  data: str
+  data: bytes
   expires: int
 
 class InMemoryBackend(Backend):
@@ -28,22 +28,22 @@ class InMemoryBackend(Backend):
     self.codec = codec
     self.ttl   = ttl
   
-  async def fetch(self, key: str) -> str:
+  async def fetch(self, key: str) -> Any:
     value: Value = self.store.get(key)
     if not value: return
     elif value.expires < self.now: del self.store[key]
     else: return self.codec.loads(value.data)
 
-  async def fetch_with_ttl(self, key: str) -> Tuple[int, str]:
+  async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
     value: Value = self.store.get(key)
     if value.expires < self.now:
       del self.store[key]
       return (0, None)
     else:
-      return (value.expires - self.now, value.data)
+      return (value.expires - self.now, self.codec.loads(value.data))
   
   async def put(self, key: str, value: str, ttl: int = None):
-    data: str       = self.codec.dumps(value)
+    data: bytes     = self.codec.dumps(value)
     expires: int    = self.now + (ttl or self.ttl)
     self.store[key] = Value(data, expires)
 

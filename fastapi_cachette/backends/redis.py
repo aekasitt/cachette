@@ -29,14 +29,16 @@ class RedisBackend(Backend):
     return cls(codec=codec, redis=Redis.from_url(url=redis_url), ttl=ttl)
 
   async def fetch(self, key) -> Any:
-    return self.codec.loads(await self.redis.get(key))
+    data: bytes = await self.redis.get(key)
+    if data: return self.codec.loads(data)
 
   async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
     async with self.redis.pipeline(transaction=True) as pipe:
-      return self.codec.loads(await (pipe.ttl(key).get(key).execute()))
+      data: bytes = await (pipe.ttl(key).get(key).execute())
+      if data: return self.codec.loads(data)
 
   async def put(self, key: str, value: Any, ttl: Optional[int] = None):
-    data: str = self.codec.dumps(value)
+    data: bytes = self.codec.dumps(value)
     return await self.redis.set(key, data, ex=(ttl or self.ttl))
 
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:

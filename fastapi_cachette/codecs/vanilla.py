@@ -16,9 +16,9 @@ from fastapi_cachette.codecs import Codec
 
 class VanillaCodec(Codec):
 
-  def dumps(self, obj: Any) -> str:
-    return str(obj)
+  def dumps(self, obj: Any) -> bytes:
+    return str(obj).encode('utf-8')
 
-  def loads(self, string: str) -> str:
-    return string
+  def loads(self, data: bytes) -> Any:
+    return data.decode('utf-8')
   

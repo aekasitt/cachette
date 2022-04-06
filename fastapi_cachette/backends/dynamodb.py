@@ -62,7 +62,7 @@ class DynamoDBBackend(Backend):
     async with self.dynamodb as client:
       response = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
       if 'Item' in response:
-        value: str = response['Item'].get('value', {}).get('S')
+        value: str = response['Item'].get('value', {}).get('B')
         ttl: int   = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
         if ttl < 0: return None
         return self.codec.loads(value)
@@ -71,7 +71,7 @@ class DynamoDBBackend(Backend):
     async with self.dynamodb as client:
       response = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
       if 'Item' in response:
-        value: Any = self.codec.loads(response['Item'].get('value', {}).get('S'))
+        value: Any = self.codec.loads(response['Item'].get('value', {}).get('B'))
         ttl: int   = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
         if ttl < 0:
           return 0, None
@@ -83,9 +83,10 @@ class DynamoDBBackend(Backend):
       expires_at: dict = {
         'expires': { 'N': f'{ self.now + ttl }' }
       }
+      data: bytes = self.codec.dumps(value)
       await client.put_item(
         TableName=self.table_name,
-        Item={ **{ 'key': { 'S': key }, 'value': { 'S': self.codec.dumps(value) }}, **expires_at }
+        Item={ **{ 'key': { 'S': key }, 'value': { 'B': data }}, **expires_at }
       )
 
   async def clear(self, namespace: str = None, key: str = None) -> int:

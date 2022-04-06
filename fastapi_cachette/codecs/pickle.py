@@ -17,8 +17,8 @@ from fastapi_cachette.codecs import Codec
 
 class PickleCodec(Codec):
 
-  def dumps(self, obj: Any):
+  def dumps(self, obj: Any) -> bytes:
     return dumps(obj)
   
-  def loads(self, string: str):
+  def loads(self, string: str) -> Any:
     return loads(string)

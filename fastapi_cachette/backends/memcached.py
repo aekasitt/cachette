@@ -29,14 +29,18 @@ class MemcachedBackend(Backend):
     return MemcachedBackend(codec=codec, mcache=Client(host=memcached_host), ttl=ttl)
 
   async def fetch(self, key: str) -> Any:
-    return self.codec.loads(await self.mcache.get(key.encode()))
+    data: bytes = await self.mcache.get(key.encode())
+    if data: return self.codec.loads(data)
+    return None
 
   async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
-    return 3600, self.codec.loads(await self.mcache.get(key.encode()))
+    data: bytes = await self.mcache.get(key.encode())
+    if data: return 3600, self.codec.loads(data)
+    return 0, None
 
   async def put(self, key: str, value: Any, ttl: Optional[int] = None):
-    data: str = self.codec.dumps(value)
-    return await self.mcache.set(key.encode(), data.encode(), exptime=ttl or self.ttl)
+    data: bytes = self.codec.dumps(value)
+    return await self.mcache.set(key.encode(), data, exptime=ttl or self.ttl)
 
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None):
     count: int = 0
