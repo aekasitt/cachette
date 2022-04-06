@@ -20,6 +20,7 @@ from fastapi_cachette.codecs import Codec
 
 @dataclass
 class DynamoDBBackend(Backend):
+  codec: Codec
   region: str
   table_name: str
   ttl: int
