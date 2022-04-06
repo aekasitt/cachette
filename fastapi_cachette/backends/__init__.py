@@ -15,7 +15,7 @@ Module containing `Backend` abstract class to be inherited by implementation-spe
 ### Standard Packages ###
 from abc import abstractmethod
 from time import time
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 class Backend:
 
@@ -24,7 +24,7 @@ class Backend:
     return int(time())
 
   @abstractmethod
-  async def fetch(self, key: str) -> str:
+  async def fetch(self, key: str) -> Any:
     '''
     Fetches the value from cache  
 
@@ -34,7 +34,7 @@ class Backend:
     raise NotImplementedError
 
   @abstractmethod
-  async def fetch_with_ttl(self, key: str) -> Tuple[int, str]:
+  async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
     '''
     Fetches the value from cache as well as remaining time to live.
 
@@ -45,13 +45,13 @@ class Backend:
     raise NotImplementedError
 
   @abstractmethod
-  async def put(self, key: str, value: str, ttl: Optional[int] = None):
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None):
     '''
     Puts the value within the cache with key and assigned time-to-live value
 
     ---
     :param:  key  `str` identifies key-value pair  
-    :param:  value  `str` value to have stored identified by key  
+    :param:  value  `Any` value to have stored identified by key  
     :param:  ttl  `int` time before value expires within cache; default: `None`
     '''
     raise NotImplementedError

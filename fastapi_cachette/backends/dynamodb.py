@@ -11,11 +11,12 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 ### Third-Party Packages ###
 from aiobotocore.session import get_session, ClientCreatorContext
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
+from fastapi_cachette.codecs import Codec
 
 @dataclass
 class DynamoDBBackend(Backend):
@@ -26,7 +27,7 @@ class DynamoDBBackend(Backend):
 
   @classmethod
   async def init(cls,
-    table_name: str, ttl: int,                              \
+    codec: Codec, table_name: str, ttl: int,                \
     region: Optional[str] = None, url: Optional[str] = None \
   ) -> 'DynamoDBBackend':
     dynamodb: ClientCreatorContext = get_session() \
@@ -50,32 +51,32 @@ class DynamoDBBackend(Backend):
           }
         }
         await client.create_table(TableName=table_name, **table_definition)
-    return cls(region=region, table_name=table_name, ttl=ttl, url=url)
+    return cls(codec=codec, region=region, table_name=table_name, ttl=ttl, url=url)
 
   @property
   def dynamodb(self) -> ClientCreatorContext:
     return get_session().create_client('dynamodb', region_name=self.region, endpoint_url=self.url)
 
-  async def fetch_with_ttl(self, key: str) -> Tuple[int, str]:
-    async with self.dynamodb as client:
-      response = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
-      if 'Item' in response:
-        value: str = response['Item'].get('value', {}).get('S')
-        ttl: int   = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
-        if ttl < 0:
-          return 0, None
-        return ttl, value
-
-  async def fetch(self, key: str) -> str:
+  async def fetch(self, key: str) -> Any:
     async with self.dynamodb as client:
       response = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
       if 'Item' in response:
         value: str = response['Item'].get('value', {}).get('S')
         ttl: int   = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
         if ttl < 0: return None
-        return value
+        return self.codec.loads(value)
 
-  async def put(self, key: str, value: str, ttl: Optional[int] = None):
+  async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
+    async with self.dynamodb as client:
+      response = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
+      if 'Item' in response:
+        value: Any = self.codec.loads(response['Item'].get('value', {}).get('S'))
+        ttl: int   = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
+        if ttl < 0:
+          return 0, None
+        return ttl, value
+
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None):
     ttl = ttl or self.ttl
     async with self.dynamodb as client:
       expires_at: dict = {
@@ -83,7 +84,7 @@ class DynamoDBBackend(Backend):
       }
       await client.put_item(
         TableName=self.table_name,
-        Item={ **{ 'key': { 'S': key }, 'value': { 'S': value }}, **expires_at }
+        Item={ **{ 'key': { 'S': key }, 'value': { 'S': self.codec.dumps(value) }}, **expires_at }
       )
 
   async def clear(self, namespace: str = None, key: str = None) -> int:

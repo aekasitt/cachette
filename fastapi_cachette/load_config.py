@@ -18,8 +18,9 @@ from typing import Optional
 from pydantic import BaseModel, validator, StrictInt, StrictStr
 
 class LoadConfig(BaseModel):
-  backend: Optional[StrictStr] = 'inmemory'
-  ttl: Optional[StrictInt]     = 60 # seconds
+  backend: Optional[StrictStr]
+  codec: Optional[StrictStr]
+  ttl: Optional[StrictInt]
 
   ### Redis ###
   redis_url: Optional[StrictStr]
@@ -50,6 +51,14 @@ class LoadConfig(BaseModel):
   def validate_time_to_live(cls, value: str):
     if value <= 0 or value > 3600:
       raise ValueError('The "ttl" value must between 1 or 3600 seconds.')
+    return value
+
+  @validator('codec')
+  def validate_codec(cls, value: str):
+    if value.lower() not in { 'feather', 'hdf5', 'msgpack', 'parquet', 'pickle' }:
+      raise ValueError(
+        'The "codec" value must be one of "feather", "hdf5", "msgpack", "parquet", or "pickle".' 
+      )
     return value
 
   @validator('redis_url', always=True)

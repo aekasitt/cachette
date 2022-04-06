@@ -22,6 +22,7 @@ from fastapi_cachette.load_config import LoadConfig
 class CachetteConfig(object):
   ### Basics ###
   _backend: str        = 'inmemory'
+  _codec: str          = 'vanilla'
   _ttl: int            = 60
 
   ### Redis ###
@@ -52,6 +53,11 @@ class CachetteConfig(object):
         defaults to using inmemory option which required no extra package dependencies. To use other
         listed options; See installation guide on the README.md at
         [Repository Page](https://github.com/aekasitt/fastapi-cachette).
+      codec -- optional; serialization and de-serialization format to have cache values stored in
+        the cache backend of choice as a string of selected encoding. once fetched, will have their
+        decoded values returned of the same format. must be one of ["feather", "hdf5", "msgpack", 
+        "parquet", "pickle"]; if none is defined, will vanilla codec of basic string conversion will
+        be used.
       ttl -- optional; the time-to-live or amount before this cache item expires within the cache;
         defaults to 60 (seconds) and must be between 1 second to 1 hour (3600 seconds).
       redis_url -- required when backend set to "redis"; the url set to redis-server instance with
@@ -78,6 +84,7 @@ class CachetteConfig(object):
     try:
       config = LoadConfig(**{key.lower(): value for key, value in settings()})
       cls._backend        = config.backend or cls._backend
+      cls._codec          = config.codec or cls._codec
       cls._ttl            = config.ttl or cls._ttl
       cls._redis_url      = config.redis_url
       cls._memcached_host = config.memcached_host

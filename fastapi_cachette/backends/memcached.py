@@ -11,29 +11,32 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 ### Third-Party Packages ###
 from aiomcache import Client
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
+from fastapi_cachette.codecs import Codec
 
 @dataclass
 class MemcachedBackend(Backend):
+  codec: Codec
   mcache: Client
   ttl: int
 
   @classmethod
-  async def init(cls, memcached_host: str, ttl: int) -> 'MemcachedBackend':
-    return MemcachedBackend(Client(host=memcached_host), ttl)
+  async def init(cls, codec: Codec, memcached_host: str, ttl: int) -> 'MemcachedBackend':
+    return MemcachedBackend(codec=codec, mcache=Client(host=memcached_host), ttl=ttl)
 
-  async def fetch(self, key: str):
-    return await self.mcache.get(key.encode())
+  async def fetch(self, key: str) -> Any:
+    return self.codec.loads(await self.mcache.get(key.encode()))
 
-  async def fetch_with_ttl(self, key: str) -> Tuple[int, str]:
-    return 3600, await self.mcache.get(key.encode())
+  async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
+    return 3600, self.codec.loads(await self.mcache.get(key.encode()))
 
-  async def put(self, key: str, value: str, ttl: Optional[int] = None):
-    return await self.mcache.set(key.encode(), value.encode(), exptime=ttl or self.ttl)
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None):
+    data: str = self.codec.dumps(value)
+    return await self.mcache.set(key.encode(), data.encode(), exptime=ttl or self.ttl)
 
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None):
     count: int = 0

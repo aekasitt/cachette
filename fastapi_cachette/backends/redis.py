@@ -11,30 +11,33 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 ### Third-Party Pacakges ###
 from redis.asyncio import Redis
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
+from fastapi_cachette.codecs import Codec
 
 @dataclass
 class RedisBackend(Backend):
+  codec: Codec
   redis: Redis
   ttl: int
 
   @classmethod
-  async def init(cls, redis_url: str, ttl: int) -> 'RedisBackend':
-    return cls(Redis.from_url(url=redis_url), ttl)
+  async def init(cls, codec: Codec, redis_url: str, ttl: int) -> 'RedisBackend':
+    return cls(codec=codec, redis=Redis.from_url(url=redis_url), ttl=ttl)
 
-  async def fetch(self, key) -> str:
-    return await self.redis.get(key)
+  async def fetch(self, key) -> Any:
+    return self.codec.loads(await self.redis.get(key))
 
-  async def fetch_with_ttl(self, key: str) -> Tuple[int, str]:
+  async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
     async with self.redis.pipeline(transaction=True) as pipe:
-      return await (pipe.ttl(key).get(key).execute())
+      return self.codec.loads(await (pipe.ttl(key).get(key).execute()))
 
-  async def put(self, key: str, value: str, ttl: Optional[int] = None):
-    return await self.redis.set(key, value, ex=(ttl or self.ttl))
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None):
+    data: str = self.codec.dumps(value)
+    return await self.redis.set(key, data, ex=(ttl or self.ttl))
 
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     if namespace:

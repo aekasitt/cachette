@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
+from fastapi_cachette.codecs import Codec
 
 @dataclass
 class Value:
@@ -23,15 +24,16 @@ class Value:
 class InMemoryBackend(Backend):
   store: Dict[str, Value] = {}
 
-  def __init__(self, ttl: Optional[int] = None):
-    self.ttl = ttl
+  def __init__(self, codec: Codec, ttl: int):
+    self.codec = codec
+    self.ttl   = ttl
   
   async def fetch(self, key: str) -> str:
     value: Value = self.store.get(key)
     if not value: return
     elif value.expires < self.now: del self.store[key]
-    else: return value.data
-  
+    else: return self.codec.loads(value.data)
+
   async def fetch_with_ttl(self, key: str) -> Tuple[int, str]:
     value: Value = self.store.get(key)
     if value.expires < self.now:
@@ -41,7 +43,9 @@ class InMemoryBackend(Backend):
       return (value.expires - self.now, value.data)
   
   async def put(self, key: str, value: str, ttl: int = None):
-    self.store[key] = Value(value, self.now + (ttl or self.ttl))
+    data: str       = self.codec.dumps(value)
+    expires: int    = self.now + (ttl or self.ttl)
+    self.store[key] = Value(data, expires)
 
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     count: int = 0
