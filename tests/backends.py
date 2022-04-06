@@ -30,7 +30,7 @@ from tests import client, Payload
     ('ttl', 2), ('mongodb_url', 'mongodb://localhost:27017')
   ],
   [('backend', 'redis'), ('ttl', 2), ('redis_url', 'redis://localhost:6379')]
-], ids={ 'dynamodb', 'inmemory', 'memcached', 'mongodb', 'redis' }, indirect=True)
+], ids=[ 'dynamodb', 'inmemory', 'memcached', 'mongodb', 'redis' ], indirect=True)
 def test_set_and_wait_til_ttld(client: TestClient):
   ### Get key-value before setting anything ###
   response: Response = client.get('/cache')
@@ -60,7 +60,7 @@ def test_set_and_wait_til_ttld(client: TestClient):
     ('mongodb_url', 'mongodb://localhost:27017')
   ],
   [('backend', 'redis'), ('redis_url', 'redis://localhost:6379')]
-], ids={ 'dynamodb', 'inmemory', 'memcached', 'mongodb', 'redis' }, indirect=True)
+], ids=[ 'dynamodb', 'inmemory', 'memcached', 'mongodb', 'redis' ], indirect=True)
 def test_set_then_clear(client: TestClient):
   ### Get key-value before setting anything ###
   response: Response = client.get('/cache')
