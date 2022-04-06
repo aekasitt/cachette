@@ -33,12 +33,15 @@ class Cachette(CachetteConfig):
 
     ### Determine Encoding and Decoding Codec ###
     codec: Codec
-    if self._codec == 'vanilla':
-      from fastapi_cachette.codecs.vanilla import VanillaCodec
-      codec = VanillaCodec()
+    if self._codec == 'msgpack':
+      from fastapi_cachette.codecs.msgpack import MsgpackCodec
+      codec = MsgpackCodec()
     elif self._codec == 'pickle':
       from fastapi_cachette.codecs.pickle import PickleCodec
       codec = PickleCodec()
+    elif self._codec == 'vanilla':
+      from fastapi_cachette.codecs.vanilla import VanillaCodec
+      codec = VanillaCodec()
 
     if self._backend == 'dynamodb':
       from fastapi_cachette.backends.dynamodb import DynamoDBBackend
