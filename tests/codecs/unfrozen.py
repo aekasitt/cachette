@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022 All rights reserved.
 # FILENAME:  tests/codecs/unfrozen.py
-# VERSION: 	 0.1.1
+# VERSION: 	 0.1.2
 # CREATED: 	 2022-04-06 22:03
 # AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
 # DESCRIPTION:

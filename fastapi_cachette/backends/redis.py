@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022 All rights reserved.
 # FILENAME:  backends/redis.py
-# VERSION: 	 0.1.1
+# VERSION: 	 0.1.2
 # CREATED: 	 2022-04-03 15:31
 # AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
 # DESCRIPTION:

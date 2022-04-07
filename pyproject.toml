@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastapi-cachette"
-version = "0.1.1"
+version = "0.1.2"
 description = "Cache Implementation Extension for FastAPI Asynchronous Web Framework"
 authors = ["Sitt Guruvanich <aekazitt@gmail.com>"]
 license = "MIT"
