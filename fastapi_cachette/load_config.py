@@ -55,9 +55,12 @@ class LoadConfig(BaseModel):
 
   @validator('codec')
   def validate_codec(cls, value: str):
-    if value.lower() not in { 'feather', 'hdf5', 'msgpack', 'parquet', 'pickle' }:
+    if value.lower() not in {
+      'feather', 'hdf5', 'json', 'msgpack', 'orjson', 'parquet', 'pickle'
+    }:
       raise ValueError(
-        'The "codec" value must be one of "feather", "hdf5", "msgpack", "parquet", or "pickle".' 
+        'The "codec" value must be one of "feather", "hdf5", "json", "msgpack", "orjson", ' \
+          '"parquet", or "pickle".' 
       )
     return value
 

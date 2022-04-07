@@ -10,7 +10,7 @@
 # HISTORY:
 #*************************************************************
 '''
-Tests for codec implementations on TestClient which can only store string representaions of items
+Tests for codec implementations on TestClient which serializes, deserializes in JSON format
 '''
 ### Standard Packages ###
 from typing import Any, List, NoReturn, Tuple
@@ -27,23 +27,19 @@ from fastapi_cachette import Cachette
 @fixture(scope='module')
 def items() -> List[Any]:
   return [
+    None,
     123,                      # Integer
     123.45,                   # Float
     'A',                      # Charstring
     'Hello, World!',          # String
     '123',                    # Alphanumeric String of an integer
     '123.45',                 # Alphanumeric String of a float
-    b'A',                     # Charbytes
-    b'Hello, World!',         # Bytes
-    b'123',                   # Alphanumeric Bytes of an integer
-    b'123.45',                # Alphanumeric Bytes of a float
     { 'a': 'b', 'c': 'd' },   # Dictionary with String values
-    { 'a': b'b', 'c': b'd' }, # Dictionary with Byte values
     { 'a': 1, 'b': 2 },       # Dictionary with Integer values
     { 'a': 1.2, 'b': 3.4 },   # Dictionary with Float values
-    [ 1, 2, 3 ],              # List of numbers
+    [ 1, 2, 3 ],              # List of integers
+    [ 1.1, 2.2, 3.3 ],        # List of floats
     [ 'a', 'b', 'c' ],        # List of charstrings
-    [ b'a', b'b', b'c' ],     # List of charbytes
   ]
 
 @fixture()
@@ -73,7 +69,7 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
     ok: bool = True
     for i, item in enumerate(items):
       uncached: str = await cachette.fetch(f'{ i }')
-      if uncached != str(item):
+      if uncached != item:
         ok = False
         break
     return ('', 'OK')[ok]
@@ -82,25 +78,38 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
 
 @mark.parametrize('client', [
 
-  ### DynamoDB & No Codec ###
-  [('backend', 'dynamodb'), ('dynamodb_url', 'http://localhost:8000')], \
+  ### DynamoDB & JSON Codecs ###
+  [('backend', 'dynamodb'), ('codec', 'json'), ('dynamodb_url', 'http://localhost:8000')],   \
+  [('backend', 'dynamodb'), ('codec', 'orjson'), ('dynamodb_url', 'http://localhost:8000')], \
 
-  ### InMemory & No Codec ###
-  [('backend', 'inmemory')], \
+  ### InMemory & JSON Codecs ###
+  [('backend', 'inmemory'), ('codec', 'json')],   \
+  [('backend', 'inmemory'), ('codec', 'orjson')], \
 
-  ### Memcached & No Codec ###
-  [('backend', 'memcached'), ('memcached_host', 'localhost')], \
+  ### Memcached & JSON Codecs ###
+  [('backend', 'memcached'), ('codec', 'json'), ('memcached_host', 'localhost')],   \
+  [('backend', 'memcached'), ('codec', 'orjson'), ('memcached_host', 'localhost')], \
 
-  ### MongoDB & No Codec ###
+  ### MongoDB & JSON Codecs ###
   [
-    ('backend', 'mongodb'), ('database_name', 'fastapi-cachette-database'), \
-    ('mongodb_url', 'mongodb://localhost:27017')                            \
+    ('backend', 'mongodb'), ('codec', 'json'),                                                   \
+    ('database_name', 'fastapi-cachette-database'), ('mongodb_url', 'mongodb://localhost:27017') \
+  ],
+  [
+    ('backend', 'mongodb'), ('codec', 'orjson'),                                                 \
+    ('database_name', 'fastapi-cachette-database'), ('mongodb_url', 'mongodb://localhost:27017') \
   ],
 
-  ### Redis & No Codec ###
-  [('backend', 'redis'), ('redis_url', 'redis://localhost:6379')], \
+  ### Redis & JSON Codecs ###
+  [('backend', 'redis'), ('codec', 'json'), ('redis_url', 'redis://localhost:6379')],  \
+  [('backend', 'redis'), ('codec', 'orjson'), ('redis_url', 'redis://localhost:6379')] \
+
 ], ids=[
-  'dynamodb-vanilla', 'inmemory-vanilla', 'memcached-vanilla', 'mongodb-vanilla', 'redis-msgpack'
+  'dynamodb-json', 'dynamodb-orjson',
+  'inmemory-json', 'inmemory-orjson',
+  'memcached-json', 'memcached-orjson',
+  'mongodb-json', 'mongodb-orjson',
+  'redis-json', 'redis-orjson'
 ], indirect=True)
 def test_every_backend_with_every_codec(client) -> NoReturn:
   response: Response = client.get('/put-items')
