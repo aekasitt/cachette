@@ -18,10 +18,7 @@ Most of the Backend implementation is directly lifted from
 1. Implement `flush` and `flush_expired` methods on individual backends 
 (Not needed for Redis & Memcached backends)
 
-2. Implement options for encoding/decoding cache data using built-in protocols such as pickle, json
-or third-party protocol such as msgpack, parquet, feather, hdf5
-
-3. Write more examples
+2. Write more examples
 
 ## Installation
 
