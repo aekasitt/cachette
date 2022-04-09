@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022 All rights reserved.
 # FILENAME:  codecs/msgpack.py
-# VERSION: 	 0.1.2
+# VERSION: 	 0.1.3
 # CREATED: 	 2022-04-07 2:08
 # AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
 # DESCRIPTION:
