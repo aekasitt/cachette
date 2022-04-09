@@ -33,15 +33,24 @@ class Cachette(CachetteConfig):
 
     ### Determine Encoding and Decoding Codec ###
     codec: Codec
-    if self._codec == 'json':
+    if self._codec == 'csv':
+      from fastapi_cachette.codecs.dataframe.csv import CSVCodec
+      codec = CSVCodec()
+    elif self._codec == 'json':
       from fastapi_cachette.codecs.json import JSONCodec
       codec = JSONCodec()
+    elif self._codec == 'feather':
+      from fastapi_cachette.codecs.dataframe.feather import FeatherCodec
+      codec = FeatherCodec()
     elif self._codec == 'msgpack':
       from fastapi_cachette.codecs.msgpack import MsgpackCodec
       codec = MsgpackCodec()
     if self._codec == 'orjson':
       from fastapi_cachette.codecs.orjson import ORJSONCodec
       codec = ORJSONCodec()
+    elif self._codec == 'parquet':
+      from fastapi_cachette.codecs.dataframe.parquet import ParquetCodec
+      codec = ParquetCodec()
     elif self._codec == 'pickle':
       from fastapi_cachette.codecs.pickle import PickleCodec
       codec = PickleCodec()

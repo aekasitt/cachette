@@ -56,12 +56,13 @@ class LoadConfig(BaseModel):
   @validator('codec')
   def validate_codec(cls, value: str):
     if value.lower() not in {
-      'feather', 'hdf5', 'json', 'msgpack', 'orjson', 'parquet', 'pickle'
+      'csv', 'feather', 'json', 'msgpack', 'orjson', 'parquet', 'pickle'
     }:
       raise ValueError(
-        'The "codec" value must be one of "feather", "hdf5", "json", "msgpack", "orjson", ' \
+        'The "codec" value must be one of "csv", "feather", "json", "msgpack", "orjson", ' \
           '"parquet", or "pickle".' 
       )
+      ### TODO Validation when using DataFrame Codecs (csv, sql, feather, parquet) have pandas? ###
     return value
 
   @validator('redis_url', always=True)
