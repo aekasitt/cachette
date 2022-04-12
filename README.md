@@ -91,6 +91,10 @@ Change library?
 
 4. Boto3 Version Fix; Current version restrictions vulnerable to `aiohttp` bug.
 
+5. Add behaviors responding to "Cache-Control" request header
+
+6. More character validations for URLs and Database/Table/Collection names in configuration options
+
 ## Installation
 
 The easiest way to start working with this extension with pip
