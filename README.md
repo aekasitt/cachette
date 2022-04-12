@@ -84,6 +84,13 @@ async def getter(key: str, cachette: Cachette = Depends()):
 1. Implement `flush` and `flush_expired` methods on individual backends 
 (Not needed for Redis & Memcached backends)
 
+2. Memcached Authentication ([No SASL Support](https://github.com/aio-libs/aiomcache/issues/12))
+Change library?
+
+3. DynamoDB Authentication (Add AWS Access Key ID and AWS Access Secret Key to configuration).
+
+4. Boto3 Version Fix; Current version restrictions vulnerable to `aiohttp` bug.
+
 ## Installation
 
 The easiest way to start working with this extension with pip
