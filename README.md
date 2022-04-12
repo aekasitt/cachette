@@ -8,17 +8,81 @@
 
 ## Features
 
-Cache Extension for FastAPI Asynchronous Web Framework
+Opinionated Cache Extension for FastAPI Asynchronous Web Framework;
+This is an extension aiming at making cache access on the server
+By configuration at startup of the FastAPI App instance, you can set the backend and other 
+configuration options and have it remain a class constant when using FastAPI's
+intuitive [Dependency Injection](https://fastapi.tiangolo.com/tutorial/dependencies/) system.
+
+The design has built-in limitations like fixed codec and backend once the app has been launched and 
+encourage developers to design their applications with this in mind.
+
 Most of the Backend implementation is directly lifted from 
 [fastapi-cache](https://github.com/long2ice/fastapi-cache) by 
 [@long2ice](https://github.com/long2ice) excluding the MongoDB backend option.
+
+## Examples
+
+The following shows and example of setting up FastAPI Cachette in its default configuration, which
+is an In-Memory cache implementation.
+
+```py
+from fastapi import FastAPI, Depends
+from fastapi.responses import PlainTextResponse
+from fastapi_cachette import Cachette
+from pydantic import BaseModel
+
+app = FastAPI()
+
+### Routing ###
+class Payload(BaseModel):
+  key: str
+  value: str
+
+@app.post('/', response_class=PlainTextResponse)
+async def setter(payload: Payload, cachette: Cachette = Depends()):
+  await cachette.put(payload.key, payload.value)
+  return 'OK'
+
+@app.get('/{key}', response_class=PlainTextResponse, status_code=200)
+async def getter(key: str, cachette: Cachette = Depends()):
+  value: str = await cachette.fetch(key)
+  return value
+```
+
+And then this is how you set up a FastAPI Cachette with Redis support enabled.
+
+```py
+from fastapi import FastAPI, Depends
+from fastapi.responses import PlainTextResponse
+from fastapi_cachette import Cachette
+from pydantic import BaseModel
+
+app = FastAPI()
+
+@Cachette.load_config
+def get_cachette_config():
+  return [('backend', 'redis'), ('redis_url', 'redis://localhost:6379')]
+
+class Payload(BaseModel):
+  key: str
+  value: str
+
+@app.post('/', response_class=PlainTextResponse)
+async def setter(payload: Payload, cachette: Cachette = Depends()):
+  await cachette.put(payload.key, payload.value)
+  return 'OK'
+
+@app.get('/{key}', response_class=PlainTextResponse, status_code=200)
+async def getter(key: str, cachette: Cachette = Depends()):
+  value: str = await cachette.fetch(key)
+  return value
+```
 
 ## Upcoming Features (To-Do List)
 
 1. Implement `flush` and `flush_expired` methods on individual backends 
 (Not needed for Redis & Memcached backends)
-
-2. Write more examples
 
 ## Installation
 
@@ -28,6 +92,23 @@ The easiest way to start working with this extension with pip
 pip install fastapi-cachette
 # or
 poetry add fastapi-cachette
+```
+
+When you familiarize with the basic structure of how to Dependency Inject Cachette within your
+endpoints, please experiment more of using external backends with `extras` installations like
+
+```bash
+# Install FastAPI Cachette's extra requirements to Redis support
+pip install fastapi-cachette --install-option "--extras-require=redis"
+# or Install FastAPI Cachette's support to Memcached
+poetry add fastapi-cachette[memcached]
+# or Special JSON Codec written on Rust at lightning speed
+poetry add fastapi-cachette[orjson]
+# or Include PyArrow package making DataFrame serialization much easiser
+pip install fastapi-cachette --install-option "--extras-require=dataframe"
+# or MongoDB and DynamoDB supports
+poetry add fastapi-cachette[mongodb]
+pip install fastapi-cachette --install-option "--extras-require=dynamodb"
 ```
 
 ## Getting Started
@@ -61,8 +142,6 @@ Do individual example with this command...
 pip install redis
 # or
 poetry install --extras redis
-# or
-poetry install --extras `<example-name>`
 ```
 
 ## Contributions
