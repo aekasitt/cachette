@@ -60,7 +60,7 @@ orjson = ["orjson"]
 dataframe = [ "pandas", "pyarrow" ]
 
 [tool.pytest.ini_options]
-addopts = "--strict-markers --tb=short -s"
+addopts = "--strict-markers --tb=short -s -rxXs"
 testpaths = [ "tests" ]
 python_files = "*.py"
 
