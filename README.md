@@ -21,6 +21,43 @@ Most of the Backend implementation is directly lifted from
 [fastapi-cache](https://github.com/long2ice/fastapi-cache) by 
 [@long2ice](https://github.com/long2ice) excluding the MongoDB backend option.
 
+## Configuration Options
+
+The following are the current available configuration keys that can be set on this FastAPI extension
+on startup either by using a method which returns a list of tuples or a Pydantic BaseSettings object
+(See examples below or in `examples/` folder)
+
+    backend -- optional; must be one of ["dynamodb", "inmemory", "memcached", "mongodb", "redis"];
+      defaults to using inmemory option which required no extra package dependencies. To use other
+      listed options;
+    codec -- optional; serialization and de-serialization format to have cache values stored in
+      the cache backend of choice as a string of selected encoding. once fetched, will have their
+      decoded values returned of the same format. must be one of ["feather", "hdf5", "msgpack",
+      "parquet", "pickle"]; if none is defined, will vanilla codec of basic string conversion will
+      be used.
+    ttl -- optional; the time-to-live or amount before this cache item expires within the cache;
+      defaults to 60 (seconds) and must be between 1 second to 1 hour (3600 seconds).
+    redis_url -- required when backend set to "redis"; the url set to redis-server instance with
+      or without provided authentication in such formats "redis://user:password@host:port" and
+      "redis://host:port" respectively.
+    memcached_host -- required when backend set to "memcached"; the host endpoint to the memcached
+      distributed memory caching system.
+    table_name -- required when backend set to "dynamodb" or "mongodb"; name of the cache table or
+      collection in case of "mongodb" backend to have key-value pairs stored; defaults to
+      "fastapi-cachette".
+    region -- required when backend set to "dynamodb" and "dynamodb_url" not set; one of Amazon
+      Web Services listed Regions which can be found on this Documentation
+      [Page](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones)
+    dynamodb_url -- required when backend set to "dynamodb" and "region" not set; this option is
+      used when setting up your own DynamoDB Local instance according to this
+      [Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal)
+      database_name -- required when backend set to "mongodb"; the database name to be automatically
+      created if not exists on the MongoDB instance and store the cache table; defaults to
+      "fastapi-cachette-database"
+    mongodb_url -- required when backend set to "mongodb"; the url set to MongoDB database
+      instance with or without provided authentication in such formats
+      "mongodb://user:password@host:port" and "mongodb://host:port" respectively.
+
 ## Examples
 
 The following shows and example of setting up FastAPI Cachette in its default configuration, which
