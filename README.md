@@ -32,9 +32,8 @@ on startup either by using a method which returns a list of tuples or a Pydantic
       listed options;
     codec -- optional; serialization and de-serialization format to have cache values stored in
       the cache backend of choice as a string of selected encoding. once fetched, will have their
-      decoded values returned of the same format. must be one of ["feather", "hdf5", "msgpack",
-      "parquet", "pickle"]; if none is defined, will vanilla codec of basic string conversion will
-      be used.
+      decoded values returned of the same format. must be one of ["feather", "msgpack", "parquet",
+      "pickle"]; if none is defined, will vanilla codec of basic string conversion will be used.
     ttl -- optional; the time-to-live or amount before this cache item expires within the cache;
       defaults to 60 (seconds) and must be between 1 second to 1 hour (3600 seconds).
     redis_url -- required when backend set to "redis"; the url set to redis-server instance with
