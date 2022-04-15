@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2021 All rights reserved.
-# FILENAME:  tests/codecs/conftest.py
+# FILENAME:  tests/codecs/dataframe/conftest.py
 # VERSION: 	 0.1.3
-# CREATED: 	 2022-04-15 23:02
+# CREATED: 	 2022-04-15 23:16
 # AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
 # DESCRIPTION:
 #
@@ -22,6 +22,19 @@ def get_config_value_from_client_configs(key: str, request: FixtureRequest) -> O
   except IndexError: return # no backend set
   if len(backend_tuple) != 2: return 
   return backend_tuple[1]
+
+@fixture(autouse=True)
+def skip_all_if_pandas_not_installed(request: FixtureRequest):
+  '''
+  Skip all tests in this subfolder if "pandas" is not installed.
+
+  ---
+  :param:  request  `FixtureRequest`
+  '''
+  try:
+    import pandas as _
+  except ImportError:
+    skip(reason='"pandas" dependency is not installed in this test environment.')
 
 @fixture(autouse=True)
 def skip_if_backend_dependency_is_not_installed(request: FixtureRequest):
@@ -59,23 +72,28 @@ def skip_if_backend_dependency_is_not_installed(request: FixtureRequest):
 @fixture(autouse=True)
 def skip_if_codec_dependency_is_not_installed(request: FixtureRequest):
   '''
-  Skip test with "msgpack" codec in the case that "msgpack" is not installed;
-  Skip test with "orjson" codec in the case that "orjson" is not installed;
+  Skip test with "feather" codec in the case that "pyarrow" is not installed;
+  Skip test with "parquet" codec in the case that "pyarrow" is not installed.
 
   ---
   :param:  request  `FixtureRequest`
   '''
   codec: str = get_config_value_from_client_configs('codec', request)
-  if codec == 'msgpack':
+  if codec == 'csv':
     try:
-      import msgpack as _
+      import pandas as _
     except ImportError:
-      skip(reason='"msgpack" dependency is not installed in this test environment.')
-  elif codec == 'orjson':
+      skip(reason='"pandas" dependency is not installed in this test environment.')
+  elif codec == 'feather':
     try:
-      import orjson as _
+      import pyarrow as _
     except ImportError:
-      skip(reason='"orjson" dependency is not installed in this test environment.')
+      skip(reason='"pyarrow" dependency is not installed in this test environment.')
+  elif codec == 'parquet':
+    try:
+      import pyarrow as _
+    except ImportError:
+      skip(reason='"pyarrow" dependency is not installed in this test environment.')
 
 @fixture(autouse=True)
 def skip_if_dynamodb_server_cannot_be_reached(request: FixtureRequest):
