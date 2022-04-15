@@ -51,7 +51,7 @@ on startup either by using a method which returns a list of tuples or a Pydantic
     dynamodb_url -- required when backend set to "dynamodb" and "region" not set; this option is
       used when setting up your own DynamoDB Local instance according to this
       [Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal)
-      database_name -- required when backend set to "mongodb"; the database name to be automatically
+    database_name -- required when backend set to "mongodb"; the database name to be automatically
       created if not exists on the MongoDB instance and store the cache table; defaults to
       "fastapi-cachette-database"
     mongodb_url -- required when backend set to "mongodb"; the url set to MongoDB database
