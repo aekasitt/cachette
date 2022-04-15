@@ -217,7 +217,7 @@ command given above.
 And finally, to stop and remove running instances, run the following command
 
 ```bash
-[ -n $(docker ps -f name="cachette-*" -q) ] && docker kill $(docker ps -f name="cachette-*" -q)
+[ -n $(docker ps -f name="cachette-*" -q | tr -d "\n") ] && docker kill $(docker ps -f name="cachette-*" -q)
 ```
 
 ## Tests
