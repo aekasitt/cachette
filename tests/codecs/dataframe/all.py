@@ -19,24 +19,21 @@ from fastapi import Depends, FastAPI
 from fastapi.responses import PlainTextResponse, Response
 from fastapi.testclient import TestClient
 from pytest import fixture, FixtureRequest, mark
-from pandas import DataFrame, get_dummies, Series
-from pandas.testing import assert_frame_equal
+try:
+  from pandas import DataFrame, get_dummies, Series
+  from pandas.testing import assert_frame_equal
+except ImportError:
+  ### Assume skipped by conftest "skip_all_if_pandas_not_installed" fixture ###
+  pass
 ### Local Modules ###
 from fastapi_cachette import Cachette
 
 ### Fixtures ###
-
-@fixture(scope='module')
-def items() -> List[DataFrame]:
-  return [
-    get_dummies(Series(['income', 'age', 'gender', 'education']))
-  ]
-
 @fixture
-def client(items: List[DataFrame], request: FixtureRequest) -> TestClient:
+def client(request: FixtureRequest) -> TestClient:
   configs: List[Tuple[str, Any]] = request.param
-
   app = FastAPI()
+  items: List[DataFrame] = [get_dummies(Series(['income', 'age', 'gender', 'education']))]
 
   @Cachette.load_config
   def get_cachette_config():
