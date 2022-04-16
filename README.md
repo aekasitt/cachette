@@ -151,7 +151,7 @@ pip install fastapi-cachette --install-option "--extras-require=redis"
 poetry add fastapi-cachette[memcached]
 # or Special JSON Codec written on Rust at lightning speed
 poetry add fastapi-cachette[orjson]
-# or Include PyArrow package making DataFrame serialization much easiser
+# or Include PyArrow package making DataFrame serialization much easier
 pip install fastapi-cachette --install-option "--extras-require=dataframe"
 # or MongoDB and DynamoDB supports
 poetry add fastapi-cachette[mongodb]
