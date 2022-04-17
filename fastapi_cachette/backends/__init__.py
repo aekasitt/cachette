@@ -26,7 +26,7 @@ class Backend:
   @abstractmethod
   async def fetch(self, key: str) -> Any:
     '''
-    Fetches the value from cache  
+    Abstract Method: Fetches the value from cache  
 
     ---
     :param:  key  `str` identifies key-value pair
@@ -36,7 +36,7 @@ class Backend:
   @abstractmethod
   async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
     '''
-    Fetches the value from cache as well as remaining time to live.
+    Abstract Method: Fetches the value from cache as well as remaining time to live.
 
     ---
     :param:  key  `str` identifies key-value pair  
@@ -47,7 +47,7 @@ class Backend:
   @abstractmethod
   async def put(self, key: str, value: Any, ttl: Optional[int] = None):
     '''
-    Puts the value within the cache with key and assigned time-to-live value
+    Abstract Method: Puts the value within the cache with key and assigned time-to-live value
 
     ---
     :param:  key  `str` identifies key-value pair  
@@ -59,7 +59,7 @@ class Backend:
   @abstractmethod
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     '''
-    Clears the cache identified by given `namespace` or `key`  
+    Abstract Method: Clears the cache identified by given `namespace` or `key`  
 
     ---
     :param:  namespace  `str` identifies namespace to have entire cache cleared; default: `None`  

@@ -14,6 +14,7 @@ Module containing Core implementation for Cashette extension for FastAPI
 '''
 ### Standard Packages ###
 from asyncio import run
+from typing import Any, Optional, Tuple
 ### Third-Party Packages ###
 from fastapi.requests import Request
 from fastapi.responses import Response
@@ -78,6 +79,44 @@ class Cachette(CachetteConfig):
       from fastapi_cachette.backends.redis import RedisBackend
       self.backend = run(RedisBackend.init(codec, self._redis_url, self._ttl))
 
-  # When a method is not found, shortcuts it to instance's `backend` member method
-  def __getattr__(self, name):
-    return getattr(self.backend, name)
+  ### Override methods to initiated backend instance ###
+  async def fetch(self, key: str) -> Any:
+    '''
+    Fetches the value from cache  
+
+    ---
+    :param:  key  `str` identifies key-value pair
+    '''
+    return await self.backend.fetch(key)
+
+  async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
+    '''
+    Fetches the value from cache as well as remaining time to live.
+
+    ---
+    :param:  key  `str` identifies key-value pair  
+    :returns:  `Tuple[int, str]`  containing timetolive value (ttl) and value
+    '''
+    return await self.backend.fetch_with_ttl(key)
+
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None):
+    '''
+    Puts the value within the cache with key and assigned time-to-live value
+
+    ---
+    :param:  key  `str` identifies key-value pair  
+    :param:  value  `Any` value to have stored identified by key  
+    :param:  ttl  `int` time before value expires within cache; default: `None`
+    '''
+    return await self.backend.put(key, value, ttl)
+  
+  async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
+    '''
+    Clears the cache identified by given `namespace` or `key`  
+
+    ---
+    :param:  namespace  `str` identifies namespace to have entire cache cleared; default: `None`  
+    :param:  key  `str` identifies key-value pair to be cleared from cache; default: `None`  
+    :returns:  `int`  amount of items cleared
+    '''
+    return await self.backend.clear(namespace, key)
