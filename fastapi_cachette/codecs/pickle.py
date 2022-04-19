@@ -20,5 +20,5 @@ class PickleCodec(Codec):
   def dumps(self, obj: Any) -> bytes:
     return dumps(obj)
   
-  def loads(self, string: str) -> Any:
-    return loads(string)
+  def loads(self, data: bytes) -> Any:
+    return loads(data)

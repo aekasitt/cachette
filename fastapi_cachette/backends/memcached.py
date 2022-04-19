@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, Optional, Tuple
+from typing import Any, NoReturn, Optional, Tuple
 ### Third-Party Packages ###
 from aiomcache import Client
 ### Local Modules ###
@@ -29,20 +29,20 @@ class MemcachedBackend(Backend):
     return MemcachedBackend(codec=codec, mcache=Client(host=memcached_host), ttl=ttl)
 
   async def fetch(self, key: str) -> Any:
-    data: bytes = await self.mcache.get(key.encode())
+    data: Optional[bytes] = await self.mcache.get(key.encode())
     if data: return self.codec.loads(data)
     return None
 
   async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
-    data: bytes = await self.mcache.get(key.encode())
+    data: Optional[bytes] = await self.mcache.get(key.encode())
     if data: return 3600, self.codec.loads(data)
     return 0, None
 
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None):
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
     data: bytes = self.codec.dumps(value)
-    return await self.mcache.set(key.encode(), data, exptime=ttl or self.ttl)
+    await self.mcache.set(key.encode(), data, exptime=ttl or self.ttl)
 
-  async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None):
+  async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     count: int = 0
     if namespace:
       raise NotImplementedError

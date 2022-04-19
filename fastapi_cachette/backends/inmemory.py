@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, NoReturn, Optional, Tuple
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
@@ -29,20 +29,21 @@ class InMemoryBackend(Backend):
     self.ttl   = ttl
   
   async def fetch(self, key: str) -> Any:
-    value: Value = self.store.get(key)
+    value: Optional[Value] = self.store.get(key)
     if not value: return
     elif value.expires < self.now: del self.store[key]
     else: return self.codec.loads(value.data)
 
   async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
-    value: Value = self.store.get(key)
+    value: Optional[Value] = self.store.get(key)
+    if not value: return -1, None
     if value.expires < self.now:
       del self.store[key]
       return (0, None)
     else:
       return (value.expires - self.now, self.codec.loads(value.data))
   
-  async def put(self, key: str, value: str, ttl: int = None):
+  async def put(self, key: str, value: str, ttl: int = None) -> NoReturn:
     data: bytes     = self.codec.dumps(value)
     expires: int    = self.now + (ttl or self.ttl)
     self.store[key] = Value(data, expires)
@@ -50,7 +51,7 @@ class InMemoryBackend(Backend):
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     count: int = 0
     if namespace:
-      keys: List[str] = filter(lambda key: key.startswith(namespace), self.store.keys())
+      keys: List[str] = list(filter(lambda key: key.startswith(namespace), self.store.keys()))
       for key in keys:
         del self.store[key]
         count += 1

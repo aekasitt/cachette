@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, Optional, Tuple
+from typing import Any, NoReturn, Optional, Tuple
 ### Third-Party Packages ###
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
 ### Local Modules ###
@@ -48,23 +48,23 @@ class MongoDBBackend(Backend):
   async def fetch(self, key: str) -> Any:
     document: dict = await self.collection.find_one({ 'key': key })
     if document and document.get('expires', 0) > self.now:
-      value: str = document.get('value', None)
+      value: bytes = document.get('value', None)
       return self.codec.loads(value)
     return None
 
   async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
     document: dict = await self.collection.find_one({ 'key': key })
     if document:
-      value: str = document.get('value', None)
+      value: bytes = document.get('value', None)
       ttl: int   = document.get('expires', 0) - self.now
       if ttl < 0: return 0, None
       return ttl, self.codec.loads(value)
     return -1, None
 
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None):
-    ttl = ttl or self.ttl
-    data: str = self.codec.dumps(value)
-    item: dict = { 'key': key, 'value': data, 'expires': self.now + ttl }
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
+    ttl         = ttl or self.ttl
+    data: bytes = self.codec.dumps(value)
+    item: dict  = { 'key': key, 'value': data, 'expires': self.now + ttl }
     document: dict = await self.collection.find_one({ 'key': key })
     if document:
       await self.collection.update_one({'key': key}, {'$set': item })

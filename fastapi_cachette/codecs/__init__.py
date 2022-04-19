@@ -23,7 +23,7 @@ class Codec:
     raise NotImplementedError
 
   @abstractmethod
-  def loads(self, string: str) -> Any:
+  def loads(self, data: bytes) -> Any:
     '''
     ...
     '''

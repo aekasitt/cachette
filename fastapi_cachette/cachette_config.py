@@ -13,7 +13,7 @@
 Module containing `CachetteConfig` class
 '''
 ### Standard Packages ###
-from typing import Callable, List, Tuple
+from typing import Callable, List, Optional, Tuple
 ### Third-Party Packages ###
 from pydantic import ValidationError
 ### Local Modules ###
@@ -21,25 +21,25 @@ from fastapi_cachette.load_config import LoadConfig
 
 class CachetteConfig(object):
   ### Basics ###
-  _backend: str        = 'inmemory'
-  _codec: str          = 'vanilla'
-  _ttl: int            = 60
+  _backend: str = 'inmemory'
+  _codec: str   = 'vanilla'
+  _ttl: int     = 60
 
   ### Redis ###
-  _redis_url: str      = None
+  _redis_url: str
 
   ### Memcached ###
-  _memcached_host: str = None
+  _memcached_host: str
 
   ### AWS DynamoDB & MongoDB ###
-  _table_name: str     = 'fastapi-cachette'
+  _table_name: str = 'fastapi-cachette'
 
   ### AWS DynamoDB ###
-  _region: str
-  _dynamodb_url: str
+  _region: Optional[str]
+  _dynamodb_url: Optional[str]
 
   ### MongoDB ###
-  _database_name: str  = 'fastapi-cachette-database'
+  _database_name: str = 'fastapi-cachette-database'
   _mongodb_url: str
 
   @classmethod
@@ -85,13 +85,14 @@ class CachetteConfig(object):
       cls._backend        = config.backend or cls._backend
       cls._codec          = config.codec or cls._codec
       cls._ttl            = config.ttl or cls._ttl
-      cls._redis_url      = config.redis_url
-      cls._memcached_host = config.memcached_host
+      cls._redis_url      = config.redis_url or ''
+      cls._memcached_host = config.memcached_host or ''
       cls._table_name     = config.table_name or cls._table_name
       cls._region         = config.region
       cls._dynamodb_url   = config.dynamodb_url
       cls._database_name  = config.database_name or cls._database_name
-      cls._mongodb_url    = config.mongodb_url
+      cls._mongodb_url    = config.mongodb_url or ''
     except ValidationError: raise
     except Exception:
       raise TypeError('CachetteConfig must be pydantic "BaseSettings" or list of tuples')
+    return cls()

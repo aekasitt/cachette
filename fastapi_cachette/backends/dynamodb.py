@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, Optional, Tuple
+from typing import Any, NoReturn, Optional, Tuple
 ### Third-Party Packages ###
 from aiobotocore.session import get_session, ClientCreatorContext
 ### Local Modules ###
@@ -21,10 +21,10 @@ from fastapi_cachette.codecs import Codec
 @dataclass
 class DynamoDBBackend(Backend):
   codec: Codec
-  region: str
+  region: Optional[str]
   table_name: str
   ttl: int
-  url: str
+  url: Optional[str]
 
   @classmethod
   async def init(cls,
@@ -62,7 +62,7 @@ class DynamoDBBackend(Backend):
     async with self.dynamodb as client:
       response = await client.get_item(TableName=self.table_name, Key={'key': {'S': key}})
       if 'Item' in response:
-        value: str = response['Item'].get('value', {}).get('B')
+        value: bytes = response['Item'].get('value', {}).get('B')
         ttl: int   = int(response['Item'].get('expires', {}).get('N', 0)) - self.now
         if ttl < 0: return None
         return self.codec.loads(value)
@@ -76,8 +76,9 @@ class DynamoDBBackend(Backend):
         if ttl < 0:
           return 0, None
         return ttl, value
+    return -1, None
 
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None):
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
     ttl = ttl or self.ttl
     async with self.dynamodb as client:
       expires_at: dict = {
