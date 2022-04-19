@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, NoReturn, Optional, Tuple
+from typing import Any, Optional, Tuple
 ### Third-Party Packages ###
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
 ### Local Modules ###
@@ -61,7 +61,7 @@ class MongoDBBackend(Backend):
       return ttl, self.codec.loads(value)
     return -1, None
 
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
     ttl         = ttl or self.ttl
     data: bytes = self.codec.dumps(value)
     item: dict  = { 'key': key, 'value': data, 'expires': self.now + ttl }

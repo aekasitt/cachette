@@ -14,7 +14,7 @@ Module containing Core implementation for Cashette extension for FastAPI
 '''
 ### Standard Packages ###
 from asyncio import run
-from typing import Any, NoReturn, Optional, Tuple
+from typing import Any, Optional, Tuple
 ### Third-Party Packages ###
 from fastapi.requests import Request
 from fastapi.responses import Response
@@ -99,7 +99,7 @@ class Cachette(CachetteConfig):
     '''
     return await self.backend.fetch_with_ttl(key)
 
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
     '''
     Puts the value within the cache with key and assigned time-to-live value
 

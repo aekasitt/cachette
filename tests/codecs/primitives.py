@@ -13,7 +13,7 @@
 Tests for codec implementations on TestClient which can encode/decode primitives with correct types
 '''
 ### Standard Packages ###
-from typing import Any, List, NoReturn, Tuple
+from typing import Any, List, Tuple
 ### Third-Party Packages ###
 from fastapi import Depends, FastAPI
 from fastapi.responses import PlainTextResponse, Response
@@ -104,7 +104,7 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
 ], ids=[
   'dynamodb-msgpack', 'inmemory-msgpack', 'memcached-msgpack', 'mongodb-msgpack', 'redis-msgpack'
 ], indirect=True)
-def test_every_backend_with_every_codec(client) -> NoReturn:
+def test_every_backend_with_every_codec(client) -> None:
   response: Response = client.get('/put-items')
   assert response.text == 'OK'
   response = client.get('/fetch-items')

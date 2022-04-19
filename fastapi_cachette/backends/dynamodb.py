@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, NoReturn, Optional, Tuple
+from typing import Any, Optional, Tuple
 ### Third-Party Packages ###
 from aiobotocore.session import get_session, ClientCreatorContext
 ### Local Modules ###
@@ -78,7 +78,7 @@ class DynamoDBBackend(Backend):
         return ttl, value
     return -1, None
 
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
     ttl = ttl or self.ttl
     async with self.dynamodb as client:
       expires_at: dict = {

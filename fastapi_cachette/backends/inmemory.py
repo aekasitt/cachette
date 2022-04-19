@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, Dict, List, NoReturn, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
@@ -43,7 +43,7 @@ class InMemoryBackend(Backend):
     else:
       return (value.expires - self.now, self.codec.loads(value.data))
   
-  async def put(self, key: str, value: str, ttl: int = None) -> NoReturn:
+  async def put(self, key: str, value: str, ttl: int = None) -> None:
     data: bytes     = self.codec.dumps(value)
     expires: int    = self.now + (ttl or self.ttl)
     self.store[key] = Value(data, expires)
@@ -51,7 +51,7 @@ class InMemoryBackend(Backend):
   async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
     count: int = 0
     if namespace:
-      keys: List[str] = list(filter(lambda key: key.startswith(namespace), self.store.keys()))
+      keys: List[str] = list(filter(lambda key: key.startswith(namespace or ''), self.store.keys()))
       for key in keys:
         del self.store[key]
         count += 1

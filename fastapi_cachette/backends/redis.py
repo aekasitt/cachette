@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, NoReturn, Optional, Tuple
+from typing import Any, Optional, Tuple
 ### Third-Party Pacakges ###
 from redis.asyncio import Redis
 ### Local Modules ###
@@ -38,7 +38,7 @@ class RedisBackend(Backend):
       if data: return self.codec.loads(data)
     return -1, None
 
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
     data: bytes = self.codec.dumps(value)
     await self.redis.set(key, data, ex=(ttl or self.ttl))
 

@@ -11,7 +11,7 @@
 #*************************************************************
 ### Standard Packages ###
 from dataclasses import dataclass
-from typing import Any, NoReturn, Optional, Tuple
+from typing import Any, Optional, Tuple
 ### Third-Party Packages ###
 from aiomcache import Client
 ### Local Modules ###
@@ -31,14 +31,13 @@ class MemcachedBackend(Backend):
   async def fetch(self, key: str) -> Any:
     data: Optional[bytes] = await self.mcache.get(key.encode())
     if data: return self.codec.loads(data)
-    return None
 
   async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
     data: Optional[bytes] = await self.mcache.get(key.encode())
     if data: return 3600, self.codec.loads(data)
     return 0, None
 
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
     data: bytes = self.codec.dumps(value)
     await self.mcache.set(key.encode(), data, exptime=ttl or self.ttl)
 

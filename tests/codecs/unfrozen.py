@@ -15,7 +15,7 @@ Tests for codec implementations on TestClient which can encode/decode frozen obj
 ### Standard Packages ###
 from datetime import date, datetime
 from decimal import Decimal
-from typing import Any, List, NoReturn, Tuple
+from typing import Any, List, Tuple
 ### Third-Party Packages ###
 from fastapi import Depends, FastAPI
 from fastapi.responses import PlainTextResponse, Response
@@ -112,7 +112,7 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
 ], ids=[
   'dynamodb-pickle', 'inmemory-pickle', 'memcached-pickle', 'mongodb-pickle', 'redis-pickle'
 ], indirect=True)
-def test_every_backend_with_every_codec(client) -> NoReturn:
+def test_every_backend_with_every_codec(client) -> None:
   response: Response = client.get('/put-items')
   assert response.text == 'OK'
   response = client.get('/fetch-items')

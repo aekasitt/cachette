@@ -15,7 +15,7 @@ Module containing `Backend` abstract class to be inherited by implementation-spe
 ### Standard Packages ###
 from abc import abstractmethod
 from time import time
-from typing import Any, Optional, Tuple, NoReturn
+from typing import Any, Optional, Tuple
 
 class Backend:
 
@@ -45,7 +45,7 @@ class Backend:
     raise NotImplementedError
 
   @abstractmethod
-  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> NoReturn:
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
     '''
     Abstract Method: Puts the value within the cache with key and assigned time-to-live value
 
@@ -53,6 +53,7 @@ class Backend:
     :param:  key  `str` identifies key-value pair  
     :param:  value  `Any` value to have stored identified by key  
     :param:  ttl  `int` time before value expires within cache; default: `None`
+    :returns:  `None`
     '''
     raise NotImplementedError
 

@@ -13,7 +13,7 @@
 Tests for codec implementations on TestClient which can serializ/de-serialize DataFrame objects
 '''
 ### Standard Packages ###
-from typing import Any, List, NoReturn, Tuple
+from typing import Any, List, Tuple
 ### Third-Party Packages ###
 from fastapi import Depends, FastAPI
 from fastapi.responses import PlainTextResponse, Response
@@ -115,7 +115,7 @@ def client(request: FixtureRequest) -> TestClient:
   'mongodb-csv', 'mongodb-feather', 'mongodb-parquet', 'mongodb-pickle',
   'redis-csv', 'redis-feather', 'redis-parquet', 'redis-pickle', 
 ], indirect=True)
-def test_every_backend_with_every_dataframe_codec(client) -> NoReturn:
+def test_every_backend_with_every_dataframe_codec(client) -> None:
   response: Response = client.get('/put-items')
   assert response.text == 'OK'
   response = client.get('/fetch-items')

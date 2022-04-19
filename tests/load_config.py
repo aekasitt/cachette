@@ -13,7 +13,7 @@
 Test Suite containing Configuration Loading tests
 '''
 ### Standard Packages ###
-from typing import Any, List, NoReturn, Tuple
+from typing import Any, List, Tuple
 ### Third-Party Packages ###
 from pydantic import ValidationError
 from pytest import mark, raises
@@ -60,7 +60,7 @@ from fastapi_cachette import Cachette
   [('backend', 'redis'), ('ttl', 3600), ('redis_url', 'redis://localhost:6379')],        \
   [('backend', 'redis'), ('redis_url', 'redis://localhost:6379'), ('table_name', None)], \
 ])
-def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
+def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> None:
   @Cachette.load_config
   def load_cachette_configs() -> List[Tuple[str, Any]]:
     return configs
@@ -158,7 +158,7 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> NoReturn:
     'The "ttl" value must between 1 or 3600 seconds.'                               \
   ),
 ])
-def test_load_invalid_configs(invalid_configs: List[Tuple[str, Any]], reason: str) -> NoReturn:
+def test_load_invalid_configs(invalid_configs: List[Tuple[str, Any]], reason: str) -> None:
   with raises(ValidationError) as exc_info:
     @Cachette.load_config
     def load_cachette_configs():
