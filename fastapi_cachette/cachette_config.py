@@ -13,7 +13,7 @@
 Module containing `CachetteConfig` class
 '''
 ### Standard Packages ###
-from typing import Callable, List, Optional, Tuple
+from typing import Callable, List, NoReturn, Optional, Tuple
 ### Third-Party Packages ###
 from pydantic import ValidationError
 ### Local Modules ###
@@ -43,7 +43,7 @@ class CachetteConfig(object):
   _mongodb_url: str
 
   @classmethod
-  def load_config(cls, settings: Callable[..., List[Tuple]]) -> 'CachetteConfig':
+  def load_config(cls, settings: Callable[..., List[Tuple]]) -> NoReturn:
     '''
     Loads the Configuration from a Pydantic "BaseSettings" object or a List of parameter tuples.
     If not specified otherwise, each item should be provided as a string.
@@ -95,4 +95,3 @@ class CachetteConfig(object):
     except ValidationError: raise
     except Exception:
       raise TypeError('CachetteConfig must be pydantic "BaseSettings" or list of tuples')
-    return cls()
