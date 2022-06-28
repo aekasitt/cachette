@@ -32,18 +32,18 @@ classifiers = [
 python = "^3.7"
 fastapi = "^0"
 pydantic = "^1.9.0"
-uvicorn = {version = "0.15.0", optional = true, extras = ["examples"]}
-aiomcache = {version = "^0.7.0", optional = true, extras = ["examples", "memcached"]}
-aiobotocore = {version = "^2.2.0", optional = true, extras = ["dynamodb", "examples"]}
-redis = {version="^4.2.1", optional = true, extras = ["examples", "redis"]}
-motor = {version = "^2.5.1", optional = true, extras = ["examples", "mongodb"]}
-msgpack = {version = "^1.0.3", optional = true, extras = ["msgpack"]}
-orjson = {version = "^3.6.7", optional = true, extras = ["orjson"]}
+uvicorn = {version = "0.15.0", optional = true}
+aiomcache = {version = "^0.7.0", optional = true}
+aiobotocore = {version = "^2.2.0", optional = true}
+redis = {version="^4.2.1", optional = true}
+motor = {version = "^2.5.1", optional = true}
+msgpack = {version = "^1.0.3", optional = true}
+orjson = {version = "^3.6.7", optional = true}
 pandas = [
-  { version = "<=1.3.5", python = "~3.7", optional = true, extras = [ "dataframe" ]},
-  { version = ">=1.4.0", python = "^3.8", optional = true, extras = [ "dataframe" ]}
+  { version = "<=1.3.5", python = "~3.7", optional = true},
+  { version = ">=1.4.0", python = "^3.8", optional = true}
 ]
-pyarrow = {version = "^7.0.0", optional = true, extras = ["dataframe"]}
+pyarrow = {version = "^7.0.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.1"
@@ -56,7 +56,7 @@ redis = ["redis"]
 memcached = ["aiomcache"]
 dynamodb = ["aiobotocore"]
 mongodb = ["motor"]
-examples = ["redis", "aiomcache", "aiobotocore", "uvicorn"]
+examples = ["redis", "aiomcache", "uvicorn"]
 msgpack = ["msgpack"]
 orjson = ["orjson"]
 dataframe = [ "pandas", "pyarrow" ]
