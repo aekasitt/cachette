@@ -8,17 +8,18 @@
 # DESCRIPTION:
 #
 # HISTORY:
-#*************************************************************
+# *************************************************************
 ### Standard Packages ###
 from pickle import dumps, loads
 from typing import Any
+
 ### Local Modules ###
 from fastapi_cachette.codecs import Codec
 
-class PickleCodec(Codec):
 
-  def dumps(self, obj: Any) -> bytes:
-    return dumps(obj)
-  
-  def loads(self, data: bytes) -> Any:
-    return loads(data)
+class PickleCodec(Codec):
+    def dumps(self, obj: Any) -> bytes:
+        return dumps(obj)
+
+    def loads(self, data: bytes) -> Any:
+        return loads(data)

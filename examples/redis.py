@@ -8,7 +8,7 @@
 # DESCRIPTION:
 #
 # HISTORY:
-#*************************************************************
+# *************************************************************
 from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
 from fastapi_cachette import Cachette
@@ -16,28 +16,32 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+
 ### Cachette Configurations ###
 @Cachette.load_config
 def get_cachette_config():
-  return [('backend', 'redis'), ('redis_url', 'redis://localhost:6379')]
+    return [("backend", "redis"), ("redis_url", "redis://localhost:6379")]
+
 
 ### Routing ###
 class Payload(BaseModel):
-  key: str
-  value: str
+    key: str
+    value: str
 
-@app.post('/', response_class=PlainTextResponse)
+
+@app.post("/", response_class=PlainTextResponse)
 async def setter(payload: Payload, cachette: Cachette = Depends()):
-  '''
-  Submit a new cache key-pair value
-  '''
-  await cachette.put(payload.key, payload.value)
-  return 'OK'
+    """
+    Submit a new cache key-pair value
+    """
+    await cachette.put(payload.key, payload.value)
+    return "OK"
 
-@app.get('/{key}', response_class=PlainTextResponse, status_code=200)
+
+@app.get("/{key}", response_class=PlainTextResponse, status_code=200)
 async def getter(key: str, cachette: Cachette = Depends()):
-  '''
-  Returns key value
-  '''
-  value: str = await cachette.fetch(key)
-  return value
+    """
+    Returns key value
+    """
+    value: str = await cachette.fetch(key)
+    return value

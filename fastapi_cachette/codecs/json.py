@@ -8,19 +8,20 @@
 # DESCRIPTION:
 #
 # HISTORY:
-#*************************************************************
+# *************************************************************
 ### Standard Packages ###
 from typing import Any
+
 ### Third-Party Packages ###
 from json import dumps, loads
+
 ### Local Modules ##
 from fastapi_cachette.codecs import Codec
 
+
 class JSONCodec(Codec):
+    def dumps(self, obj: Any) -> bytes:
+        return dumps(obj).encode()
 
-  def dumps(self, obj: Any) -> bytes:
-    return dumps(obj).encode()
-
-  def loads(self, data: bytes) -> Any:
-    return loads(data)
-  
+    def loads(self, data: bytes) -> Any:
+        return loads(data)

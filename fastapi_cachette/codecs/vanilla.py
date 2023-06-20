@@ -8,17 +8,17 @@
 # DESCRIPTION:
 #
 # HISTORY:
-#*************************************************************
+# *************************************************************
 ### Standard Packages ###
 from typing import Any
+
 ### Local Modules ##
 from fastapi_cachette.codecs import Codec
 
+
 class VanillaCodec(Codec):
+    def dumps(self, obj: Any) -> bytes:
+        return str(obj).encode("utf-8")
 
-  def dumps(self, obj: Any) -> bytes:
-    return str(obj).encode('utf-8')
-
-  def loads(self, data: bytes) -> Any:
-    return data.decode('utf-8')
-  
+    def loads(self, data: bytes) -> Any:
+        return data.decode("utf-8")

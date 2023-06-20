@@ -8,15 +8,13 @@
 # DESCRIPTION:
 #
 # HISTORY:
-#*************************************************************
-'''
+# *************************************************************
+"""
 FastAPI extension that provides Cache Implementation Support
-'''
+"""
 
-__version__ = '0.1.4'
+__version__ = "0.1.4"
 
 from .core import Cachette
 
-__all__ = [
-  'Cachette'
-]
+__all__ = ["Cachette"]
