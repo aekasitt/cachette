@@ -17,12 +17,6 @@ from pydantic import BaseModel
 app = FastAPI()
 
 
-### Cachette Configurations ###
-@Cachette.load_config
-def get_cachette_config():
-    return []  # defaults to inmemory
-
-
 ### Routing ###
 class Payload(BaseModel):
     key: str
