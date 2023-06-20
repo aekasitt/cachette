@@ -1,65 +1,34 @@
 [tool.poetry]
-name = "fastapi-cachette"
-version = "0.1.4"
-description = "Cache Implementation Extension for FastAPI Asynchronous Web Framework"
-authors = ["Sitt Guruvanich <aekazitt@gmail.com>"]
-license = "MIT"
-readme = "README.md"
-homepage = "https://github.com/aekasitt/fastapi-cachette"
-repository = "https://github.com/aekasitt/fastapi-cachette"
+name = 'fastapi-cachette'
+version = '0.1.4'
+description = 'Cache Implementation Extension for FastAPI Asynchronous Web Framework'
+authors = ['Sitt Guruvanich <aekazitt@gmail.com>']
+license = 'MIT'
+readme = 'README.md'
+homepage = 'https://github.com/aekasitt/fastapi-cachette'
+repository = 'https://github.com/aekasitt/fastapi-cachette'
 keywords = [
-  "starlette", "fastapi", "cache",
-  "redis", "aioredis", "dynamodb",
-  "aiobotocore", "asynchronous", 
-  "memcached", "aiomcache",
-  "mongodb", "motor", "pymongo"
+  'starlette', 'fastapi', 'cache',
+  'redis', 'aioredis', 'dynamodb',
+  'aiobotocore', 'asynchronous', 
+  'memcached', 'aiomcache',
+  'mongodb', 'motor', 'pymongo'
 ]
 classifiers = [
-  "Environment :: Web Environment",
-  "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3 :: Only",
-  "Operating System :: OS Independent",
-  "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
-  "Topic :: Software Development :: Libraries :: Python Modules"
+  'Environment :: Web Environment',
+  'Intended Audience :: Developers',
+  'License :: OSI Approved :: MIT License',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3.7',
+  'Programming Language :: Python :: 3.8',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Programming Language :: Python :: 3 :: Only',
+  'Operating System :: OS Independent',
+  'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+  'Topic :: Software Development :: Libraries :: Python Modules'
 ]
-
-[tool.poetry.dependencies]
-python = "^3.7"
-fastapi = "^0"
-pydantic = "^1.9.0"
-uvicorn = {version = "0.15.0", optional = true}
-aiomcache = {version = "^0.7.0", optional = true}
-aiobotocore = {version = "^2.2.0", optional = true}
-redis = {version="^4.2.1", optional = true}
-motor = {version = "^2.5.1", optional = true}
-msgpack = {version = "^1.0.3", optional = true}
-orjson = {version = "^3.6.7", optional = true}
-pandas = [
-  { version = "<=1.3.5", python = "~3.7", optional = true},
-  { version = ">=1.4.0", python = "^3.8", optional = true}
-]
-pyarrow = {version = "^7.0.0", optional = true}
-
-[tool.poetry.dev-dependencies]
-pytest = "^7.1.1"
-requests = "^2.27.1"
-mypy = "^0.942"
-types-redis = "^4.1.21"
-
-[tool.poetry.extras]
-redis = ["redis"]
-memcached = ["aiomcache"]
-dynamodb = ["aiobotocore"]
-mongodb = ["motor"]
-examples = ["redis", "aiomcache", "uvicorn"]
-msgpack = ["msgpack"]
-orjson = ["orjson"]
-dataframe = [ "pandas", "pyarrow" ]
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -67,11 +36,106 @@ disallow_untyped_calls = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 
+[tool.poetry.dependencies]
+python = '^3.7'
+fastapi = '^0'
+pydantic = '^1.9.0'
+
+[tool.poetry.group.dataframe]
+optional = true
+
+[tool.poetry.group.dataframe.dependencies]
+pandas = [
+  { version = '<=1.3.5', python = '~3.7'},
+  { version = '>=1.4.0', python = '^3.8'}
+]
+pyarrow = '^7.0.0'
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+black = '^23.3.0'
+mypy = '^1.3.0'
+types-redis = '^4.1.21'
+
+[tool.poetry.group.dynamodb]
+optional = true
+
+[tool.poetry.group.dynamodb.dependencies]
+aiobotocore = '^2.2.0'
+
+[tool.poetry.group.examples]
+optional = true
+
+[tool.poetry.group.examples.dependencies]
+aiomcache = '^0.7.0'
+redis = '^4.2.1'
+uvicorn = '0.15.0'
+
+[tool.poetry.group.memcached]
+optional = true
+
+[tool.poetry.group.memcached.dependencies]
+aiomcache = '^0.7.0'
+
+[tool.poetry.group.mongodb]
+optional = true
+
+[tool.poetry.group.mongodb.dependencies]
+motor = '^2.5.1'
+
+[tool.poetry.group.msgpack]
+optional = true
+
+[tool.poetry.group.msgpack.dependencies]
+msgpack = '^1.0.3'
+
+[tool.poetry.group.orjson]
+optional = true
+
+[tool.poetry.group.orjson.dependencies]
+orjson = '^3.6.7'
+
+[tool.poetry.group.redis]
+optional = true
+
+[tool.poetry.group.redis.dependencies]
+redis = '^4.2.1'
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+httpx = '^0.24.1'
+pytest = '^7.1.1'
+
+[tool.poetry.group.thewholeshebang]
+optional = true
+
+[tool.poetry.group.thewholeshebang.dependencies]
+aiobotocore = '^2.2.0'
+aiomcache = '^0.7.0'
+black = '^23.3.0'
+httpx = '^0.24.1'
+motor = '^2.5.1'
+mypy = '^1.3.0'
+orjson = '^3.6.7'
+pandas = [
+  { version = '<=1.3.5', python = '~3.7'},
+  { version = '>=1.4.0', python = '^3.8'}
+]
+pyarrow = '^7.0.0'
+pytest = '^7.1.1'
+redis = '^4.2.1'
+types-redis = '^4.1.21'
+uvicorn = '0.15.0'
+
 [tool.pytest.ini_options]
-addopts = "--strict-markers --tb=short -s -rxXs"
-testpaths = [ "tests" ]
-python_files = "*.py"
+addopts = '--strict-markers --tb=short -s -rxXs'
+testpaths = [ 'tests' ]
+python_files = '*.py'
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ['poetry-core>=1.0.0']
+build-backend = 'poetry.core.masonry.api'
