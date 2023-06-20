@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023, All rights reserved.
 # FILENAME:  codecs/dataframe/feather.py
-# VERSION: 	 0.1.4
+# VERSION: 	 0.1.5
 # CREATED: 	 2022-04-09 13:02
 # AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
 # DESCRIPTION:

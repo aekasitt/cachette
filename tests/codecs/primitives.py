@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023, All rights reserved.
 # FILENAME:  tests/codecs/primitives.py
-# VERSION: 	 0.1.4
+# VERSION: 	 0.1.5
 # CREATED: 	 2022-04-06 3:27
 # AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
 # DESCRIPTION:
