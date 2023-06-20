@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding:utf-8
-# Copyright (C) 2021 All rights reserved.
+# Copyright (C) 2022-2023, All rights reserved.
 # FILENAME:  tests/codecs/conftest.py
 # VERSION: 	 0.1.4
 # CREATED: 	 2022-04-15 23:02
