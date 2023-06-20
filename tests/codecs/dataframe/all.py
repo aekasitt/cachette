@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding:utf-8
-# Copyright (C) 2022 All rights reserved.
+# Copyright (C) 2022-2023, All rights reserved.
 # FILENAME:  tests/codecs/dataframe/all.py
 # VERSION: 	 0.1.4
 # CREATED: 	 2022-04-06 22:03
