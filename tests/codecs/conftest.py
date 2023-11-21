@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023, All rights reserved.
 # FILENAME:  tests/codecs/conftest.py
-# VERSION: 	 0.1.5
+# VERSION: 	 0.1.6
 # CREATED: 	 2022-04-15 23:02
 # AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
 # DESCRIPTION:
@@ -107,7 +107,7 @@ def skip_if_dynamodb_server_cannot_be_reached(request: FixtureRequest):
     """
     backend: str = get_config_value_from_client_configs("backend", request)
     if backend == "dynamodb":
-        skip(reason="DynamoDB tests are disabled in version 0.1.5")
+        skip(reason="DynamoDB tests are disabled in version 0.1.6")
 
 
 @fixture(autouse=True)

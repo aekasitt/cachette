@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023, All rights reserved.
 # FILENAME:  tests/backends/wait_till_expired.py
-# VERSION: 	 0.1.5
+# VERSION: 	 0.1.6
 # CREATED: 	 2022-04-15 19:06
 # AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
 # DESCRIPTION:
