@@ -8,11 +8,8 @@ readme = 'README.md'
 homepage = 'https://github.com/aekasitt/fastapi-cachette'
 repository = 'https://github.com/aekasitt/fastapi-cachette'
 keywords = [
-  'starlette', 'fastapi', 'cache',
-  'redis', 'aioredis', 'dynamodb',
-  'aiobotocore', 'asynchronous', 
-  'memcached', 'aiomcache',
-  'mongodb', 'motor', 'pymongo'
+  'starlette', 'fastapi', 'cache', 'redis', 'aioredis', 'dynamodb', 'aiobotocore',
+  'asynchronous', 'memcached', 'aiomcache', 'mongodb', 'motor', 'pymongo'
 ]
 classifiers = [
   'Environment :: Web Environment',
