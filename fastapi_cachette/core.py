@@ -16,10 +16,6 @@ Module containing Core implementation for Cashette extension for FastAPI
 from asyncio import run
 from typing import Any, Optional, Tuple
 
-### Third-Party Packages ###
-from fastapi.requests import Request
-from fastapi.responses import Response
-
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.cachette_config import CachetteConfig
@@ -29,7 +25,7 @@ from fastapi_cachette.codecs import Codec
 class Cachette(CachetteConfig):
     backend: Backend
 
-    def __init__(self, request: Request, response: Response):
+    def __init__(self):
         """
         Invoked by FastAPI Depends
         """
