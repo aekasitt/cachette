@@ -9,13 +9,18 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""
+Module defining `ORJSONCodec` codec subclass used for decoding and encoding json-formatted data
+using `orjson` library
+"""
+
+### Standard packages ###
 from typing import Any
 
-### Third-Party Packages ###
+### Third-party packages ###
 from orjson import dumps, loads
 
-### Local Modules ##
+### Local modules ##
 from fastapi_cachette.codecs import Codec
 
 
@@ -25,3 +30,6 @@ class ORJSONCodec(Codec):
 
     def loads(self, data: bytes) -> Any:
         return loads(data)
+
+
+__all__ = ["ORJSONCodec"]

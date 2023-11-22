@@ -11,11 +11,12 @@
 # *************************************************************
 """Module containing Core implementation for Cachette extension for FastAPI
 """
-### Standard Packages ###
+
+### Standard packages ###
 from asyncio import run
 from typing import Any, Optional, Tuple
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.cachette_config import CachetteConfig
 from fastapi_cachette.codecs import Codec
@@ -143,3 +144,6 @@ class Cachette(CachetteConfig):
         :returns:  `int`  amount of items cleared
         """
         return await self.backend.clear(namespace, key)
+
+
+__all__ = ["Cachette"]

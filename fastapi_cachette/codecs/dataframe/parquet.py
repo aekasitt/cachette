@@ -9,13 +9,16 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""Module defining `ParquetCodec` codec subclass for decoding and encoding parquet dataframes
+"""
+
+### Standard packages ###
 from io import BytesIO
 
-### Third-Party Packages ###
+### Third-party packages ###
 from pandas import DataFrame, read_parquet
 
-### Local Modules ##
+### Local modules ##
 from fastapi_cachette.codecs import Codec
 
 
@@ -28,3 +31,6 @@ class ParquetCodec(Codec):
     def loads(self, data: bytes) -> DataFrame:
         bytes_io: BytesIO = BytesIO(data)
         return read_parquet(bytes_io)
+
+
+__all__ = ["ParquetCodec"]

@@ -9,13 +9,13 @@
 #
 # HISTORY:
 # *************************************************************
+"""Module containing `LoadConfig` Pydantic model
 """
-Module containing `LoadConfig` Pydantic model
-"""
-### Standard Packages ###
+
+### Standard packages ###
 from typing import Optional
 
-### Third-Party Packages ###
+### Third-party packages ###
 from pydantic import BaseModel, validator, StrictInt, StrictStr
 
 
@@ -162,3 +162,6 @@ class LoadConfig(BaseModel):
             )
         ### TODO More Validations ###
         return value
+
+
+__all__ = ["LoadConfig"]

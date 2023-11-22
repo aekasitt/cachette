@@ -12,16 +12,17 @@
 """
 Tests for codec implementations on TestClient which can encode/decode primitives with correct types
 """
-### Standard Packages ###
+
+### Standard packages ###
 from typing import Any, List, Tuple
 
-### Third-Party Packages ###
+### Third-party packages ###
 from fastapi import Depends, FastAPI
 from fastapi.responses import PlainTextResponse, Response
 from fastapi.testclient import TestClient
 from pytest import fixture, FixtureRequest, mark
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette import Cachette
 
 ### Fixtures ###

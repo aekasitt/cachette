@@ -9,13 +9,13 @@
 #
 # HISTORY:
 # *************************************************************
+"""Tests for codec implementations on TestClient which can serializ/de-serialize DataFrame objects
 """
-Tests for codec implementations on TestClient which can serializ/de-serialize DataFrame objects
-"""
-### Standard Packages ###
+
+### Standard packages ###
 from typing import Any, List, Tuple
 
-### Third-Party Packages ###
+### Third-party packages ###
 from fastapi import Depends, FastAPI
 from fastapi.responses import PlainTextResponse, Response
 from fastapi.testclient import TestClient
@@ -27,7 +27,7 @@ try:
 except ImportError:
     ### Assume skipped by conftest "skip_all_if_pandas_not_installed" fixture ###
     pass
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette import Cachette
 
 

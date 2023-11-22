@@ -9,17 +9,17 @@
 #
 # HISTORY:
 # *************************************************************
+"""Test suite containing configuration loading tests via `LoadConfig`
 """
-Test Suite containing Configuration Loading tests
-"""
-### Standard Packages ###
+
+### Standard packages ###
 from typing import Any, List, Tuple
 
-### Third-Party Packages ###
+### Third-party packages ###
 from pydantic import ValidationError
 from pytest import mark, raises
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette import Cachette
 
 

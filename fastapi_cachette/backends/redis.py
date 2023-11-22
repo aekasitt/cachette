@@ -12,14 +12,14 @@
 """Module defining `RedisBackend` backend subclass used with Redis key-value store
 """
 
-### Standard Packages ###
+### Standard packages ###
 from typing import Any, Optional, Tuple
 
-### Third-Party Pacakges ###
+### Third-party packages ###
 from pydantic import BaseModel
 from redis.asyncio import Redis
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
 

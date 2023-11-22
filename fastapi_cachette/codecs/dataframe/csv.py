@@ -9,13 +9,17 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""
+Module defining `CSVCodec` codec subclass used for decoding and encoding csv-formatted dataframes
+"""
+
+### Standard packages ###
 from io import BytesIO, StringIO
 
-### Third-Party Packages ###
+### Third-party packages ###
 from pandas import DataFrame, read_csv
 
-### Local Modules ##
+### Local modules ##
 from fastapi_cachette.codecs import Codec
 
 
@@ -28,3 +32,6 @@ class CSVCodec(Codec):
     def loads(self, data: bytes) -> DataFrame:
         string_io: StringIO = StringIO(data.decode())
         return read_csv(string_io, index_col=0)
+
+
+__all__ = ["CSVCodec"]

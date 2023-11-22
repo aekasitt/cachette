@@ -9,7 +9,10 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""Module defining `Codec` abstract class defining subclasses' method schemas
+"""
+
+### Standard packages ###
 from abc import abstractmethod
 from typing import Any
 
@@ -28,3 +31,6 @@ class Codec:
         ...
         """
         raise NotImplementedError
+
+
+__all__ = ["Codec"]

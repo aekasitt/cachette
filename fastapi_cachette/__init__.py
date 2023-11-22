@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""
-FastAPI extension that provides Cache Implementation Support
+"""FastAPI extension that provides Cache Implementation Support
 """
 
 __version__ = "0.1.6"

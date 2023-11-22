@@ -9,16 +9,16 @@
 #
 # HISTORY:
 # *************************************************************
+"""Module containing `CachetteConfig` class
 """
-Module containing `CachetteConfig` class
-"""
-### Standard Packages ###
+
+### Standard packages ###
 from typing import Callable, List, Optional, Tuple
 
-### Third-Party Packages ###
+### Third-party packages ###
 from pydantic import ValidationError
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette.load_config import LoadConfig
 
 
@@ -101,3 +101,6 @@ class CachetteConfig(object):
             raise TypeError(
                 'CachetteConfig must be pydantic "BaseSettings" or list of tuples'
             )
+
+
+__all__ = ["CachetteConfig"]

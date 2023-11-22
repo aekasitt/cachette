@@ -9,20 +9,20 @@
 #
 # HISTORY:
 # *************************************************************
+"""Module defining test methods to be used by different backend-specific tests
 """
-Module defining test methods to be used by different backend-specific tests
-"""
-### Standard Packages ###
+
+### Standard packages ###
 from typing import Any, List, Tuple
 
-### Third-Party Packages ###
+### Third-party packages ###
 from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
 from fastapi.testclient import TestClient
 from pydantic import BaseModel
 from pytest import fixture
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette import Cachette
 
 

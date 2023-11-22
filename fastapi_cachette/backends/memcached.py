@@ -12,14 +12,14 @@
 """Module defining `MemcachedBackend` backend subclass used with Memcached key-value store
 """
 
-### Standard Packages ###
+### Standard packages ###
 from typing import Any, Optional, Tuple
 
-### Third-Party Packages ###
+### Third-party packages ###
 from aiomcache import Client
 from pydantic import BaseModel
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
 

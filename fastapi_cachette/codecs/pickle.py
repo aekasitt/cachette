@@ -9,11 +9,14 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""Module defining `PickleCodec` codec subclass used for decoding and encoding pickled data
+"""
+
+### Standard packages ###
 from pickle import dumps, loads
 from typing import Any
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette.codecs import Codec
 
 
@@ -23,3 +26,6 @@ class PickleCodec(Codec):
 
     def loads(self, data: bytes) -> Any:
         return loads(data)
+
+
+__all__ = ["PickleCodec"]

@@ -9,13 +9,16 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""Module defining `FeatherCodec` codec subclass used for decoding and encoding feather dataframes
+"""
+
+### Standard packages ###
 from io import BytesIO
 
-### Third-Party Packages ###
+### Third-party packages ###
 from pandas import DataFrame, read_feather
 
-### Local Modules ##
+### Local modules ##
 from fastapi_cachette.codecs import Codec
 
 
@@ -28,3 +31,6 @@ class FeatherCodec(Codec):
     def loads(self, data: bytes) -> DataFrame:
         bytes_io: BytesIO = BytesIO(data)
         return read_feather(bytes_io)
+
+
+__all__ = ["FeatherCodec"]

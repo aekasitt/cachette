@@ -9,10 +9,15 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""
+Module defining `VanillaCodec` codec subclass used as default for decoding and encoding
+basic data string-casted for storage
+"""
+
+### Standard packages ###
 from typing import Any
 
-### Local Modules ##
+### Local modules ##
 from fastapi_cachette.codecs import Codec
 
 
@@ -22,3 +27,6 @@ class VanillaCodec(Codec):
 
     def loads(self, data: bytes) -> Any:
         return data.decode("utf-8")
+
+
+__all__ = ["VanillaCodec"]

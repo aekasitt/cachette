@@ -9,13 +9,18 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""
+Module defining `JSONCodec` codec subclass used for decoding and encoding json-formatted data
+using python standard `json` library
+"""
+
+### Standard packages ###
 from typing import Any
 
-### Third-Party Packages ###
+### Third-party packages ###
 from json import dumps, loads
 
-### Local Modules ##
+### Local modules ##
 from fastapi_cachette.codecs import Codec
 
 
@@ -25,3 +30,6 @@ class JSONCodec(Codec):
 
     def loads(self, data: bytes) -> Any:
         return loads(data)
+
+
+__all__ = ["JSONCodec"]

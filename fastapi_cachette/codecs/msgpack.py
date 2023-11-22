@@ -9,13 +9,17 @@
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
+"""
+Module defining `MsgpackCodec` codec subclass used for decoding and encoding msgpack-formatted data
+"""
+
+### Standard packages ###
 from typing import Any
 
-### Third-Party Packages ###
+### Third-party packages ###
 from msgpack import dumps, loads
 
-### Local Modules ##
+### Local modules ##
 from fastapi_cachette.codecs import Codec
 
 
@@ -25,3 +29,6 @@ class MsgpackCodec(Codec):
 
     def loads(self, data: bytes) -> Any:
         return loads(data)
+
+
+__all__ = ["MsgpackCodec"]
