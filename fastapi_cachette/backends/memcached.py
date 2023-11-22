@@ -64,4 +64,5 @@ class MemcachedBackend(Backend, BaseModel):
             count += (0, 1)[await self.mcache.delete(key.encode())]
         return count
 
+
 __all__ = ["MemcachedBackend"]

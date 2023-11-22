@@ -62,4 +62,5 @@ class RedisBackend(Backend, BaseModel):
             return await self.redis.delete(key)
         return 0
 
+
 __all__ = ["RedisBackend"]
