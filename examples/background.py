@@ -4,7 +4,7 @@
 # FILENAME:  examples/background.py
 # VERSION: 	 0.1.6
 # CREATED: 	 2022-04-12 11:25
-# AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
+# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:

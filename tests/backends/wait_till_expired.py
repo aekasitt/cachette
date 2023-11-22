@@ -4,7 +4,7 @@
 # FILENAME:  tests/backends/wait_till_expired.py
 # VERSION: 	 0.1.6
 # CREATED: 	 2022-04-15 19:06
-# AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
+# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:

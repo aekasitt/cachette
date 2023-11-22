@@ -2,7 +2,7 @@
 name = 'fastapi-cachette'
 version = '0.1.6'
 description = 'Cache Implementation Extension for FastAPI Asynchronous Web Framework'
-authors = ['Sitt Guruvanich <aekazitt@gmail.com>']
+authors = ['Sitt Guruvanich <aekazitt+github@gmail.com>']
 license = 'MIT'
 readme = 'README.md'
 homepage = 'https://github.com/aekasitt/fastapi-cachette'

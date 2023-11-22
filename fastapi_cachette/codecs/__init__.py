@@ -4,7 +4,7 @@
 # FILENAME:  codecs/__init__.py
 # VERSION: 	 0.1.6
 # CREATED: 	 2022-04-06 15:38
-# AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
+# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
