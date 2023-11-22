@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""
-Module containing Core implementation for Cashette extension for FastAPI
+"""Module containing Core implementation for Cachette extension for FastAPI
 """
 ### Standard Packages ###
 from asyncio import run

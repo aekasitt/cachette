@@ -4,15 +4,15 @@
 # FILENAME:  backends/__init__.py
 # VERSION: 	 0.1.6
 # CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
+# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
 # *************************************************************
+"""Module containing `Backend` abstract class to be inherited by implementation-specific backends
 """
-Module containing `Backend` abstract class to be inherited by implementation-specific backends
-"""
-### Standard Packages ###
+
+### Standard packages ###
 from abc import abstractmethod
 from time import time
 from typing import Any, Optional, Tuple

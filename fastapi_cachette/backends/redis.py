@@ -9,11 +9,14 @@
 #
 # HISTORY:
 # *************************************************************
+"""Module defining `RedisBackend` backend subclass used with Redis key-value store
+"""
+
 ### Standard Packages ###
-from dataclasses import dataclass
 from typing import Any, Optional, Tuple
 
 ### Third-Party Pacakges ###
+from pydantic import BaseModel
 from redis.asyncio import Redis
 
 ### Local Modules ###
@@ -21,8 +24,10 @@ from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
 
 
-@dataclass
-class RedisBackend(Backend):
+class RedisBackend(Backend, BaseModel):
+    class Config:
+        arbitrary_types_allowed: bool = True
+
     codec: Codec
     redis: Redis
     ttl: int
@@ -56,3 +61,5 @@ class RedisBackend(Backend):
         elif key:
             return await self.redis.delete(key)
         return 0
+
+__all__ = ["RedisBackend"]

@@ -4,39 +4,41 @@
 # FILENAME:  backends/dynamodb.py
 # VERSION: 	 0.1.6
 # CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
+# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
-from dataclasses import dataclass
+"""Module defining backend subclass used with DynamoDB key-value database
+"""
+
+### Standard packages ###
 from typing import Any, Optional, Tuple
 
-### Third-Party Packages ###
+### Third-party packages ###
 from aiobotocore.session import get_session, ClientCreatorContext
+from pydantic import BaseModel, PositiveInt, StrictStr, validate_arguments
 
-### Local Modules ###
+### Local modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
 
 
-@dataclass
-class DynamoDBBackend(Backend):
+class DynamoDBBackend(Backend, BaseModel):
     codec: Codec
-    region: Optional[str]
-    table_name: str
-    ttl: int
-    url: Optional[str]
+    region: Optional[StrictStr]
+    table_name: StrictStr
+    ttl: PositiveInt
+    url: Optional[StrictStr]
 
     @classmethod
     async def init(
         cls,
         codec: Codec,
-        table_name: str,
-        ttl: int,
-        region: Optional[str] = None,
-        url: Optional[str] = None,
+        table_name: StrictStr,
+        ttl: StrictStr,
+        region: Optional[StrictStr] = None,
+        url: Optional[StrictStr] = None,
     ) -> "DynamoDBBackend":
         dynamodb: ClientCreatorContext = get_session().create_client(
             "dynamodb", region_name=region, endpoint_url=url
@@ -64,7 +66,8 @@ class DynamoDBBackend(Backend):
             "dynamodb", region_name=self.region, endpoint_url=self.url
         )
 
-    async def fetch(self, key: str) -> Any:
+    @validate_arguments
+    async def fetch(self, key: StrictStr) -> Any:
         async with self.dynamodb as client:
             response = await client.get_item(
                 TableName=self.table_name, Key={"key": {"S": key}}
@@ -78,7 +81,8 @@ class DynamoDBBackend(Backend):
                     return None
                 return self.codec.loads(value)
 
-    async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
+    @validate_arguments
+    async def fetch_with_ttl(self, key: StrictStr) -> Tuple[int, Any]:
         async with self.dynamodb as client:
             response = await client.get_item(
                 TableName=self.table_name, Key={"key": {"S": key}}
@@ -95,7 +99,10 @@ class DynamoDBBackend(Backend):
                 return ttl, value
         return -1, None
 
-    async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
+    @validate_arguments
+    async def put(
+        self, key: StrictStr, value: Any, ttl: Optional[PositiveInt] = None
+    ) -> None:
         ttl = ttl or self.ttl
         async with self.dynamodb as client:
             expires_at: dict = {"expires": {"N": f"{ self.now + ttl }"}}
@@ -105,7 +112,10 @@ class DynamoDBBackend(Backend):
                 Item={**{"key": {"S": key}, "value": {"B": data}}, **expires_at},
             )
 
-    async def clear(self, namespace: str = None, key: str = None) -> int:
+    @validate_arguments
+    async def clear(
+        self, namespace: Optional[StrictStr] = None, key: Optional[StrictStr] = None
+    ) -> int:
         count: int = 0
         if namespace:
             raise NotImplementedError
@@ -129,3 +139,6 @@ class DynamoDBBackend(Backend):
                     ttl > 0 and resp["ResponseMetadata"]["HTTPStatusCode"] == 200
                 ]
         return count
+
+
+__all__ = ["DynamoDBBackend"]

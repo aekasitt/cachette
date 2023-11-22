@@ -4,34 +4,38 @@
 # FILENAME:  backends/inmemory.py
 # VERSION: 	 0.1.6
 # CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt@gmail.com>
+# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
 # *************************************************************
-### Standard Packages ###
-from dataclasses import dataclass
+"""Module defining backend subclass used with In-memory key-value store
+"""
+
+### Standard packages ###
 from typing import Any, Dict, List, Optional, Tuple
 
-### Local Modules ###
+### Third-party packages ###
+from pydantic import BaseModel, StrictBytes, StrictInt, StrictStr
+
+### Local modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
 
 
-@dataclass
-class Value:
-    data: bytes
-    expires: int
+class Value(BaseModel):
+    data: StrictBytes
+    expires: StrictInt
 
 
 class InMemoryBackend(Backend):
     store: Dict[str, Value] = {}
 
-    def __init__(self, codec: Codec, ttl: int):
+    def __init__(self, codec: Codec, ttl: StrictInt):
         self.codec = codec
         self.ttl = ttl
 
-    async def fetch(self, key: str) -> Any:
+    async def fetch(self, key: StrictStr) -> Any:
         value: Optional[Value] = self.store.get(key)
         if not value:
             return
@@ -40,7 +44,7 @@ class InMemoryBackend(Backend):
         else:
             return self.codec.loads(value.data)
 
-    async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
+    async def fetch_with_ttl(self, key: StrictStr) -> Tuple[int, Any]:
         value: Optional[Value] = self.store.get(key)
         if not value:
             return -1, None
@@ -50,13 +54,15 @@ class InMemoryBackend(Backend):
         else:
             return (value.expires - self.now, self.codec.loads(value.data))
 
-    async def put(self, key: str, value: str, ttl: int = None) -> None:
+    async def put(
+        self, key: StrictStr, value: StrictStr, ttl: Optional[StrictInt] = None
+    ) -> None:
         data: bytes = self.codec.dumps(value)
         expires: int = self.now + (ttl or self.ttl)
-        self.store[key] = Value(data, expires)
+        self.store[key] = Value(data=data, expires=expires)
 
     async def clear(
-        self, namespace: Optional[str] = None, key: Optional[str] = None
+        self, namespace: Optional[StrictStr] = None, key: Optional[StrictStr] = None
     ) -> int:
         count: int = 0
         if namespace:
@@ -70,3 +76,6 @@ class InMemoryBackend(Backend):
             del self.store[key]
             count += 1
         return count
+
+
+__all__ = ["InMemoryBackend"]

@@ -9,20 +9,26 @@
 #
 # HISTORY:
 # *************************************************************
+"""Module defining `MemcachedBackend` backend subclass used with Memcached key-value store
+"""
+
 ### Standard Packages ###
-from dataclasses import dataclass
 from typing import Any, Optional, Tuple
 
 ### Third-Party Packages ###
 from aiomcache import Client
+from pydantic import BaseModel
 
 ### Local Modules ###
 from fastapi_cachette.backends import Backend
 from fastapi_cachette.codecs import Codec
 
 
-@dataclass
-class MemcachedBackend(Backend):
+class MemcachedBackend(Backend, BaseModel):
+    class Config:
+        arbitrary_types_allowed: bool = True
+
+    ### member vars ###
     codec: Codec
     mcache: Client
     ttl: int
@@ -31,9 +37,7 @@ class MemcachedBackend(Backend):
     async def init(
         cls, codec: Codec, memcached_host: str, ttl: int
     ) -> "MemcachedBackend":
-        return MemcachedBackend(
-            codec=codec, mcache=Client(host=memcached_host), ttl=ttl
-        )
+        return cls(codec=codec, mcache=Client(host=memcached_host), ttl=ttl)
 
     async def fetch(self, key: str) -> Any:
         data: Optional[bytes] = await self.mcache.get(key.encode())
@@ -59,3 +63,5 @@ class MemcachedBackend(Backend):
         elif key:
             count += (0, 1)[await self.mcache.delete(key.encode())]
         return count
+
+__all__ = ["MemcachedBackend"]
