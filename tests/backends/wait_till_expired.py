@@ -23,6 +23,7 @@ from fastapi.testclient import TestClient
 from pytest import mark
 
 ### Local modules ###
+from tests import remove_pickles
 from tests.backends import client, Payload
 
 

@@ -12,3 +12,26 @@
 """
 Previous implementations moved to tests/backends/__init__.py
 """
+
+### Standard packages ###
+from os import remove
+
+### Third-party packages ###
+from pytest import fixture
+
+
+@fixture(autouse=True, scope="session")
+def remove_pickles() -> None:
+    """Fixture to be called after test session is over for cleaning up local pickle files"""
+    yield
+    file_exists: bool = False
+    try:
+        with open("tests/cache.pkl", "rb"):
+            file_exists = True
+    except FileNotFoundError:
+        pass
+    if file_exists:
+        remove("tests/cache.pkl")
+
+
+__all__ = ["remove_pickles"]
