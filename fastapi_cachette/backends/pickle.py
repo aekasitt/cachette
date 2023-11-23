@@ -101,7 +101,7 @@ class PickleBackend(Backend, BaseModel):
             cleared: int = 0
             if key in values.keys():
                 value = values.pop(key)
-                if value.expires >= value.now:
+                if value.expires >= self.now:
                     cleared = 1
             with open(self.pickle_path, "wb") as f:
                 dump(values, f)
