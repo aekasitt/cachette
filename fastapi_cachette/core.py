@@ -96,6 +96,11 @@ class Cachette(CachetteConfig):
                     self._mongodb_url,
                 )
             )
+        elif self._backend == "pickle":
+            from fastapi_cachette.backends.pickle import PickleBackend
+
+            ### Ignore codec when pickle backend is chosen ###
+            self.backend = PickleBackend(pickle_path=self._pickle_path, ttl=self._ttl)
         elif self._backend == "redis":
             from fastapi_cachette.backends.redis import RedisBackend
 

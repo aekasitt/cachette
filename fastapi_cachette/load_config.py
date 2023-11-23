@@ -41,17 +41,22 @@ class LoadConfig(BaseModel):
     database_name: Optional[StrictStr]
     mongodb_url: Optional[StrictStr]
 
+    ### Pickle ###
+    pickle_path: Optional[StrictStr]
+
     @validator("backend")
     def validate_backend(cls, value: str) -> str:
         if value.lower() not in {
             "dynamodb",
             "inmemory",
             "memcached",
+            "pickle",
             "redis",
             "mongodb",
         }:
             raise ValueError(
-                'The "backend" value must be one of "dynamodb", "inmemory", "memcached", or "redis".'
+                'The "backend" value must be one of "dynamodb", "inmemory", "memcached", "pickle",'
+                'or "redis".'
             )
         return value.lower()
 
@@ -76,7 +81,7 @@ class LoadConfig(BaseModel):
                 'The "codec" value must be one of "csv", "feather", "json", "msgpack", "orjson", '
                 '"parquet", or "pickle".'
             )
-            ### TODO Validation when using DataFrame Codecs (csv, sql, feather, parquet) have pandas? ###
+            ### TODO: validation when using DataFrame Codecs (csv, sql, feather, parquet) have pandas? ###
         return value
 
     @validator("redis_url", always=True)
@@ -85,7 +90,7 @@ class LoadConfig(BaseModel):
             raise ValueError(
                 'The "redis_url" cannot be null when using redis as backend.'
             )
-        ### TODO More Validations ###
+        ### TODO: More validations ###
         return value
 
     @validator("memcached_host", always=True)
@@ -94,7 +99,7 @@ class LoadConfig(BaseModel):
             raise ValueError(
                 'The "memcached_host" cannot be null when using memcached as backend.'
             )
-        ### TODO More Validations ###
+        ### TODO: More validations ###
         return value
 
     @validator("table_name")
@@ -104,7 +109,7 @@ class LoadConfig(BaseModel):
             raise ValueError(
                 'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.'
             )
-        ### TODO More Validations ###
+        ### TODO: More validations ###
         return value
 
     @validator("region")
@@ -140,7 +145,7 @@ class LoadConfig(BaseModel):
             raise ValueError(
                 'The "dynamodb_url" cannot be null when using DynamoDB as backend and no region defined.'
             )
-        ### TODO More Validations ###
+        ### TODO: More validations ###
         return value
 
     @validator("database_name")
@@ -150,7 +155,7 @@ class LoadConfig(BaseModel):
             raise ValueError(
                 'The "database_name" cannot be null when using MongoDB as backend.'
             )
-        ### TODO More Validations ###
+        ### TODO: More validations ###
         return value
 
     @validator("mongodb_url", always=True)
@@ -160,7 +165,17 @@ class LoadConfig(BaseModel):
             raise ValueError(
                 'The "mongodb_url" cannot be null when using MongoDB as backend.'
             )
-        ### TODO More Validations ###
+        ### TODO: More validations ###
+        return value
+    
+    @validator("pickle_path", always=True)
+    def validate_pickle_path(cls, value: str, values: dict) -> str:
+        backend: str = values["backend"].lower()
+        if backend == "pickle" and not value:
+            raise ValueError(
+                'The "pickle_path" cannot be null when using pickle as backend.'
+            )
+        ### TODO: More validations ###
         return value
 
 

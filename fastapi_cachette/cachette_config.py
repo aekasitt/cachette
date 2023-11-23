@@ -45,6 +45,9 @@ class CachetteConfig(object):
     _database_name: str = "fastapi-cachette-database"
     _mongodb_url: str
 
+    ### Pickle ###
+    _pickle_path: str
+
     @classmethod
     def load_config(cls, settings: Callable[..., List[Tuple]]) -> None:
         """
@@ -82,6 +85,8 @@ class CachetteConfig(object):
           mongodb_url -- required when backend set to "mongodb"; the url set to MongoDB database
             instance with or without provided authentication in such formats
             "mongodb://user:password@host:port" and "mongodb://host:port" respectively.
+          pickle_path -- required when backend set to "pickle"; the file-system path to create local
+            store using python pickling on local directory
         """
         try:
             config = LoadConfig(**{key.lower(): value for key, value in settings()})
@@ -95,6 +100,7 @@ class CachetteConfig(object):
             cls._dynamodb_url = config.dynamodb_url
             cls._database_name = config.database_name or cls._database_name
             cls._mongodb_url = config.mongodb_url or ""
+            cls._pickle_path = config.pickle_path
         except ValidationError:
             raise
         except Exception:
