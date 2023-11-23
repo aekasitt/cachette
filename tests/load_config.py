@@ -209,7 +209,7 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> None:
         ### Pickle ###
         (
             [("backend", "pickle")],
-            'The "pickle_path" cannot be null when using pickle as backend.'
+            'The "pickle_path" cannot be null when using pickle as backend.',
         ),
         (
             [("backend", "pickle"), ("ttl", 0), ("pickle_path", "tests/cache.pkl")],
