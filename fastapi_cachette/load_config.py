@@ -167,7 +167,7 @@ class LoadConfig(BaseModel):
             )
         ### TODO: More validations ###
         return value
-    
+
     @validator("pickle_path", always=True)
     def validate_pickle_path(cls, value: str, values: dict) -> str:
         backend: str = values["backend"].lower()
