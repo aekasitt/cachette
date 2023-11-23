@@ -34,9 +34,10 @@ from tests.backends import client, Payload
             ("database_name", "fastapi-cachette-database"),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
+        [("backend", "pickle"), ("pickle_path", "tests/cache.pkl")],
         [("backend", "redis"), ("redis_url", "redis://localhost:6379")],
     ],
-    ids=["dynamodb", "inmemory", "memcached", "mongodb", "redis"],
+    ids=["dynamodb", "inmemory", "memcached", "mongodb", "pickle", "redis"],
     indirect=True,
 )
 def test_set_then_clear(client: TestClient):

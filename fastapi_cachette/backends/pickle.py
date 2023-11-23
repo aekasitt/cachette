@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from pickle import loads, dumps
+from pickle import load, dump
 from typing import Any, Dict, Optional, Tuple
 
 ### Third-party packages ###
@@ -26,36 +26,55 @@ class Value(BaseModel):
     expires: StrictInt
 
 
-class PickleBackend(Backend):
+class PickleBackend(Backend, BaseModel):
     pickle_path: StrictStr
+    ttl: StrictInt
 
-    def __init__(self, pickle_path: str, ttl: int) -> None:
-        ### TODO: reimplement ###
-        self.pickle_path = pickle_path
-        values: Dict[str, Value]
-        with open(self.pickle_path, "wb") as f:
-            values = loads(f.read()) or {}
-            dumps(f, values)
+    # def __init__(self, pickle_path: str, ttl: int) -> None:
+    #     ### TODO: reimplement ###
+    #     self.pickle_path = pickle_path
+    #     self.ttl = ttl
+    #     values: Dict[str, Value]
+    #     try:
+    #         with open(self.pickle_path, "rb") as f:
+    #             values = load(f) or {}
+    #     except FileNotFoundError:
+    #         values = {}
+    #     with open(self.pickle_path, "wb") as f:
+    #         dump(values, f)
 
     async def fetch(self, key: str) -> Optional[Any]:
         ### TODO: reimplement ###
         values: Dict[str, Value]
-        with open(self.pickle_path, "rb") as f:
-            values = loads(f.read()) or {}
-            value: Value = values.get(key, None)
-            return value.data if value is not None else None
+        try:
+            with open(self.pickle_path, "rb") as f:
+                values = load(f) or {}
+                value: Value = values.get(key, None)
+                return value.data if value is not None else None
+        except FileNotFoundError:
+            pass
 
     async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
         ### TODO: reimplement ###
         values: Dict[str, Value]
-        with open(self.pickle_path, "rb") as f:
-            values = f.read() or {}
-            value: Value = values.get(key, None)
-            return (value.expires, value.data) if value is not None else None
+        try:
+            with open(self.pickle_path, "rb") as f:
+                values = f or {}
+                value: Value = values.get(key, None)
+                return (value.expires, value.data) if value is not None else None
+        except FileNotFoundError:
+            return (0, None)
 
     async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
-        ### TODO: reimplement ###
         values: Dict[str, Value]
+        try:
+            with open(self.pickle_path, "rb") as f:
+                values = load(f)
+        except FileNotFoundError:
+            values = {}
+        values[key] = Value(data=value, expires=self.now + (ttl or self.ttl))
+        with open(self.pickle_path, "wb") as f:
+            dump(values, f)
 
     async def clear(
         self, namespace: Optional[str] = None, key: Optional[str] = None
@@ -63,7 +82,16 @@ class PickleBackend(Backend):
         if namespace is not None:
             raise NotImplemented
         elif key is not None:
-            raise NotImplemented
+            values: Dict[str, Value]
+            try:
+                with open(self.pickle_path, "rb") as f:
+                    values = load(f)
+            except FileNotFoundError:
+                return 0
+            values.pop(key)
+            with open(self.pickle_path, "wb") as f:
+                dump(values, f)
+            return 1
         file_exists: bool = False
         try:
             with open(self.pickle_path, "rb") as _:
