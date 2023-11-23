@@ -1,14 +1,14 @@
-# FastAPI Cachette
+# Cachette
 
-[![Build Status](https://travis-ci.com/aekasitt/fastapi-cachette.svg?branch=master)](https://app.travis-ci.com/github/aekasitt/fastapi-cachette)
-[![Package Vesion](https://img.shields.io/pypi/v/fastapi-cachette)](https://pypi.org/project/fastapi-cachette)
-[![Format](https://img.shields.io/pypi/format/fastapi-cachette)](https://pypi.org/project/fastapi-cachette)
-[![Python Version](https://img.shields.io/pypi/pyversions/fastapi-cachette)](https://pypi.org/project/fastapi-cachette)
-[![License](https://img.shields.io/pypi/l/fastapi-cachette)](https://pypi.org/project/fastapi-cachette)
+[![Build status](https://travis-ci.com/aekasitt/cachette.svg?branch=master)](https://app.travis-ci.com/github/aekasitt/cachette)
+[![Package vesion](https://img.shields.io/pypi/v/cachette)](https://pypi.org/project/cachette)
+[![Format](https://img.shields.io/pypi/format/cachette)](https://pypi.org/project/cachette)
+[![Python version](https://img.shields.io/pypi/pyversions/cachette)](https://pypi.org/project/cachette)
+[![License](https://img.shields.io/pypi/l/cachette)](https://pypi.org/project/cachette)
 
 ## Features
 
-Opinionated Cache Extension for FastAPI Asynchronous Web Framework;
+Opinionated cache extension for ASGI frameworks such as FastAPI, Quartz, Starlette and Unicorn;
 This is an extension aiming at making cache access on the server
 By configuration at startup of the FastAPI App instance, you can set the backend and other 
 configuration options and have it remain a class constant when using FastAPI's
@@ -43,7 +43,7 @@ on startup either by using a method which returns a list of tuples or a Pydantic
       distributed memory caching system.
     table_name -- required when backend set to "dynamodb" or "mongodb"; name of the cache table or
       collection in case of "mongodb" backend to have key-value pairs stored; defaults to
-      "fastapi-cachette".
+      "cachette".
     region -- required when backend set to "dynamodb" and "dynamodb_url" not set; one of Amazon
       Web Services listed Regions which can be found on this Documentation
       [Page](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones)
@@ -52,7 +52,7 @@ on startup either by using a method which returns a list of tuples or a Pydantic
       [Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal)
     database_name -- required when backend set to "mongodb"; the database name to be automatically
       created if not exists on the MongoDB instance and store the cache table; defaults to
-      "fastapi-cachette-database"
+      "cachette-db"
     mongodb_url -- required when backend set to "mongodb"; the url set to MongoDB database
       instance with or without provided authentication in such formats
       "mongodb://user:password@host:port" and "mongodb://host:port" respectively.
@@ -63,9 +63,9 @@ The following shows and example of setting up FastAPI Cachette in its default co
 is an In-Memory cache implementation.
 
 ```py
+from cachette import Cachette
 from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
-from fastapi_cachette import Cachette
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -89,9 +89,9 @@ async def getter(key: str, cachette: Cachette = Depends()):
 And then this is how you set up a FastAPI Cachette with Redis support enabled.
 
 ```py
+from cachette import Cachette
 from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
-from fastapi_cachette import Cachette
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -136,9 +136,9 @@ Change library?
 The easiest way to start working with this extension with pip
 
 ```bash
-pip install fastapi-cachette
+pip install cachette
 # or
-poetry add fastapi-cachette
+poetry add cachette
 ```
 
 When you familiarize with the basic structure of how to Dependency Inject Cachette within your
@@ -146,16 +146,16 @@ endpoints, please experiment more of using external backends with `extras` insta
 
 ```bash
 # Install FastAPI Cachette's extra requirements to Redis support
-pip install fastapi-cachette --install-option "--extras-require=redis"
+pip install cachette --install-option "--extras-require=redis"
 # or Install FastAPI Cachette's support to Memcached
-poetry add fastapi-cachette[memcached]
+poetry add cachette[memcached]
 # or Special JSON Codec written on Rust at lightning speed
-poetry add fastapi-cachette[orjson]
+poetry add cachette[orjson]
 # or Include PyArrow package making DataFrame serialization much easier
-pip install fastapi-cachette --install-option "--extras-require=dataframe"
+pip install cachette --install-option "--extras-require=dataframe"
 # or MongoDB and DynamoDB supports
-poetry add fastapi-cachette[mongodb]
-pip install fastapi-cachette --install-option "--extras-require=dynamodb"
+poetry add cachette[mongodb]
+pip install cachette --install-option "--extras-require=dynamodb"
 ```
 
 ## Getting Started
