@@ -70,3 +70,6 @@ class Backend:
         :returns:  `int`  amount of items cleared
         """
         raise NotImplementedError
+
+
+__all__ = ["Backend"]
