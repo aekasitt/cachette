@@ -6,9 +6,10 @@
 [![Python version](https://img.shields.io/pypi/pyversions/cachette)](https://pypi.org/project/cachette)
 [![License](https://img.shields.io/pypi/l/cachette)](https://pypi.org/project/cachette)
 
+![Cachette banner](static/cachette-banner.svg)
+
 ## Features
 
-Opinionated cache extension for ASGI frameworks such as FastAPI, Litstar, Xpresso and Starlette;
 This is an extension aiming at making cache access on the server
 By configuration at startup of the FastAPI App instance, you can set the backend and other 
 configuration options and have it remain a class constant when using FastAPI's
