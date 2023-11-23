@@ -13,9 +13,9 @@
 Example for using FastAPI Cachette extension in tandem with BackgroundTasks
 """
 from asyncio import run
+from cachette import Cachette
 from fastapi import BackgroundTasks, Depends, FastAPI
 from fastapi.responses import PlainTextResponse
-from fastapi_cachette import Cachette
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -34,9 +34,7 @@ class Payload(BaseModel):
 
 
 @app.post("/", response_class=PlainTextResponse)
-def setter(
-    payload: Payload, background_tasks: BackgroundTasks, cachette: Cachette = Depends()
-):
+def setter(payload: Payload, background_tasks: BackgroundTasks, cachette: Cachette = Depends()):
     """
     Submit a new cache key-pair value
     """

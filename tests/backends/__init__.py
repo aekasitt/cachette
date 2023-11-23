@@ -23,7 +23,7 @@ from pydantic import BaseModel
 from pytest import fixture
 
 ### Local modules ###
-from fastapi_cachette import Cachette
+from cachette import Cachette
 
 
 class Payload(BaseModel):

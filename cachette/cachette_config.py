@@ -19,7 +19,7 @@ from typing import Callable, List, Optional, Tuple
 from pydantic import ValidationError
 
 ### Local modules ###
-from fastapi_cachette.load_config import LoadConfig
+from cachette.load_config import LoadConfig
 
 
 class CachetteConfig(object):
@@ -35,14 +35,14 @@ class CachetteConfig(object):
     _memcached_host: str
 
     ### AWS DynamoDB & MongoDB ###
-    _table_name: str = "fastapi-cachette"
+    _table_name: str = "cachette"
 
     ### AWS DynamoDB ###
     _region: Optional[str]
     _dynamodb_url: Optional[str]
 
     ### MongoDB ###
-    _database_name: str = "fastapi-cachette-database"
+    _database_name: str = "cachette-db"
     _mongodb_url: str
 
     ### Pickle ###
@@ -58,7 +58,7 @@ class CachetteConfig(object):
           backend -- optional; must be one of ["dynamodb", "inmemory", "memcached", "mongodb", "redis"];
             defaults to using inmemory option which required no extra package dependencies. To use other
             listed options; See installation guide on the README.md at
-            [Repository Page](https://github.com/aekasitt/fastapi-cachette).
+            [Repository Page](https://github.com/aekasitt/cachette).
           codec -- optional; serialization and de-serialization format to have cache values stored in
             the cache backend of choice as a string of selected encoding. once fetched, will have their
             decoded values returned of the same format. must be one of ["feather", "msgpack", "parquet",
@@ -72,7 +72,7 @@ class CachetteConfig(object):
             distributed memory caching system.
           table_name -- required when backend set to "dynamodb" or "mongodb"; name of the cache table or
             collection in case of "mongodb" backend to have key-value pairs stored; defaults to
-            "fastapi-cachette".
+            "cachette".
           region -- required when backend set to "dynamodb" and "dynamodb_url" not set; one of Amazon
             Web Services listed Regions which can be found on this Documentation
             [Page](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones)
@@ -81,7 +81,7 @@ class CachetteConfig(object):
             [Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal)
           database_name -- required when backend set to "mongodb"; the database name to be automatically
             created if not exists on the MongoDB instance and store the cache table; defaults to
-            "fastapi-cachette-database"
+            "cachette-db"
           mongodb_url -- required when backend set to "mongodb"; the url set to MongoDB database
             instance with or without provided authentication in such formats
             "mongodb://user:password@host:port" and "mongodb://host:port" respectively.
@@ -104,9 +104,7 @@ class CachetteConfig(object):
         except ValidationError:
             raise
         except Exception:
-            raise TypeError(
-                'CachetteConfig must be pydantic "BaseSettings" or list of tuples'
-            )
+            raise TypeError('CachetteConfig must be pydantic "BaseSettings" or list of tuples')
 
 
 __all__ = ["CachetteConfig"]

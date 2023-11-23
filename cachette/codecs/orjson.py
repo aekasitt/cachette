@@ -1,32 +1,35 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2023, All rights reserved.
-# FILENAME:  codecs/vanilla.py
+# FILENAME:  codecs/json.py
 # VERSION: 	 0.1.6
-# CREATED: 	 2022-04-06 15:38
+# CREATED: 	 2022-04-07 12:23
 # AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
 # *************************************************************
 """
-Module defining `VanillaCodec` codec subclass used as default for decoding and encoding
-basic data string-casted for storage
+Module defining `ORJSONCodec` codec subclass used for decoding and encoding json-formatted data
+using `orjson` library
 """
 
 ### Standard packages ###
 from typing import Any
 
+### Third-party packages ###
+from orjson import dumps, loads
+
 ### Local modules ##
-from fastapi_cachette.codecs import Codec
+from cachette.codecs import Codec
 
 
-class VanillaCodec(Codec):
+class ORJSONCodec(Codec):
     def dumps(self, obj: Any) -> bytes:
-        return str(obj).encode("utf-8")
+        return dumps(obj)
 
     def loads(self, data: bytes) -> Any:
-        return data.decode("utf-8")
+        return loads(data)
 
 
-__all__ = ["VanillaCodec"]
+__all__ = ["ORJSONCodec"]

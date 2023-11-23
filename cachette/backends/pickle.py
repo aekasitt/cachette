@@ -18,7 +18,7 @@ from typing import Any, Dict, Optional, Tuple
 from pydantic import BaseModel, StrictInt, StrictStr
 
 ### Local modules ###
-from fastapi_cachette.backends import Backend
+from cachette.backends import Backend
 
 
 class Value(BaseModel):
@@ -86,9 +86,7 @@ class PickleBackend(Backend, BaseModel):
         with open(self.pickle_path, "wb") as f:
             dump(values, f)
 
-    async def clear(
-        self, namespace: Optional[str] = None, key: Optional[str] = None
-    ) -> int:
+    async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
         if namespace is not None:
             raise NotImplemented
         elif key is not None:

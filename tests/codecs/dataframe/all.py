@@ -28,7 +28,7 @@ except ImportError:
     ### Assume skipped by conftest "skip_all_if_pandas_not_installed" fixture ###
     pass
 ### Local modules ###
-from fastapi_cachette import Cachette
+from cachette import Cachette
 
 
 ### Fixtures ###
@@ -36,9 +36,7 @@ from fastapi_cachette import Cachette
 def client(request: FixtureRequest) -> TestClient:
     configs: List[Tuple[str, Any]] = request.param
     app = FastAPI()
-    items: List[DataFrame] = [
-        get_dummies(Series(["income", "age", "gender", "education"]))
-    ]
+    items: List[DataFrame] = [get_dummies(Series(["income", "age", "gender", "education"]))]
 
     @Cachette.load_config
     def get_cachette_config():
@@ -123,25 +121,25 @@ def client(request: FixtureRequest) -> TestClient:
         ### MongoDB & Codecs ###
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("codec", "csv"),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("codec", "feather"),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("codec", "parquet"),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("codec", "pickle"),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],

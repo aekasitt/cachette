@@ -20,8 +20,8 @@ from pydantic import BaseModel
 from redis.asyncio import Redis
 
 ### Local modules ###
-from fastapi_cachette.backends import Backend
-from fastapi_cachette.codecs import Codec
+from cachette.backends import Backend
+from cachette.codecs import Codec
 
 
 class RedisBackend(Backend, BaseModel):
@@ -52,9 +52,7 @@ class RedisBackend(Backend, BaseModel):
         data: bytes = self.codec.dumps(value)
         await self.redis.set(key, data, ex=(ttl or self.ttl))
 
-    async def clear(
-        self, namespace: Optional[str] = None, key: Optional[str] = None
-    ) -> int:
+    async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
         if namespace:
             lua: str = f'for i, key in ipairs(redis.call("KEYS", "{namespace}:*")) do redis.call("DEL", key); end'
             return await self.redis.eval(lua, numkeys=0)

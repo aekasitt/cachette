@@ -39,11 +39,11 @@ from tests.backends import client, Payload
         [("backend", "memcached"), ("ttl", 2), ("memcached_host", "localhost")],
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("ttl", 2),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
-        [("backend", "pickle"), ("ttl", 2), ("pickle_path", "tests/cache.pkl")],
+        [("backend", "pickle"), ("ttl", 2), ("pickle_path", "tests/cachette.pkl")],
         [("backend", "redis"), ("ttl", 2), ("redis_url", "redis://localhost:6379")],
     ],
     ids=["dynamodb", "inmemory", "memcached", "mongodb", "pickle", "redis"],

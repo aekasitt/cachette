@@ -20,8 +20,8 @@ from aiomcache import Client
 from pydantic import BaseModel
 
 ### Local modules ###
-from fastapi_cachette.backends import Backend
-from fastapi_cachette.codecs import Codec
+from cachette.backends import Backend
+from cachette.codecs import Codec
 
 
 class MemcachedBackend(Backend, BaseModel):
@@ -34,9 +34,7 @@ class MemcachedBackend(Backend, BaseModel):
     ttl: int
 
     @classmethod
-    async def init(
-        cls, codec: Codec, memcached_host: str, ttl: int
-    ) -> "MemcachedBackend":
+    async def init(cls, codec: Codec, memcached_host: str, ttl: int) -> "MemcachedBackend":
         return cls(codec=codec, mcache=Client(host=memcached_host), ttl=ttl)
 
     async def fetch(self, key: str) -> Any:
@@ -54,9 +52,7 @@ class MemcachedBackend(Backend, BaseModel):
         data: bytes = self.codec.dumps(value)
         await self.mcache.set(key.encode(), data, exptime=ttl or self.ttl)
 
-    async def clear(
-        self, namespace: Optional[str] = None, key: Optional[str] = None
-    ) -> int:
+    async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
         count: int = 0
         if namespace:
             raise NotImplementedError

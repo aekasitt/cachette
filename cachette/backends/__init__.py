@@ -58,9 +58,7 @@ class Backend:
         raise NotImplementedError
 
     @abstractmethod
-    async def clear(
-        self, namespace: Optional[str] = None, key: Optional[str] = None
-    ) -> int:
+    async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
         """
         Abstract Method: Clears the cache identified by given `namespace` or `key`
 

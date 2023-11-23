@@ -87,18 +87,14 @@ class LoadConfig(BaseModel):
     @validator("redis_url", always=True)
     def validate_redis_url(cls, value: str, values: dict) -> str:
         if values["backend"].lower() == "redis" and not value:
-            raise ValueError(
-                'The "redis_url" cannot be null when using redis as backend.'
-            )
+            raise ValueError('The "redis_url" cannot be null when using redis as backend.')
         ### TODO: More validations ###
         return value
 
     @validator("memcached_host", always=True)
     def validate_memcached_host(cls, value: str, values: dict) -> str:
         if values["backend"].lower() == "memcached" and not value:
-            raise ValueError(
-                'The "memcached_host" cannot be null when using memcached as backend.'
-            )
+            raise ValueError('The "memcached_host" cannot be null when using memcached as backend.')
         ### TODO: More validations ###
         return value
 
@@ -152,9 +148,7 @@ class LoadConfig(BaseModel):
     def validate_database_name(cls, value: str, values: dict) -> str:
         backend: str = values["backend"].lower()
         if backend == "mongodb" and not value:
-            raise ValueError(
-                'The "database_name" cannot be null when using MongoDB as backend.'
-            )
+            raise ValueError('The "database_name" cannot be null when using MongoDB as backend.')
         ### TODO: More validations ###
         return value
 
@@ -162,9 +156,7 @@ class LoadConfig(BaseModel):
     def validate_mongodb_url(cls, value: str, values: dict) -> str:
         backend: str = values["backend"].lower()
         if backend == "mongodb" and not value:
-            raise ValueError(
-                'The "mongodb_url" cannot be null when using MongoDB as backend.'
-            )
+            raise ValueError('The "mongodb_url" cannot be null when using MongoDB as backend.')
         ### TODO: More validations ###
         return value
 
@@ -172,9 +164,7 @@ class LoadConfig(BaseModel):
     def validate_pickle_path(cls, value: str, values: dict) -> str:
         backend: str = values["backend"].lower()
         if backend == "pickle" and not value:
-            raise ValueError(
-                'The "pickle_path" cannot be null when using pickle as backend.'
-            )
+            raise ValueError('The "pickle_path" cannot be null when using pickle as backend.')
         ### TODO: More validations ###
         return value
 

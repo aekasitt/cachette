@@ -19,16 +19,12 @@ from typing import Any, List, Optional, Tuple
 from pytest import fixture, FixtureRequest, skip
 
 
-def get_config_value_from_client_configs(
-    key: str, request: FixtureRequest
-) -> Optional[str]:
+def get_config_value_from_client_configs(key: str, request: FixtureRequest) -> Optional[str]:
     configs: List[Tuple[str, Any]] = request.node.callspec.params.get("client", [])
     if len(configs) == 0:
         return
     try:
-        backend_tuple: Tuple[str, str] = list(
-            filter(lambda item: item[0] == key, configs)
-        )[0]
+        backend_tuple: Tuple[str, str] = list(filter(lambda item: item[0] == key, configs))[0]
     except IndexError:
         return  # no backend set
     if len(backend_tuple) != 2:
@@ -66,16 +62,12 @@ def skip_if_backend_dependency_is_not_installed(request: FixtureRequest):
         try:
             import aiobotocore as _
         except ImportError:
-            skip(
-                reason='"aiobotocore" dependency is not installed in this test environment.'
-            )
+            skip(reason='"aiobotocore" dependency is not installed in this test environment.')
     elif backend == "memcached":
         try:
             import aiomcache as _
         except ImportError:
-            skip(
-                reason='"aiomcache" dependency is not installed in this test environment.'
-            )
+            skip(reason='"aiomcache" dependency is not installed in this test environment.')
     elif backend == "mongodb":
         try:
             import motor as _
@@ -102,23 +94,17 @@ def skip_if_codec_dependency_is_not_installed(request: FixtureRequest):
         try:
             import pandas as _
         except ImportError:
-            skip(
-                reason='"pandas" dependency is not installed in this test environment.'
-            )
+            skip(reason='"pandas" dependency is not installed in this test environment.')
     elif codec == "feather":
         try:
             import pyarrow as _
         except ImportError:
-            skip(
-                reason='"pyarrow" dependency is not installed in this test environment.'
-            )
+            skip(reason='"pyarrow" dependency is not installed in this test environment.')
     elif codec == "parquet":
         try:
             import pyarrow as _
         except ImportError:
-            skip(
-                reason='"pyarrow" dependency is not installed in this test environment.'
-            )
+            skip(reason='"pyarrow" dependency is not installed in this test environment.')
 
 
 @fixture(autouse=True)
@@ -143,9 +129,7 @@ def skip_if_memcached_server_cannot_be_reached(request: FixtureRequest):
     ---
     :param:  request  `FixtureRequest`
     """
-    memcached_host: str = get_config_value_from_client_configs(
-        "memcached_host", request
-    )
+    memcached_host: str = get_config_value_from_client_configs("memcached_host", request)
     if memcached_host is not None:
         from asyncio import BaseEventLoop, set_event_loop, get_event_loop
         from aiomcache import Client

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2023, All rights reserved.
-# FILENAME:  codecs/dataframe/csv.py
+# FILENAME:  codecs/dataframe/feather.py
 # VERSION: 	 0.1.6
 # CREATED: 	 2022-04-09 13:02
 # AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
@@ -9,29 +9,28 @@
 #
 # HISTORY:
 # *************************************************************
-"""
-Module defining `CSVCodec` codec subclass used for decoding and encoding csv-formatted dataframes
+"""Module defining `FeatherCodec` codec subclass used for decoding and encoding feather dataframes
 """
 
 ### Standard packages ###
-from io import BytesIO, StringIO
+from io import BytesIO
 
 ### Third-party packages ###
-from pandas import DataFrame, read_csv
+from pandas import DataFrame, read_feather
 
 ### Local modules ##
-from fastapi_cachette.codecs import Codec
+from cachette.codecs import Codec
 
 
-class CSVCodec(Codec):
+class FeatherCodec(Codec):
     def dumps(self, df: DataFrame) -> bytes:
         bytes_io: BytesIO = BytesIO()
-        df.to_csv(bytes_io)
+        df.to_feather(bytes_io)
         return bytes_io.getvalue()
 
     def loads(self, data: bytes) -> DataFrame:
-        string_io: StringIO = StringIO(data.decode())
-        return read_csv(string_io, index_col=0)
+        bytes_io: BytesIO = BytesIO(data)
+        return read_feather(bytes_io)
 
 
-__all__ = ["CSVCodec"]
+__all__ = ["FeatherCodec"]

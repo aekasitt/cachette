@@ -1,2 +1,2 @@
 include LICENSE
-recursive-include fastapi_cachette *.py
+recursive-include cachette *.py

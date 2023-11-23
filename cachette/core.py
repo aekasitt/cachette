@@ -17,9 +17,9 @@ from asyncio import run
 from typing import Any, Optional, Tuple
 
 ### Local modules ###
-from fastapi_cachette.backends import Backend
-from fastapi_cachette.cachette_config import CachetteConfig
-from fastapi_cachette.codecs import Codec
+from cachette.backends import Backend
+from cachette.cachette_config import CachetteConfig
+from cachette.codecs import Codec
 
 
 class Cachette(CachetteConfig):
@@ -34,40 +34,40 @@ class Cachette(CachetteConfig):
         ### Determine Encoding and Decoding Codec ###
         codec: Codec
         if self._codec == "csv":
-            from fastapi_cachette.codecs.dataframe.csv import CSVCodec
+            from cachette.codecs.dataframe.csv import CSVCodec
 
             codec = CSVCodec()
         elif self._codec == "json":
-            from fastapi_cachette.codecs.json import JSONCodec
+            from cachette.codecs.json import JSONCodec
 
             codec = JSONCodec()
         elif self._codec == "feather":
-            from fastapi_cachette.codecs.dataframe.feather import FeatherCodec
+            from cachette.codecs.dataframe.feather import FeatherCodec
 
             codec = FeatherCodec()
         elif self._codec == "msgpack":
-            from fastapi_cachette.codecs.msgpack import MsgpackCodec
+            from cachette.codecs.msgpack import MsgpackCodec
 
             codec = MsgpackCodec()
         if self._codec == "orjson":
-            from fastapi_cachette.codecs.orjson import ORJSONCodec
+            from cachette.codecs.orjson import ORJSONCodec
 
             codec = ORJSONCodec()
         elif self._codec == "parquet":
-            from fastapi_cachette.codecs.dataframe.parquet import ParquetCodec
+            from cachette.codecs.dataframe.parquet import ParquetCodec
 
             codec = ParquetCodec()
         elif self._codec == "pickle":
-            from fastapi_cachette.codecs.pickle import PickleCodec
+            from cachette.codecs.pickle import PickleCodec
 
             codec = PickleCodec()
         elif self._codec == "vanilla":
-            from fastapi_cachette.codecs.vanilla import VanillaCodec
+            from cachette.codecs.vanilla import VanillaCodec
 
             codec = VanillaCodec()
 
         if self._backend == "dynamodb":
-            from fastapi_cachette.backends.dynamodb import DynamoDBBackend
+            from cachette.backends.dynamodb import DynamoDBBackend
 
             self.backend = run(
                 DynamoDBBackend.init(
@@ -75,17 +75,15 @@ class Cachette(CachetteConfig):
                 )
             )
         elif self._backend == "inmemory":
-            from fastapi_cachette.backends.inmemory import InMemoryBackend
+            from cachette.backends.inmemory import InMemoryBackend
 
             self.backend = InMemoryBackend(codec=codec, ttl=self._ttl)
         elif self._backend == "memcached":
-            from fastapi_cachette.backends.memcached import MemcachedBackend
+            from cachette.backends.memcached import MemcachedBackend
 
-            self.backend = run(
-                MemcachedBackend.init(codec, self._memcached_host, self._ttl)
-            )
+            self.backend = run(MemcachedBackend.init(codec, self._memcached_host, self._ttl))
         elif self._backend == "mongodb":
-            from fastapi_cachette.backends.mongodb import MongoDBBackend
+            from cachette.backends.mongodb import MongoDBBackend
 
             self.backend = run(
                 MongoDBBackend.init(
@@ -97,12 +95,12 @@ class Cachette(CachetteConfig):
                 )
             )
         elif self._backend == "pickle":
-            from fastapi_cachette.backends.pickle import PickleBackend
+            from cachette.backends.pickle import PickleBackend
 
             ### Ignore codec when pickle backend is chosen ###
             self.backend = PickleBackend(pickle_path=self._pickle_path, ttl=self._ttl)
         elif self._backend == "redis":
-            from fastapi_cachette.backends.redis import RedisBackend
+            from cachette.backends.redis import RedisBackend
 
             self.backend = run(RedisBackend.init(codec, self._redis_url, self._ttl))
 
@@ -137,9 +135,7 @@ class Cachette(CachetteConfig):
         """
         await self.backend.put(key, value, ttl)
 
-    async def clear(
-        self, namespace: Optional[str] = None, key: Optional[str] = None
-    ) -> int:
+    async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
         """
         Clears the cache identified by given `namespace` or `key`
 

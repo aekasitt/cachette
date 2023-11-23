@@ -20,8 +20,8 @@ from aiobotocore.session import get_session, ClientCreatorContext
 from pydantic import BaseModel, PositiveInt, StrictStr, validate_arguments
 
 ### Local modules ###
-from fastapi_cachette.backends import Backend
-from fastapi_cachette.codecs import Codec
+from cachette.backends import Backend
+from cachette.codecs import Codec
 
 
 class DynamoDBBackend(Backend, BaseModel):
@@ -48,9 +48,7 @@ class DynamoDBBackend(Backend, BaseModel):
             table_names: list = (await client.list_tables()).get("TableNames", [])
             if table_name not in table_names:
                 table_definition: dict = {
-                    "AttributeDefinitions": [
-                        {"AttributeName": "key", "AttributeType": "S"}
-                    ],
+                    "AttributeDefinitions": [{"AttributeName": "key", "AttributeType": "S"}],
                     "KeySchema": [{"AttributeName": "key", "KeyType": "HASH"}],
                     "ProvisionedThroughput": {
                         "ReadCapacityUnits": 10,
@@ -69,14 +67,10 @@ class DynamoDBBackend(Backend, BaseModel):
     @validate_arguments
     async def fetch(self, key: StrictStr) -> Any:
         async with self.dynamodb as client:
-            response = await client.get_item(
-                TableName=self.table_name, Key={"key": {"S": key}}
-            )
+            response = await client.get_item(TableName=self.table_name, Key={"key": {"S": key}})
             if "Item" in response:
                 value: bytes = response["Item"].get("value", {}).get("B")
-                ttl: int = (
-                    int(response["Item"].get("expires", {}).get("N", 0)) - self.now
-                )
+                ttl: int = int(response["Item"].get("expires", {}).get("N", 0)) - self.now
                 if ttl < 0:
                     return None
                 return self.codec.loads(value)
@@ -84,25 +78,17 @@ class DynamoDBBackend(Backend, BaseModel):
     @validate_arguments
     async def fetch_with_ttl(self, key: StrictStr) -> Tuple[int, Any]:
         async with self.dynamodb as client:
-            response = await client.get_item(
-                TableName=self.table_name, Key={"key": {"S": key}}
-            )
+            response = await client.get_item(TableName=self.table_name, Key={"key": {"S": key}})
             if "Item" in response:
-                value: Any = self.codec.loads(
-                    response["Item"].get("value", {}).get("B")
-                )
-                ttl: int = (
-                    int(response["Item"].get("expires", {}).get("N", 0)) - self.now
-                )
+                value: Any = self.codec.loads(response["Item"].get("value", {}).get("B"))
+                ttl: int = int(response["Item"].get("expires", {}).get("N", 0)) - self.now
                 if ttl < 0:
                     return 0, None
                 return ttl, value
         return -1, None
 
     @validate_arguments
-    async def put(
-        self, key: StrictStr, value: Any, ttl: Optional[PositiveInt] = None
-    ) -> None:
+    async def put(self, key: StrictStr, value: Any, ttl: Optional[PositiveInt] = None) -> None:
         ttl = ttl or self.ttl
         async with self.dynamodb as client:
             expires_at: dict = {"expires": {"N": f"{ self.now + ttl }"}}
@@ -128,16 +114,10 @@ class DynamoDBBackend(Backend, BaseModel):
                 ### Calculate Time-to-live ###
                 ttl: int = -1
                 if "Item" in response:
-                    ttl = (
-                        int(response["Item"].get("expires", {}).get("N", 0)) - self.now
-                    )
+                    ttl = int(response["Item"].get("expires", {}).get("N", 0)) - self.now
                 ### Sends Delete Item Request ###
-                resp = await client.delete_item(
-                    TableName=self.table_name, Key={"key": {"S": key}}
-                )
-                count += (0, 1)[
-                    ttl > 0 and resp["ResponseMetadata"]["HTTPStatusCode"] == 200
-                ]
+                resp = await client.delete_item(TableName=self.table_name, Key={"key": {"S": key}})
+                count += (0, 1)[ttl > 0 and resp["ResponseMetadata"]["HTTPStatusCode"] == 200]
         return count
 
 

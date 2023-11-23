@@ -21,7 +21,7 @@ from typing import Any
 from json import dumps, loads
 
 ### Local modules ##
-from fastapi_cachette.codecs import Codec
+from cachette.codecs import Codec
 
 
 class JSONCodec(Codec):

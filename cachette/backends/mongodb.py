@@ -24,8 +24,8 @@ from motor.motor_asyncio import (
 from pydantic import BaseModel, StrictInt, StrictStr, validate_arguments
 
 ### Local modules ###
-from fastapi_cachette.backends import Backend
-from fastapi_cachette.codecs import Codec
+from cachette.backends import Backend
+from cachette.codecs import Codec
 
 
 class MongoDBBackend(Backend, BaseModel):
@@ -55,9 +55,7 @@ class MongoDBBackend(Backend, BaseModel):
     ) -> "MongoDBBackend":
         client: AsyncIOMotorClient = AsyncIOMotorClient(url)
         ### Create Collection if None existed ###
-        names: list = await client[database_name].list_collection_names(
-            filter={"name": table_name}
-        )
+        names: list = await client[database_name].list_collection_names(filter={"name": table_name})
         if len(names) == 0:
             await client[database_name].create_collection(table_name)
         return cls(codec, database_name, table_name, ttl, url)
@@ -82,9 +80,7 @@ class MongoDBBackend(Backend, BaseModel):
         return -1, None
 
     @validate_arguments
-    async def put(
-        self, key: StrictStr, value: Any, ttl: Optional[StrictInt] = None
-    ) -> None:
+    async def put(self, key: StrictStr, value: Any, ttl: Optional[StrictInt] = None) -> None:
         ttl = ttl or self.ttl
         data: bytes = self.codec.dumps(value)
         item: dict = {"key": key, "value": data, "expires": self.now + ttl}

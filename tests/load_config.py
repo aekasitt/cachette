@@ -20,7 +20,7 @@ from pydantic import ValidationError
 from pytest import mark, raises
 
 ### Local modules ###
-from fastapi_cachette import Cachette
+from cachette import Cachette
 
 
 @mark.parametrize(
@@ -57,18 +57,18 @@ from fastapi_cachette import Cachette
         ### MongoDB ###
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("ttl", 1),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("ttl", 3600),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
@@ -212,14 +212,12 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> None:
             'The "pickle_path" cannot be null when using pickle as backend.',
         ),
         (
-            [("backend", "pickle"), ("ttl", 0), ("pickle_path", "tests/cache.pkl")],
+            [("backend", "pickle"), ("ttl", 0), ("pickle_path", "tests/cachette.pkl")],
             'The "ttl" value must between 1 or 3600 seconds.',
         ),
     ],
 )
-def test_load_invalid_configs(
-    invalid_configs: List[Tuple[str, Any]], reason: str
-) -> None:
+def test_load_invalid_configs(invalid_configs: List[Tuple[str, Any]], reason: str) -> None:
     with raises(ValidationError) as exc_info:
 
         @Cachette.load_config

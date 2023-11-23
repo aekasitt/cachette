@@ -11,7 +11,7 @@
 # *************************************************************
 from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
-from fastapi_cachette import Cachette
+from cachette import Cachette
 from pydantic import BaseModel
 
 app = FastAPI()

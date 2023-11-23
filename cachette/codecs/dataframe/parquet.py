@@ -19,7 +19,7 @@ from io import BytesIO
 from pandas import DataFrame, read_parquet
 
 ### Local modules ##
-from fastapi_cachette.codecs import Codec
+from cachette.codecs import Codec
 
 
 class ParquetCodec(Codec):

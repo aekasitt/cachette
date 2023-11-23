@@ -1,16 +1,20 @@
+[build-system]
+requires = ['poetry-core>=1.0.0']
+build-backend = 'poetry.core.masonry.api'
+
+[tool.black]
+include = '\.pyi?$'
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+
+[tool.mypy]
+ignore_missing_imports = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
 [tool.poetry]
-name = 'fastapi-cachette'
-version = '0.1.6'
-description = 'Cache Implementation Extension for FastAPI Asynchronous Web Framework'
 authors = ['Sitt Guruvanich <aekazitt+github@gmail.com>']
-license = 'MIT'
-readme = 'README.md'
-homepage = 'https://github.com/aekasitt/fastapi-cachette'
-repository = 'https://github.com/aekasitt/fastapi-cachette'
-keywords = [
-  'starlette', 'fastapi', 'cache', 'redis', 'aioredis', 'dynamodb', 'aiobotocore',
-  'asynchronous', 'memcached', 'aiomcache', 'mongodb', 'motor', 'pymongo'
-]
 classifiers = [
   'Environment :: Web Environment',
   'Intended Audience :: Developers',
@@ -27,16 +31,23 @@ classifiers = [
   'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
   'Topic :: Software Development :: Libraries :: Python Modules'
 ]
-
-[tool.mypy]
-ignore_missing_imports = true
-disallow_untyped_calls = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
+description = 'Cache extension for ASGI frameworks'
+homepage = 'https://github.com/aekasitt/cachette'
+keywords = [
+  'starlette', 'fastapi', 'cache', 'redis', 'aioredis', 'dynamodb', 'aiobotocore',
+  'asynchronous', 'memcached', 'aiomcache', 'mongodb', 'motor', 'pymongo'
+]
+license = 'MIT'
+name = 'cachette'
+packages = [
+  {include='cachette'},
+]
+readme = 'README.md'
+repository = 'https://github.com/aekasitt/cachette'
+version = '0.1.6'
 
 [tool.poetry.dependencies]
 python = '^3.8'
-fastapi = '^0'
 pydantic = '^1.9.0'
 
 [tool.poetry.group.dataframe]
@@ -102,6 +113,7 @@ redis = '^4.2.1'
 optional = true
 
 [tool.poetry.group.test.dependencies]
+fastapi = '^0'
 httpx = '^0.24.1'
 pytest = '^7.1.1'
 
@@ -127,7 +139,3 @@ uvicorn = '0.15.0'
 addopts = '--strict-markers --tb=short -s -rxXs'
 testpaths = [ 'tests' ]
 python_files = '*.py'
-
-[build-system]
-requires = ['poetry-core>=1.0.0']
-build-backend = 'poetry.core.masonry.api'

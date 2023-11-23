@@ -26,12 +26,12 @@ def remove_pickles() -> None:
     yield
     file_exists: bool = False
     try:
-        with open("tests/cache.pkl", "rb"):
+        with open("tests/cachette.pkl", "rb"):
             file_exists = True
     except FileNotFoundError:
         pass
     if file_exists:
-        remove("tests/cache.pkl")
+        remove("tests/cachette.pkl")
 
 
 __all__ = ["remove_pickles"]

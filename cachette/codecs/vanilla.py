@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2023, All rights reserved.
-# FILENAME:  codecs/pickle.py
+# FILENAME:  codecs/vanilla.py
 # VERSION: 	 0.1.6
 # CREATED: 	 2022-04-06 15:38
 # AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
@@ -9,23 +9,24 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `PickleCodec` codec subclass used for decoding and encoding pickled data
+"""
+Module defining `VanillaCodec` codec subclass used as default for decoding and encoding
+basic data string-casted for storage
 """
 
 ### Standard packages ###
-from pickle import dumps, loads
 from typing import Any
 
-### Local modules ###
-from fastapi_cachette.codecs import Codec
+### Local modules ##
+from cachette.codecs import Codec
 
 
-class PickleCodec(Codec):
+class VanillaCodec(Codec):
     def dumps(self, obj: Any) -> bytes:
-        return dumps(obj)
+        return str(obj).encode("utf-8")
 
     def loads(self, data: bytes) -> Any:
-        return loads(data)
+        return data.decode("utf-8")
 
 
-__all__ = ["PickleCodec"]
+__all__ = ["VanillaCodec"]

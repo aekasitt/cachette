@@ -23,7 +23,7 @@ from fastapi.testclient import TestClient
 from pytest import fixture, FixtureRequest, mark
 
 ### Local modules ###
-from fastapi_cachette import Cachette
+from cachette import Cachette
 
 ### Fixtures ###
 
@@ -109,7 +109,7 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
         ### MongoDB & Codecs ###
         [
             ("backend", "mongodb"),
-            ("database_name", "fastapi-cachette-database"),
+            ("database_name", "cachette-db"),
             ("codec", "msgpack"),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],

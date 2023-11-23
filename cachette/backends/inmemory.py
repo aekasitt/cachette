@@ -19,8 +19,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from pydantic import BaseModel, StrictBytes, StrictInt, StrictStr
 
 ### Local modules ###
-from fastapi_cachette.backends import Backend
-from fastapi_cachette.codecs import Codec
+from cachette.backends import Backend
+from cachette.codecs import Codec
 
 
 class Value(BaseModel):
@@ -54,9 +54,7 @@ class InMemoryBackend(Backend):
         else:
             return (value.expires - self.now, self.codec.loads(value.data))
 
-    async def put(
-        self, key: StrictStr, value: StrictStr, ttl: Optional[StrictInt] = None
-    ) -> None:
+    async def put(self, key: StrictStr, value: StrictStr, ttl: Optional[StrictInt] = None) -> None:
         data: bytes = self.codec.dumps(value)
         expires: int = self.now + (ttl or self.ttl)
         self.store[key] = Value(data=data, expires=expires)
