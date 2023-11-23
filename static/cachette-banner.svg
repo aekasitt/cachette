@@ -90,10 +90,10 @@
     font-family='Courgette'
     font-size='18px'
     x='265px'
-    y='190px'>Opinionated cache extension for ASGI frameworks</text>
+    y='190px'>Opinionated cache extension for ASGI frameworks,</text>
   <text
     font-family='Courgette'
     font-size='18px'
     x='265px'
-    y='215px'>such as FastAPI, Litstar, Xpresso and Starlette.</text>
+    y='215px'>such as FastAPI, Litestar, Xpresso and Starlette.</text>
 </svg>
