@@ -11,7 +11,6 @@
 # *************************************************************
 from cachette import Cachette
 from pydantic import BaseModel
-from typing import AsyncGenerator
 from xpresso import App, Depends, FromJson, FromPath, Path
 from xpresso.typing import Annotated
 
