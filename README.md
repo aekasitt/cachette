@@ -8,7 +8,7 @@
 
 ## Features
 
-Opinionated cache extension for ASGI frameworks such as FastAPI, Quartz, Starlette and Unicorn;
+Opinionated cache extension for ASGI frameworks such as FastAPI, Litstar, Xpresso and Starlette;
 This is an extension aiming at making cache access on the server
 By configuration at startup of the FastAPI App instance, you can set the backend and other 
 configuration options and have it remain a class constant when using FastAPI's

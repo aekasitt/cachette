@@ -78,6 +78,8 @@ optional = true
 aiomcache = '^0.7.0'
 redis = '^4.2.1'
 uvicorn = '0.15.0'
+xpresso = '^0.46.0'
+litestar = '^2.3.2'
 
 [tool.poetry.group.memcached]
 optional = true
