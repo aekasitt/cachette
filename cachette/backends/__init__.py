@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023, All rights reserved.
 # FILENAME:  backends/__init__.py
-# VERSION: 	 0.1.6
+# VERSION: 	 0.1.7
 # CREATED: 	 2022-04-03 15:31
 # AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
