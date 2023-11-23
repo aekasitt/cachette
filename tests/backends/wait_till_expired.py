@@ -42,9 +42,10 @@ from tests.backends import client, Payload
             ("ttl", 2),
             ("mongodb_url", "mongodb://localhost:27017"),
         ],
+        [("backend", "pickle"), ("ttl", 2), ("pickle_path", "tests/cache.pkl")],
         [("backend", "redis"), ("ttl", 2), ("redis_url", "redis://localhost:6379")],
     ],
-    ids=["dynamodb", "inmemory", "memcached", "mongodb", "redis"],
+    ids=["dynamodb", "inmemory", "memcached", "mongodb", "pickle", "redis"],
     indirect=True,
 )
 def test_set_and_wait_til_expired(client: TestClient):

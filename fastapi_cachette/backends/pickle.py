@@ -44,23 +44,33 @@ class PickleBackend(Backend, BaseModel):
     #         dump(values, f)
 
     async def fetch(self, key: str) -> Optional[Any]:
-        ### TODO: reimplement ###
         values: Dict[str, Value]
         try:
             with open(self.pickle_path, "rb") as f:
                 values = load(f) or {}
                 value: Value = values.get(key, None)
+                if value is not None and value.expires < self.now:
+                    if key in values.keys():
+                        values.pop(key)
+                    with open(self.pickle_path, "wb") as f:
+                        dump(values, f)
+                    return None
                 return value.data if value is not None else None
         except FileNotFoundError:
             pass
 
     async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
-        ### TODO: reimplement ###
         values: Dict[str, Value]
         try:
             with open(self.pickle_path, "rb") as f:
-                values = f or {}
+                values = load(f) or {}
                 value: Value = values.get(key, None)
+                if value is not None and value.expires < self.now:
+                    if key in values.keys():
+                        values.pop(key)
+                    with open(self.pickle_path, "wb") as f:
+                        dump(values, f)
+                    return (0, None)
                 return (value.expires, value.data) if value is not None else None
         except FileNotFoundError:
             return (0, None)
@@ -88,10 +98,14 @@ class PickleBackend(Backend, BaseModel):
                     values = load(f)
             except FileNotFoundError:
                 return 0
-            values.pop(key)
+            cleared: int = 0
+            if key in values.keys():
+                value = values.pop(key)
+                if value.expires >= value.now:
+                    cleared = 1
             with open(self.pickle_path, "wb") as f:
                 dump(values, f)
-            return 1
+            return cleared
         file_exists: bool = False
         try:
             with open(self.pickle_path, "rb") as _:
