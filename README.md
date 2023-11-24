@@ -57,6 +57,8 @@ on startup either by using a method which returns a list of tuples or a Pydantic
     mongodb_url -- required when backend set to "mongodb"; the url set to MongoDB database
       instance with or without provided authentication in such formats
       "mongodb://user:password@host:port" and "mongodb://host:port" respectively.
+    pickle_path -- required when backend set to "pickle"; the file-system path to create local
+      store using python pickling on local directory
 
 ## Examples
 
