@@ -28,9 +28,10 @@ The following are the current available configuration keys that can be set on th
 on startup either by using a method which returns a list of tuples or a Pydantic BaseSettings object
 (See examples below or in `examples/` folder)
 
-    backend -- optional; must be one of ["dynamodb", "inmemory", "memcached", "mongodb", "redis"];
-      defaults to using inmemory option which required no extra package dependencies. To use other
-      listed options;
+    backend -- optional; must be one of ["dynamodb", "inmemory", "memcached", "mongodb", "pickle",
+      "redis"]; defaults to using inmemory option which required no extra package dependencies.
+      To use other listed options; See installation guide on the README.md at
+      [Repository Page](https://github.com/aekasitt/cachette).
     codec -- optional; serialization and de-serialization format to have cache values stored in
       the cache backend of choice as a string of selected encoding. once fetched, will have their
       decoded values returned of the same format. must be one of ["feather", "msgpack", "parquet",

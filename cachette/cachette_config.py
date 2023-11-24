@@ -55,9 +55,9 @@ class CachetteConfig(object):
         If not specified otherwise, each item should be provided as a string.
 
         ---
-          backend -- optional; must be one of ["dynamodb", "inmemory", "memcached", "mongodb", "redis"];
-            defaults to using inmemory option which required no extra package dependencies. To use other
-            listed options; See installation guide on the README.md at
+          backend -- optional; must be one of ["dynamodb", "inmemory", "memcached", "mongodb", "pickle",
+            "redis"]; defaults to using inmemory option which required no extra package dependencies.
+            To use other listed options; See installation guide on the README.md at
             [Repository Page](https://github.com/aekasitt/cachette).
           codec -- optional; serialization and de-serialization format to have cache values stored in
             the cache backend of choice as a string of selected encoding. once fetched, will have their
