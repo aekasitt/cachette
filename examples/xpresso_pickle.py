@@ -10,7 +10,11 @@
 # HISTORY:
 # *************************************************************
 from cachette import Cachette
+from contextlib import asynccontextmanager
+from os import remove
+from os.path import isfile
 from pydantic import BaseModel
+from typing import AsyncIterator
 from xpresso import App, Depends, FromJson, FromPath, Path
 from xpresso.typing import Annotated
 
@@ -45,7 +49,17 @@ async def getter(key: FromPath[str], cachette: Annotated[Cachette, Depends(Cache
     return value
 
 
-app = App(routes=[Path("/{key}", get=getter), Path("/", post=setter)])
+@asynccontextmanager
+async def lifespan() -> AsyncIterator[None]:
+    """
+    Remove cachette pickle when App shuts down
+    """
+    yield
+    if isfile("examples/cachette.pkl"):
+        remove("examples/cachette.pkl")
+
+
+app = App(lifespan=lifespan, routes=[Path("/{key}", get=getter), Path("/", post=setter)])
 
 
 __all__ = ["app"]
