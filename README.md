@@ -5,6 +5,10 @@
 [![Format](https://img.shields.io/pypi/format/cachette)](https://pypi.org/project/cachette)
 [![Python version](https://img.shields.io/pypi/pyversions/cachette)](https://pypi.org/project/cachette)
 [![License](https://img.shields.io/pypi/l/cachette)](https://pypi.org/project/cachette)
+[![Top](https://img.shields.io/github/languages/top/krutt/cachette)](.)
+[![Languages](https://img.shields.io/github/languages/count/krutt/cachette)](.)
+[![Size](https://img.shields.io/github/repo-size/krutt/cachette)](.)
+[![Last commit](https://img.shields.io/github/last-commit/krutt/cachette/master)](.)
 
 ![Cachette banner](static/cachette-banner.svg)
 
