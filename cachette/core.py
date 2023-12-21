@@ -102,7 +102,23 @@ class Cachette(CachetteConfig):
         elif self._backend == "redis":
             from cachette.backends.redis import RedisBackend
 
-            self.backend = run(RedisBackend.init(codec, self._redis_url, self._ttl))
+            if self._redis_url:
+                self.backend = run(RedisBackend.init(codec, self._ttl, self._redis_url))
+            else:
+                self.backend = run(
+                    RedisBackend.init(
+                        codec,
+                        self._ttl,
+                        redis_host=self._redis_host,
+                        redis_port=self._redis_port,
+                        redis_password=self._redis_password,
+                        redis_username=self._redis_username,
+                        redis_ssl=self._redis_ssl,
+                        redis_ssl_keyfile=self._redis_ssl_keyfile,
+                        redis_ssl_certfile=self._redis_ssl_certfile,
+                        redis_ssl_ca_certs=self._redis_ssl_ca_certs,
+                    )
+                )
 
     ### Override methods to initiated backend instance ###
     async def fetch(self, key: str) -> Any:

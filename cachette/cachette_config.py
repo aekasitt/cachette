@@ -30,6 +30,14 @@ class CachetteConfig(object):
 
     ### Redis ###
     _redis_url: str
+    _redis_host: str = "localhost"
+    _redis_port: int = 6379
+    _redis_username: str
+    _redis_password: str
+    _redis_ssl: bool = False
+    _redis_ssl_keyfile: str
+    _redis_ssl_certfile: str
+    _redis_ssl_ca_certs: str
 
     ### Memcached ###
     _memcached_host: str
@@ -94,6 +102,14 @@ class CachetteConfig(object):
             cls._codec = config.codec or cls._codec
             cls._ttl = config.ttl or cls._ttl
             cls._redis_url = config.redis_url or ""
+            cls._redis_host = config.redis_host or cls._redis_host
+            cls._redis_port = config.redis_port or cls._redis_port
+            cls._redis_username = config.redis_username or None
+            cls._redis_password = config.redis_password or None
+            cls._redis_ssl = config.redis_ssl or False
+            cls._redis_ssl_keyfile = config.redis_ssl_keyfile or None
+            cls._redis_ssl_certfile = config.redis_ssl_certfile or None
+            cls._redis_ssl_ca_certs = config.redis_ssl_ca_certs or None
             cls._memcached_host = config.memcached_host or ""
             cls._table_name = config.table_name or cls._table_name
             cls._region = config.region

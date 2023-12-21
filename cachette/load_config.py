@@ -16,7 +16,7 @@
 from typing import Optional
 
 ### Third-party packages ###
-from pydantic import BaseModel, validator, StrictInt, StrictStr
+from pydantic import BaseModel, validator, StrictBool, StrictInt, StrictStr
 
 
 class LoadConfig(BaseModel):
@@ -26,6 +26,14 @@ class LoadConfig(BaseModel):
 
     ### Redis ###
     redis_url: Optional[StrictStr]
+    redis_host: Optional[StrictStr]
+    redis_port: Optional[StrictInt]
+    redis_username: Optional[StrictStr]
+    redis_password: Optional[StrictStr]
+    redis_ssl: Optional[StrictBool]
+    redis_ssl_keyfile: Optional[StrictStr]
+    redis_ssl_certfile: Optional[StrictStr]
+    redis_ssl_ca_certs: Optional[StrictStr]
 
     ### Memcached ###
     memcached_host: Optional[StrictStr]
@@ -86,8 +94,11 @@ class LoadConfig(BaseModel):
 
     @validator("redis_url", always=True)
     def validate_redis_url(cls, value: str, values: dict) -> str:
-        if values["backend"].lower() == "redis" and not value:
-            raise ValueError('The "redis_url" cannot be null when using redis as backend.')
+        backend: str = values["backend"].lower()
+        redis_host: str = values.get("redis_host", None)
+
+        if backend == "redis" and (not value or not redis_host):
+            raise ValueError('The "redis_url" or "redis_host" cannot be null when using redis as backend.')
         ### TODO: More validations ###
         return value
 

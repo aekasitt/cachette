@@ -33,8 +33,35 @@ class RedisBackend(Backend, BaseModel):
     ttl: int
 
     @classmethod
-    async def init(cls, codec: Codec, redis_url: str, ttl: int) -> "RedisBackend":
-        return cls(codec=codec, redis=Redis.from_url(url=redis_url), ttl=ttl)
+    async def init(
+        cls,
+        codec: Codec,
+        ttl: int,
+        redis_url: str = None,
+        redis_host: str = None,
+        redis_port: int = None,
+        redis_password: str = None,
+        redis_username: str = None,
+        redis_ssl: bool = False,
+        redis_ssl_keyfile: str = None,
+        redis_ssl_certfile: str = None,
+        redis_ssl_ca_certs: str = None,
+    ) -> "RedisBackend":
+        if redis_url:
+            return cls(codec=codec, redis=Redis.from_url(url=redis_url), ttl=ttl)
+        else:
+            redis_obj = Redis(
+                host=redis_host,
+                port=redis_port,
+                password=redis_password,
+                username=redis_username,
+                ssl=redis_ssl,
+                ssl_keyfile=redis_ssl_keyfile,
+                ssl_certfile=redis_ssl_certfile,
+                ssl_ca_certs=redis_ssl_ca_certs,
+            )
+
+            return cls(codec=codec, redis=redis_obj, ttl=ttl)
 
     async def fetch(self, key: str) -> Any:
         data: bytes = await self.redis.get(key)
