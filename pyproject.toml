@@ -162,3 +162,13 @@ uvicorn = '0.15.0'
 addopts = '--strict-markers --tb=short -s -rxXs'
 python_files = '*.py'
 testpaths = [ 'tests' ]
+
+
+[tool.ruff]
+indent-width = 2
+line-length = 100
+target-version = 'py310'
+
+
+[tool.ruff.per-file-ignores]
+'__init__.py' = ['F401'] # Ignore unused imports
