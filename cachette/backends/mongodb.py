@@ -21,7 +21,7 @@ from motor.motor_asyncio import (
   AsyncIOMotorCollection,
   AsyncIOMotorDatabase,
 )
-from pydantic import BaseModel, StrictInt, StrictStr, validate_arguments
+from pydantic import BaseModel, StrictInt, StrictStr
 
 ### Local modules ###
 from cachette.backends import Backend
@@ -29,6 +29,9 @@ from cachette.codecs import Codec
 
 
 class MongoDBBackend(Backend, BaseModel):
+  class Config:
+    arbitrary_types_allowed: bool = True
+
   codec: Codec
   database_name: StrictStr
   table_name: StrictStr
@@ -44,7 +47,6 @@ class MongoDBBackend(Backend, BaseModel):
     return AsyncIOMotorClient(self.url)[self.database_name][self.table_name]
 
   @classmethod
-  @validate_arguments
   async def init(
     cls,
     codec: Codec,
@@ -58,9 +60,16 @@ class MongoDBBackend(Backend, BaseModel):
     names: list = await client[database_name].list_collection_names(filter={"name": table_name})
     if len(names) == 0:
       await client[database_name].create_collection(table_name)
-    return cls(codec, database_name, table_name, ttl, url)
+    return cls(
+      **{
+        "codec": codec,
+        "database_name": database_name,
+        "table_name": table_name,
+        "ttl": ttl,
+        "url": url,
+      }
+    )
 
-  @validate_arguments
   async def fetch(self, key: StrictStr) -> Any:
     document: dict = await self.collection.find_one({"key": key})
     if document and document.get("expires", 0) > self.now:
@@ -68,7 +77,6 @@ class MongoDBBackend(Backend, BaseModel):
       return self.codec.loads(value)
     return None
 
-  @validate_arguments
   async def fetch_with_ttl(self, key: StrictStr) -> Tuple[int, Any]:
     document: dict = await self.collection.find_one({"key": key})
     if document:
@@ -79,7 +87,6 @@ class MongoDBBackend(Backend, BaseModel):
       return ttl, self.codec.loads(value)
     return -1, None
 
-  @validate_arguments
   async def put(self, key: StrictStr, value: Any, ttl: Optional[StrictInt] = None) -> None:
     ttl = ttl or self.ttl
     data: bytes = self.codec.dumps(value)
@@ -90,7 +97,6 @@ class MongoDBBackend(Backend, BaseModel):
     else:
       await self.collection.insert_one(item)
 
-  @validate_arguments
   async def clear(
     self, namespace: Optional[StrictStr] = None, key: Optional[StrictStr] = None
   ) -> int:
