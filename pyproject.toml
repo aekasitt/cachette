@@ -160,6 +160,7 @@ uvicorn = '0.15.0'
 
 [tool.pytest.ini_options]
 addopts = '--strict-markers --tb=short -s -rxXs'
+filterwarnings = ['ignore::DeprecationWarning', 'ignore::FutureWarning']
 python_files = '*.py'
 testpaths = [ 'tests' ]
 
