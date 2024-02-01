@@ -24,11 +24,11 @@ from cachette.codecs import Codec
 
 
 class MsgpackCodec(Codec):
-    def dumps(self, obj: Any) -> bytes:
-        return dumps(obj)
+  def dumps(self, obj: Any) -> bytes:
+    return dumps(obj)
 
-    def loads(self, data: bytes) -> Any:
-        return loads(data)
+  def loads(self, data: bytes) -> Any:
+    return loads(data)
 
 
 __all__ = ["MsgpackCodec"]

@@ -23,14 +23,14 @@ from cachette.codecs import Codec
 
 
 class ParquetCodec(Codec):
-    def dumps(self, df: DataFrame) -> bytes:
-        bytes_io: BytesIO = BytesIO()
-        df.to_parquet(bytes_io)
-        return bytes_io.getvalue()
+  def dumps(self, df: DataFrame) -> bytes:
+    bytes_io: BytesIO = BytesIO()
+    df.to_parquet(bytes_io)
+    return bytes_io.getvalue()
 
-    def loads(self, data: bytes) -> DataFrame:
-        bytes_io: BytesIO = BytesIO(data)
-        return read_parquet(bytes_io)
+  def loads(self, data: bytes) -> DataFrame:
+    bytes_io: BytesIO = BytesIO(data)
+    return read_parquet(bytes_io)
 
 
 __all__ = ["ParquetCodec"]

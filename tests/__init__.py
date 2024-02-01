@@ -22,16 +22,16 @@ from pytest import fixture
 
 @fixture(autouse=True, scope="session")
 def remove_pickles() -> None:
-    """Fixture to be called after test session is over for cleaning up local pickle files"""
-    yield
-    file_exists: bool = False
-    try:
-        with open("tests/cachette.pkl", "rb"):
-            file_exists = True
-    except FileNotFoundError:
-        pass
-    if file_exists:
-        remove("tests/cachette.pkl")
+  """Fixture to be called after test session is over for cleaning up local pickle files"""
+  yield
+  file_exists: bool = False
+  try:
+    with open("tests/cachette.pkl", "rb"):
+      file_exists = True
+  except FileNotFoundError:
+    pass
+  if file_exists:
+    remove("tests/cachette.pkl")
 
 
 __all__ = ["remove_pickles"]

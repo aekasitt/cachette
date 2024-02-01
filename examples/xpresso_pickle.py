@@ -21,42 +21,42 @@ from xpresso.typing import Annotated
 
 @Cachette.load_config
 def get_cachette_config():
-    return [("backend", "pickle"), ("pickle_path", "examples/cachette.pkl")]
+  return [("backend", "pickle"), ("pickle_path", "examples/cachette.pkl")]
 
 
 ### Schema ###
 class Payload(BaseModel):
-    key: str
-    value: str
+  key: str
+  value: str
 
 
 ### Routing ###
 
 
 async def setter(payload: FromJson[Payload], cachette: Annotated[Cachette, Depends(Cachette)]):
-    """
-    Submit a new cache key-pair value
-    """
-    await cachette.put(payload.key, payload.value)
-    return "OK"
+  """
+  Submit a new cache key-pair value
+  """
+  await cachette.put(payload.key, payload.value)
+  return "OK"
 
 
 async def getter(key: FromPath[str], cachette: Annotated[Cachette, Depends(Cachette)]):
-    """
-    Returns key value
-    """
-    value: str = await cachette.fetch(key)
-    return value
+  """
+  Returns key value
+  """
+  value: str = await cachette.fetch(key)
+  return value
 
 
 @asynccontextmanager
 async def lifespan() -> AsyncIterator[None]:
-    """
-    Remove cachette pickle when App shuts down
-    """
-    yield
-    if isfile("examples/cachette.pkl"):
-        remove("examples/cachette.pkl")
+  """
+  Remove cachette pickle when App shuts down
+  """
+  yield
+  if isfile("examples/cachette.pkl"):
+    remove("examples/cachette.pkl")
 
 
 app = App(lifespan=lifespan, routes=[Path("/{key}", get=getter), Path("/", post=setter)])

@@ -18,19 +18,19 @@ from typing import Any
 
 
 class Codec:
-    @abstractmethod
-    def dumps(self, obj: Any) -> bytes:
-        """
-        ...
-        """
-        raise NotImplementedError
+  @abstractmethod
+  def dumps(self, obj: Any) -> bytes:
+    """
+    ...
+    """
+    raise NotImplementedError
 
-    @abstractmethod
-    def loads(self, data: bytes) -> Any:
-        """
-        ...
-        """
-        raise NotImplementedError
+  @abstractmethod
+  def loads(self, data: bytes) -> Any:
+    """
+    ...
+    """
+    raise NotImplementedError
 
 
 __all__ = ["Codec"]

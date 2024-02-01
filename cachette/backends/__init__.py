@@ -19,55 +19,55 @@ from typing import Any, Optional, Tuple
 
 
 class Backend:
-    @property
-    def now(self) -> int:
-        return int(time())
+  @property
+  def now(self) -> int:
+    return int(time())
 
-    @abstractmethod
-    async def fetch(self, key: str) -> Any:
-        """
-        Abstract Method: Fetches the value from cache
+  @abstractmethod
+  async def fetch(self, key: str) -> Any:
+    """
+    Abstract Method: Fetches the value from cache
 
-        ---
-        :param:  key  `str` identifies key-value pair
-        """
-        raise NotImplementedError
+    ---
+    :param:  key  `str` identifies key-value pair
+    """
+    raise NotImplementedError
 
-    @abstractmethod
-    async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
-        """
-        Abstract Method: Fetches the value from cache as well as remaining time to live.
+  @abstractmethod
+  async def fetch_with_ttl(self, key: str) -> Tuple[int, Any]:
+    """
+    Abstract Method: Fetches the value from cache as well as remaining time to live.
 
-        ---
-        :param:  key  `str` identifies key-value pair
-        :returns:  `Tuple[int, str]`  containing timetolive value (ttl) and value
-        """
-        raise NotImplementedError
+    ---
+    :param:  key  `str` identifies key-value pair
+    :returns:  `Tuple[int, str]`  containing timetolive value (ttl) and value
+    """
+    raise NotImplementedError
 
-    @abstractmethod
-    async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
-        """
-        Abstract Method: Puts the value within the cache with key and assigned time-to-live value
+  @abstractmethod
+  async def put(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
+    """
+    Abstract Method: Puts the value within the cache with key and assigned time-to-live value
 
-        ---
-        :param:  key  `str` identifies key-value pair
-        :param:  value  `Any` value to have stored identified by key
-        :param:  ttl  `int` time before value expires within cache; default: `None`
-        :returns:  `None`
-        """
-        raise NotImplementedError
+    ---
+    :param:  key  `str` identifies key-value pair
+    :param:  value  `Any` value to have stored identified by key
+    :param:  ttl  `int` time before value expires within cache; default: `None`
+    :returns:  `None`
+    """
+    raise NotImplementedError
 
-    @abstractmethod
-    async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
-        """
-        Abstract Method: Clears the cache identified by given `namespace` or `key`
+  @abstractmethod
+  async def clear(self, namespace: Optional[str] = None, key: Optional[str] = None) -> int:
+    """
+    Abstract Method: Clears the cache identified by given `namespace` or `key`
 
-        ---
-        :param:  namespace  `str` identifies namespace to have entire cache cleared; default: `None`
-        :param:  key  `str` identifies key-value pair to be cleared from cache; default: `None`
-        :returns:  `int`  amount of items cleared
-        """
-        raise NotImplementedError
+    ---
+    :param:  namespace  `str` identifies namespace to have entire cache cleared; default: `None`
+    :param:  key  `str` identifies key-value pair to be cleared from cache; default: `None`
+    :returns:  `int`  amount of items cleared
+    """
+    raise NotImplementedError
 
 
 __all__ = ["Backend"]

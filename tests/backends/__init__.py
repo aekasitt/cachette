@@ -27,45 +27,45 @@ from cachette import Cachette
 
 
 class Payload(BaseModel):
-    key: str
-    value: str
+  key: str
+  value: str
 
 
 @fixture
 def client(request) -> TestClient:
-    assert isinstance(request.param, list)
-    assert len(request.param) > 0
-    configs: List[Tuple[str, Any]] = request.param
+  assert isinstance(request.param, list)
+  assert len(request.param) > 0
+  configs: List[Tuple[str, Any]] = request.param
 
-    app = FastAPI()
+  app = FastAPI()
 
-    @Cachette.load_config
-    def get_cachette_config():
-        return configs
+  @Cachette.load_config
+  def get_cachette_config():
+    return configs
 
-    ### Routing ###
-    @app.post("/", response_class=PlainTextResponse)
-    async def setter(payload: Payload, cachette: Cachette = Depends()):
-        """
-        Submit a new cache key-pair value
-        """
-        await cachette.put(payload.key, payload.value)
-        return "OK"
+  ### Routing ###
+  @app.post("/", response_class=PlainTextResponse)
+  async def setter(payload: Payload, cachette: Cachette = Depends()):
+    """
+    Submit a new cache key-pair value
+    """
+    await cachette.put(payload.key, payload.value)
+    return "OK"
 
-    @app.get("/{key}", response_class=PlainTextResponse, status_code=200)
-    async def getter(key: str, cachette: Cachette = Depends()):
-        """
-        Returns key value
-        """
-        value: str = await cachette.fetch(key)
-        return value
+  @app.get("/{key}", response_class=PlainTextResponse, status_code=200)
+  async def getter(key: str, cachette: Cachette = Depends()):
+    """
+    Returns key value
+    """
+    value: str = await cachette.fetch(key)
+    return value
 
-    @app.delete("/{key}", response_class=PlainTextResponse, status_code=200)
-    async def destroy(key: str, cachette: Cachette = Depends()):
-        """
-        Clears cached value
-        """
-        cleared: int = await cachette.clear(key=key)
-        return ("", "OK")[cleared > 0]
+  @app.delete("/{key}", response_class=PlainTextResponse, status_code=200)
+  async def destroy(key: str, cachette: Cachette = Depends()):
+    """
+    Clears cached value
+    """
+    cleared: int = await cachette.clear(key=key)
+    return ("", "OK")[cleared > 0]
 
-    return TestClient(app)
+  return TestClient(app)

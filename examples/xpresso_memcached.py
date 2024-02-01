@@ -17,37 +17,37 @@ from xpresso.typing import Annotated
 
 @Cachette.load_config
 def get_cachette_config():
-    return [("backend", "memcached"), ("memcached_host", "localhost")]
+  return [("backend", "memcached"), ("memcached_host", "localhost")]
 
 
 ### Schema ###
 class Payload(BaseModel):
-    key: str
-    value: str
+  key: str
+  value: str
 
 
 ### Routing ###
 
 
 async def setter(
-    payload: FromJson[Payload],
-    cachette: Annotated[Cachette, Depends(Cachette, sync_to_thread=True)],
+  payload: FromJson[Payload],
+  cachette: Annotated[Cachette, Depends(Cachette, sync_to_thread=True)],
 ):
-    """
-    Submit a new cache key-pair value
-    """
-    await cachette.put(payload.key, payload.value)
-    return "OK"
+  """
+  Submit a new cache key-pair value
+  """
+  await cachette.put(payload.key, payload.value)
+  return "OK"
 
 
 async def getter(
-    key: FromPath[str], cachette: Annotated[Cachette, Depends(Cachette, sync_to_thread=True)]
+  key: FromPath[str], cachette: Annotated[Cachette, Depends(Cachette, sync_to_thread=True)]
 ):
-    """
-    Returns key value
-    """
-    value: str = await cachette.fetch(key)
-    return value
+  """
+  Returns key value
+  """
+  value: str = await cachette.fetch(key)
+  return value
 
 
 app = App(routes=[Path("/{key}", get=getter), Path("/", post=setter)])
