@@ -151,3 +151,6 @@ dmypy.json
 
 # profiling data
 .prof
+
+# Ruff
+.ruff_cache
