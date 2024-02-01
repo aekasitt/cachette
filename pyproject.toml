@@ -166,5 +166,5 @@ uvicorn = '0.15.0'
 
 [tool.pytest.ini_options]
 addopts = '--strict-markers --tb=short -s -rxXs'
-testpaths = [ 'tests' ]
 python_files = '*.py'
+testpaths = [ 'tests' ]
