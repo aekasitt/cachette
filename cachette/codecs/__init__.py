@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding:utf-8
-# Copyright (C) 2022-2023, All rights reserved.
+# Copyright (C) 2022-2024, All rights reserved.
 # FILENAME:  codecs/__init__.py
-# VERSION: 	 0.1.7
+# VERSION: 	 0.1.8
 # CREATED: 	 2022-04-06 15:38
 # AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding:utf-8
-# Copyright (C) 2022-2023, All rights reserved.
+# Copyright (C) 2022-2024, All rights reserved.
 # FILENAME:  load_config.py
-# VERSION: 	 0.1.7
+# VERSION: 	 0.1.8
 # CREATED: 	 2022-04-03 15:31
 # AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
@@ -20,29 +20,29 @@ from pydantic import BaseModel, validator, StrictInt, StrictStr
 
 
 class LoadConfig(BaseModel):
-  backend: Optional[StrictStr]
-  codec: Optional[StrictStr]
-  ttl: Optional[StrictInt]
+  backend: Optional[StrictStr] = None
+  codec: Optional[StrictStr] = None
+  ttl: Optional[StrictInt] = None
 
   ### Redis ###
-  redis_url: Optional[StrictStr]
+  redis_url: Optional[StrictStr] = None
 
   ### Memcached ###
-  memcached_host: Optional[StrictStr]
+  memcached_host: Optional[StrictStr] = None
 
   ### AWS DynamoDB & MongoDB ###
-  table_name: Optional[StrictStr]
+  table_name: Optional[StrictStr] = None
 
   ### AWS DynamoDB ###
-  region: Optional[StrictStr]
-  dynamodb_url: Optional[StrictStr]
+  region: Optional[StrictStr] = None
+  dynamodb_url: Optional[StrictStr] = None
 
   ### MongoDB ###
-  database_name: Optional[StrictStr]
-  mongodb_url: Optional[StrictStr]
+  database_name: Optional[StrictStr] = None
+  mongodb_url: Optional[StrictStr] = None
 
   ### Pickle ###
-  pickle_path: Optional[StrictStr]
+  pickle_path: Optional[StrictStr] = None
 
   @validator("backend")
   def validate_backend(cls, value: str) -> str:
