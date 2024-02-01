@@ -54,7 +54,7 @@ optional = true
 
 [tool.poetry.group.dataframe.dependencies]
 pandas = '>=1.4.0'
-pyarrow = '^7.0.0'
+pyarrow = '^10.0.1'
 
 
 [tool.poetry.group.dev]
@@ -150,7 +150,7 @@ mypy = '^1.8.0'
 orjson = '^3.6.7'
 pandas = '>=1.4.0'
 pydantic = '^2.6.0'
-pyarrow = '^7.0.0'
+pyarrow = '^10.0.1'
 pytest = '^7.1.1'
 redis = '^4.2.1'
 starlette = '^0'
