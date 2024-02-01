@@ -150,6 +150,7 @@ fastapi = [
   {version='^0', python='^3.10'},
 ]
 httpx = '^0.24.1'
+litestar = '^2.3.2'
 motor = '^2.5.1'
 mypy = '^1.8.0'
 orjson = '^3.6.7'
