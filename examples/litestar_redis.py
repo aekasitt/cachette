@@ -54,7 +54,7 @@ async def setter(data: Payload, cachette: Cachette) -> str:
 
 app: Litestar = Litestar(
   route_handlers=[getter, setter],
-  dependencies={"cachette": Provide(Cachette, sync_to_thread=True)},
+  dependencies={"cachette": Provide(Cachette)},
 )
 
 

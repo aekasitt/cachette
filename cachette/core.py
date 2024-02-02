@@ -102,7 +102,7 @@ class Cachette(CachetteConfig):
     elif self._backend == "redis":
       from cachette.backends.redis import RedisBackend
 
-      self.backend = run(RedisBackend.init(codec, self._redis_url, self._ttl))
+      self.backend = RedisBackend(codec=codec, redis_url=self._redis_url, ttl=self._ttl)
 
   ### Override methods to initiated backend instance ###
   async def fetch(self, key: str) -> Any:

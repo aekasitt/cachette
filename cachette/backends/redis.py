@@ -16,7 +16,7 @@
 from typing import Any, Optional, Tuple
 
 ### Third-party packages ###
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictStr
 from redis.asyncio import Redis
 
 ### Local modules ###
@@ -29,12 +29,8 @@ class RedisBackend(Backend, BaseModel):
     arbitrary_types_allowed: bool = True
 
   codec: Codec
-  redis: Redis
+  redis_url: StrictStr
   ttl: int
-
-  @classmethod
-  async def init(cls, codec: Codec, redis_url: str, ttl: int) -> "RedisBackend":
-    return cls(codec=codec, redis=Redis.from_url(url=redis_url), ttl=ttl)
 
   async def fetch(self, key: str) -> Any:
     data: bytes = await self.redis.get(key)
@@ -61,6 +57,10 @@ class RedisBackend(Backend, BaseModel):
     elif key:
       return await self.redis.delete(key)
     return 0
+
+  @property
+  def redis(self) -> Redis:
+    return Redis.from_url(url=self.redis_url)
 
 
 __all__ = ["RedisBackend"]
