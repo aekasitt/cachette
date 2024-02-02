@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  examples/xpresso_memcached.py
+# FILENAME:  examples/blacksheep_memcached.py
 # VERSION: 	 0.1.8
 # CREATED: 	 2022-04-03 15:31
 # AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
@@ -11,8 +11,7 @@
 # *************************************************************
 from cachette import Cachette
 from pydantic import BaseModel
-from xpresso import App, Depends, FromJson, FromPath, Path
-from xpresso.typing import Annotated
+from blacksheep import Application, FromJSON, get, post
 
 
 @Cachette.load_config
@@ -28,29 +27,30 @@ class Payload(BaseModel):
 
 ### Routing ###
 
+app: Application = Application()
 
-async def setter(
-  payload: FromJson[Payload],
-  cachette: Annotated[Cachette, Depends(Cachette, sync_to_thread=True)],
-):
+# async def syncs_cachette_instance_to_thread(app: Application):
+
+app.services.add_scoped(Cachette)
+
+
+@post("/")
+async def setter(data: FromJSON[Payload], cachette: Cachette):
   """
   Submit a new cache key-pair value
   """
+  payload: Payload = data.value
   await cachette.put(payload.key, payload.value)
   return "OK"
 
 
-async def getter(
-  key: FromPath[str], cachette: Annotated[Cachette, Depends(Cachette, sync_to_thread=True)]
-):
+@get("/{key}")
+async def getter(key: str, cachette: Cachette):
   """
   Returns key value
   """
   value: str = await cachette.fetch(key)
   return value
-
-
-app = App(routes=[Path("/{key}", get=getter), Path("/", post=setter)])
 
 
 __all__ = ["app"]

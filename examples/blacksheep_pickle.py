@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  examples/pickle_xpresso.py
+# FILENAME:  examples/blacksheep_pickle.py
 # VERSION: 	 0.1.8
 # CREATED: 	 2022-04-03 15:31
 # AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
@@ -9,14 +9,12 @@
 #
 # HISTORY:
 # *************************************************************
+from blacksheep import Application, FromJSON, get, post
 from cachette import Cachette
-from contextlib import asynccontextmanager
 from os import remove
 from os.path import isfile
 from pydantic import BaseModel
-from typing import AsyncIterator
-from xpresso import App, Depends, FromJson, FromPath, Path
-from xpresso.typing import Annotated
+from typing import Optional
 
 
 @Cachette.load_config
@@ -30,18 +28,25 @@ class Payload(BaseModel):
   value: str
 
 
+app: Application = Application()
+app.services.add_scoped(Cachette)
+
+
 ### Routing ###
 
 
-async def setter(payload: FromJson[Payload], cachette: Annotated[Cachette, Depends(Cachette)]):
+@post("/")
+async def setter(body: FromJSON[Payload], cachette: Cachette) -> str:
   """
   Submit a new cache key-pair value
   """
+  payload: Payload = body.value
   await cachette.put(payload.key, payload.value)
   return "OK"
 
 
-async def getter(key: FromPath[str], cachette: Annotated[Cachette, Depends(Cachette)]):
+@get("/{key}")
+async def getter(cachette: Cachette, key: str) -> Optional[str]:
   """
   Returns key value
   """
@@ -49,8 +54,8 @@ async def getter(key: FromPath[str], cachette: Annotated[Cachette, Depends(Cache
   return value
 
 
-@asynccontextmanager
-async def lifespan() -> AsyncIterator[None]:
+@app.lifespan
+async def remove_pickle_after_shutdown() -> None:
   """
   Remove cachette pickle when App shuts down
   """
@@ -59,7 +64,10 @@ async def lifespan() -> AsyncIterator[None]:
     remove("examples/cachette.pkl")
 
 
-app = App(lifespan=lifespan, routes=[Path("/{key}", get=getter), Path("/", post=setter)])
+if __name__ == "__main__":
+  from uvicorn import run
+
+  run(app, lifespan="on")
 
 
 __all__ = ["app"]
