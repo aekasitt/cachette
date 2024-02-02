@@ -154,3 +154,6 @@ dmypy.json
 
 # Ruff
 .ruff_cache
+
+# PyPI
+pypi-token.pypi
