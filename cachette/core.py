@@ -79,7 +79,9 @@ class Cachette(CachetteConfig):
     elif self._backend == "memcached":
       from cachette.backends.memcached import MemcachedBackend
 
-      self.backend = run(MemcachedBackend.init(codec, self._memcached_host, self._ttl))
+      self.backend = MemcachedBackend(
+        codec=codec, memcached_host=self._memcached_host, ttl=self._ttl
+      )
     elif self._backend == "mongodb":
       from cachette.backends.mongodb import MongoDBBackend
 

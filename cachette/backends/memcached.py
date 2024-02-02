@@ -17,7 +17,7 @@ from typing import Any, Optional, Tuple
 
 ### Third-party packages ###
 from aiomcache import Client
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictStr
 
 ### Local modules ###
 from cachette.backends import Backend
@@ -30,12 +30,8 @@ class MemcachedBackend(Backend, BaseModel):
 
   ### member vars ###
   codec: Codec
-  mcache: Client
+  memcached_host: StrictStr
   ttl: int
-
-  @classmethod
-  async def init(cls, codec: Codec, memcached_host: str, ttl: int) -> "MemcachedBackend":
-    return cls(codec=codec, mcache=Client(host=memcached_host), ttl=ttl)
 
   async def fetch(self, key: str) -> Any:
     data: Optional[bytes] = await self.mcache.get(key.encode())
@@ -59,6 +55,10 @@ class MemcachedBackend(Backend, BaseModel):
     elif key:
       count += (0, 1)[await self.mcache.delete(key.encode())]
     return count
+  
+  @property
+  def mcache(self) -> Client:
+    return Client(host=self.memcached_host)
 
 
 __all__ = ["MemcachedBackend"]
