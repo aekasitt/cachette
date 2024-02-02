@@ -55,7 +55,7 @@ class MemcachedBackend(Backend, BaseModel):
     elif key:
       count += (0, 1)[await self.mcache.delete(key.encode())]
     return count
-  
+
   @property
   def mcache(self) -> Client:
     return Client(host=self.memcached_host)
