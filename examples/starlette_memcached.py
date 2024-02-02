@@ -10,8 +10,6 @@
 # HISTORY:
 # *************************************************************
 from cachette import Cachette
-from os import remove
-from os.path import isfile
 from pydantic import BaseModel, ValidationError
 from starlette.applications import Starlette
 from starlette.requests import Request
@@ -60,18 +58,10 @@ async def getter(request: Request):
   return PlainTextResponse(value)
 
 
-def shutdown() -> None:
-  """
-  Remove cachette pickle when App shuts down
-  """
-  if isfile("examples/cachette.pkl"):
-    remove("examples/cachette.pkl")
-
-
 routes: List[Route] = []
 routes.append(Route("/{key:str}", getter, methods=["GET"]))
 routes.append(Route("/", setter, methods=["POST"]))
-app: Starlette = Starlette(on_shutdown=[shutdown], routes=routes)
+app: Starlette = Starlette(routes=routes)
 
 
 __all__ = ["app"]
