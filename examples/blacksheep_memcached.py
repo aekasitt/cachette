@@ -28,9 +28,6 @@ class Payload(BaseModel):
 ### Routing ###
 
 app: Application = Application()
-
-# async def syncs_cachette_instance_to_thread(app: Application):
-
 app.services.add_scoped(Cachette)
 
 
