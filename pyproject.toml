@@ -36,11 +36,11 @@ keywords = [
 license = 'MIT'
 name = 'cachette'
 packages = [
-  {include='cachette'},
+  {from='src', include='cachette'},
 ]
 readme = 'README.md'
 repository = 'https://github.com/aekasitt/cachette'
-version = '0.1.8'
+version = '0.1.9'
 
 
 [tool.poetry.dependencies]
