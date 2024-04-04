@@ -1,6 +1,5 @@
 # Cachette
 
-[![Build status](https://travis-ci.com/aekasitt/cachette.svg?branch=master)](https://app.travis-ci.com/github/aekasitt/cachette)
 [![Package vesion](https://img.shields.io/pypi/v/cachette)](https://pypi.org/project/cachette)
 [![Format](https://img.shields.io/pypi/format/cachette)](https://pypi.org/project/cachette)
 [![Python version](https://img.shields.io/pypi/pyversions/cachette)](https://pypi.org/project/cachette)
@@ -124,7 +123,7 @@ async def getter(key: str, cachette: Cachette = Depends()):
 ```
 
 ## Roadmap
-
+t
 1. Implement `flush` and `flush_expired` methods on individual backends 
 (Not needed for Redis & Memcached backends)
 
