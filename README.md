@@ -208,15 +208,11 @@ See features and write tests I guess.
 This project utilizes multiple external backend services namely AWS DynamoDB, Memcached, MongoDB and
 Redis as backend service options as well as a possible internal option called InMemoryBackend. In
 order to test viability, we must have specific instances of these set up in the background of our
-testing environment 
-
-### With Docker-Compose
-
-Utilize orchestration file attached to reposity and `docker-compose` command to set up testing 
-instances of backend services using the following command...
+testing environment. Utilize orchestration file attached to reposity and `docker-compose` command 
+to set up testing instances of backend services using the following command...
 
 ```bash
-docker-compose up -d
+docker-compose up --detach
 ```
 
 When you are finished, you can stop and remove background running backend instances with the
@@ -225,47 +221,6 @@ following command...
 ```bash
 docker-compose down
 ```
-
-### Without Docker-Compose
-
-If you are using `arm64` architecture on your local machine like I am with my fancy MacBook Pro, 
-there is a chance that your `docker-compose` (V1) is not properly configured and have caused you 
-many headaches. The following commands will allow you to replicate docker-compose orchestration
-command given above.
-
-
-1. AWS DynamoDB Local
-
-    ```bash
-    docker run --detach --rm -ti -p 8000:8000 --name cachette-dynamodb amazon/dynamodb-local:latest
-    ```
-
-2. Memcached
-
-    ```bash
-    docker run --detach --rm -ti -p 11211:11211 --name cachette-memcached memcached:bullseye
-    ```
-
-3. MongoDB
-
-    ```bash
-    docker run --detach --rm -ti -p 27017:27017 --name cachette-mongodb mongo:latest
-    ```
-
-4. Redis
-
-    ```bash
-    docker run --detach --rm -ti -p 6379:6379 --name cachette-redis redis:bullseye
-    ```
-
-And finally, to stop and remove running instances, run the following command
-
-```bash
-[ ! -z $(docker ps -f name="cachette-*" -q | tr -d '\n') ] \
-  && docker kill $(docker ps -f name="cachette-*" -q)
-```
-
-## Tests
 
 Now that you have background running backend instances, you can proceed with the tests by using
 `pytest` command as such...
