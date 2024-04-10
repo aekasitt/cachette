@@ -44,19 +44,23 @@ class LoadConfig(BaseModel):
   ### Pickle ###
   pickle_path: Optional[StrictStr] = None
 
+  ### Valkey ###
+  valkey_url: Optional[StrictStr] = None
+
   @validator("backend")
   def validate_backend(cls, value: str) -> str:
     if value.lower() not in {
       "dynamodb",
       "inmemory",
       "memcached",
+      "mongodb",
       "pickle",
       "redis",
-      "mongodb",
+      "valkey",
     }:
       raise ValueError(
         'The "backend" value must be one of "dynamodb", "inmemory", "memcached", "pickle",'
-        'or "redis".'
+        '"redis", or "valkey".'
       )
     return value.lower()
 
@@ -166,5 +170,12 @@ class LoadConfig(BaseModel):
     ### TODO: More validations ###
     return value
 
+  @validator("valkey_url", always=True)
+  def validate_valkey_url(cls, value: str, values: dict) -> str:
+    if values["backend"].lower() == "valkey" and not value:
+      raise ValueError('The "valkey_url" cannot be null when using valkey as backend.')
+    ### TODO: More validations ###
+    return value
 
-__all__ = ["LoadConfig"]
+
+__all__ = ("LoadConfig",)

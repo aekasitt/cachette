@@ -39,6 +39,7 @@ def skip_if_backend_dependency_is_not_installed(request: FixtureRequest):
   Skip test with "memcached" backend in the case that "aiomcache" is not installed;
   Skip test with "mongodb" backend in the case that "motor" is not installed;
   Skip test with "redis" backend in the case that "redis" is not installed.
+  Skip test with "valkey" backend in the case that "redis" is not installed.
 
   ---
   :param:  request  `FixtureRequest`
@@ -48,22 +49,27 @@ def skip_if_backend_dependency_is_not_installed(request: FixtureRequest):
     try:
       import aiobotocore as _
     except ImportError:
-      skip(reason='"aiobotocore" dependency is not installed in this test environment.')
+      skip(reason='"aiobotocore" dependency is required for "dynamodb" backend test.')
   elif backend == "memcached":
     try:
       import aiomcache as _
     except ImportError:
-      skip(reason='"aiomcache" dependency is not installed in this test environment.')
+      skip(reason='"aiomcache" dependency is required for "memcached" backend test.')
   elif backend == "mongodb":
     try:
       import motor as _
     except ImportError:
-      skip(reason='"motor" dependency is not installed in this test environment.')
+      skip(reason='"motor" dependency is required for "mongodb" backend test.')
   elif backend == "redis":
     try:
       import redis as _
     except ImportError:
-      skip(reason='"redis" dependency is not installed in this test environment.')
+      skip(reason='"redis" dependency is required for "redis" backend test.')
+  elif backend == "valkey":
+    try:
+      import redis as _
+    except ImportError:
+      skip(reason='"redis" dependency is required for "valkey" backend test.')
 
 
 @fixture(autouse=True)
@@ -127,6 +133,27 @@ def skip_if_memcached_server_cannot_be_reached(request: FixtureRequest):
 
 
 @fixture(autouse=True)
+def skip_if_mongodb_server_cannot_be_reached(request: FixtureRequest):
+  """
+  Skip test with "mongodb" backend in the case that MongoDB server defined by "mongodb_url"
+  cannot be reached.
+
+  ---
+  :param:  request  `FixtureRequest`
+  """
+  mongodb_url: str = get_config_value_from_client_configs("mongodb_url", request)
+  if mongodb_url is not None:
+    from pymongo import MongoClient
+    from pymongo.errors import ServerSelectionTimeoutError
+
+    try:
+      client: MongoClient = MongoClient(mongodb_url, serverSelectionTimeoutMS=1)
+      client["test"].list_collection_names(filter={"name": "test"})
+    except ServerSelectionTimeoutError:
+      skip(reason="MongoDB Server cannot be reached.")
+
+
+@fixture(autouse=True)
 def skip_if_redis_server_cannot_be_reached(request: FixtureRequest):
   """
   Skip test with "redis" backend in the case that Redis server defined by "redis_url"
@@ -147,21 +174,21 @@ def skip_if_redis_server_cannot_be_reached(request: FixtureRequest):
 
 
 @fixture(autouse=True)
-def skip_if_mongodb_server_cannot_be_reached(request: FixtureRequest):
+def skip_if_valkey_server_cannot_be_reached(request: FixtureRequest):
   """
-  Skip test with "mongodb" backend in the case that MongoDB server defined by "mongodb_url"
+  Skip test with "valkey" backend in the case that Valkey server defined by "valkey_url"
   cannot be reached.
 
   ---
   :param:  request  `FixtureRequest`
   """
-  mongodb_url: str = get_config_value_from_client_configs("mongodb_url", request)
-  if mongodb_url is not None:
-    from pymongo import MongoClient
-    from pymongo.errors import ServerSelectionTimeoutError
+  valkey_url: str = get_config_value_from_client_configs("valkey_url", request)
+  if valkey_url is not None:
+    from redis import Redis
+    from redis.exceptions import ConnectionError
 
+    valkey_url = valkey_url.replace("valkey://", "redis://")
     try:
-      client: MongoClient = MongoClient(mongodb_url, serverSelectionTimeoutMS=1)
-      client["test"].list_collection_names(filter={"name": "test"})
-    except ServerSelectionTimeoutError:
-      skip(reason="MongoDB Server cannot be reached.")
+      Redis.from_url(valkey_url).get("test")
+    except ConnectionError:
+      skip(reason="Valkey Server cannot be reached.")

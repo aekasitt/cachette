@@ -103,6 +103,10 @@ class Cachette(CachetteConfig):
       from cachette.backends.redis import RedisBackend
 
       self.backend = RedisBackend(codec=codec, redis_url=self._redis_url, ttl=self._ttl)
+    elif self._backend == "valkey":
+      from cachette.backends.valkey import ValkeyBackend
+
+      self.backend = ValkeyBackend(codec=codec, ttl=self._ttl, valkey_url=self._valkey_url)
 
   ### Override methods to initiated backend instance ###
   async def fetch(self, key: str) -> Any:
@@ -147,4 +151,4 @@ class Cachette(CachetteConfig):
     return await self.backend.clear(namespace, key)
 
 
-__all__ = ["Cachette"]
+__all__ = ("Cachette",)

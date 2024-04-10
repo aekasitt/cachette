@@ -45,8 +45,9 @@ from tests.backends import client, Payload
     ],
     [("backend", "pickle"), ("ttl", 2), ("pickle_path", "tests/cachette.pkl")],
     [("backend", "redis"), ("ttl", 2), ("redis_url", "redis://localhost:6379")],
+    [("backend", "valkey"), ("ttl", 2), ("valkey_url", "valkey://localhost:6380")],
   ],
-  ids=["dynamodb", "inmemory", "memcached", "mongodb", "pickle", "redis"],
+  ids=["dynamodb", "inmemory", "memcached", "mongodb", "pickle", "redis", "valkey"],
   indirect=True,
 )
 def test_set_and_wait_til_expired(client: TestClient):

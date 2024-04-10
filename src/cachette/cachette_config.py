@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  config.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/cachette_config.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-03 15:31
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -48,6 +48,9 @@ class CachetteConfig(object):
   ### Pickle ###
   _pickle_path: str
 
+  ### Valkey ###
+  _valkey_url: str
+
   @classmethod
   def load_config(cls, settings: Callable[..., List[Tuple]]) -> None:
     """
@@ -87,6 +90,9 @@ class CachetteConfig(object):
         "mongodb://user:password@host:port" and "mongodb://host:port" respectively.
       pickle_path -- required when backend set to "pickle"; the file-system path to create local
         store using python pickling on local directory
+      valkey_url -- required when backend set to "valkey"; the url set to valkey-server instance
+        with or without provided authentication in such formats "valkey://user:password@host:port"
+        and "valkey://host:port" respectively.
     """
     try:
       config = LoadConfig(**{key.lower(): value for key, value in settings()})
@@ -101,10 +107,13 @@ class CachetteConfig(object):
       cls._database_name = config.database_name or cls._database_name
       cls._mongodb_url = config.mongodb_url or ""
       cls._pickle_path = config.pickle_path
+      cls._valkey_url = config.valkey_url or ""
     except ValidationError:
       raise
     except Exception:
       raise TypeError('CachetteConfig must be pydantic "BaseSettings" or list of tuples')
 
+
+__all__ = ("CachetteConfig",)
 
 __all__ = ["CachetteConfig"]

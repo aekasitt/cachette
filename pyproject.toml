@@ -44,7 +44,7 @@ version = '0.1.9'
 
 
 [tool.poetry.dependencies]
-pydantic = '^2.4.0'
+pydantic = '^2.6.0'
 python = '^3.9'
 
 
