@@ -12,7 +12,7 @@ services:
     command: memcached
     ports:
       - "11211:11211"
-  
+
   ### MongoDB ###
   mongodb:
     image: mongo:latest
@@ -26,3 +26,10 @@ services:
     command: redis-server
     ports:
       - "6379:6379"
+
+  ### Valkey ###
+  valkey:
+    image: valkey/valkey:7.2
+    command: valkey-server
+    ports:
+      - "6380:6379"
