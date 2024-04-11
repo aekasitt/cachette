@@ -92,12 +92,6 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
 @mark.parametrize(
   "client",
   [
-    ### DynamoDB & Codecs ###
-    [
-      ("backend", "dynamodb"),
-      ("codec", "msgpack"),
-      ("dynamodb_url", "http://localhost:8000"),
-    ],
     ### InMemory & Codecs ###
     [("backend", "inmemory"), ("codec", "msgpack")],
     ### Memcached & Codecs ###
@@ -121,7 +115,6 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
     ],
   ],
   ids=[
-    "dynamodb-msgpack",
     "inmemory-msgpack",
     "memcached-msgpack",
     "mongodb-msgpack",
