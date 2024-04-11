@@ -12,6 +12,7 @@
 """
 Example for using FastAPI Cachette extension in tandem with BackgroundTasks
 """
+
 from asyncio import run
 from cachette import Cachette
 from fastapi import BackgroundTasks, Depends, FastAPI

@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `pytest` config overrides
-"""
+"""Module defining `pytest` config overrides"""
 
 ### Standard packages ###
 from typing import Any, List, Optional, Tuple

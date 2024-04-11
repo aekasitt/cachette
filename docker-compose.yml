@@ -1,12 +1,7 @@
 version: '3'
 services:
-  ### AWS DynamoDB ###
-  dynamodb:
-    image: amazon/dynamodb-local
-    ports:
-      - "8000:8000"
 
-  ### AWS Memcached ###
+  ### Memcached ###
   memcached:
     image: memcached:bullseye
     command: memcached

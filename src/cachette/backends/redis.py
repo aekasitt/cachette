@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `RedisBackend` backend subclass used with Redis key-value store
-"""
+"""Module defining `RedisBackend` backend subclass used with Redis key-value store"""
 
 ### Standard packages ###
 from typing import Any, Optional, Tuple

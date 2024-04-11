@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `PickleCodec` codec subclass used for decoding and encoding pickled data
-"""
+"""Module defining `PickleCodec` codec subclass used for decoding and encoding pickled data"""
 
 ### Standard packages ###
 from pickle import dumps, loads

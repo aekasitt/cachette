@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Tests for codec implementations on TestClient which can encode/decode frozen objects fully
-"""
+"""Tests for codec implementations on TestClient which can encode/decode frozen objects fully"""
 
 ### Standard packages ###
 from datetime import date, datetime
@@ -98,12 +97,6 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
 @mark.parametrize(
   "client",
   [
-    ### DynamoDB & Codecs ###
-    [
-      ("backend", "dynamodb"),
-      ("codec", "pickle"),
-      ("dynamodb_url", "http://localhost:8000"),
-    ],
     ### InMemory & Codecs ###
     [("backend", "inmemory"), ("codec", "pickle")],
     ### Memcached & Codecs ###
@@ -127,7 +120,6 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
     ],
   ],
   ids=[
-    "dynamodb-pickle",
     "inmemory-pickle",
     "memcached-pickle",
     "mongodb-pickle",

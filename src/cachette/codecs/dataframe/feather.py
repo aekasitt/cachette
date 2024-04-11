@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `FeatherCodec` codec subclass used for decoding and encoding feather dataframes
-"""
+"""Module defining `FeatherCodec` codec subclass used for decoding and encoding feather dataframes"""
 
 ### Standard packages ###
 from io import BytesIO

@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Tests for codec implementations on TestClient which can serializ/de-serialize DataFrame objects
-"""
+"""Tests for codec implementations on TestClient which can serializ/de-serialize DataFrame objects"""
 
 ### Standard packages ###
 from typing import Any, List, Tuple
@@ -73,27 +72,6 @@ def client(request: FixtureRequest) -> TestClient:
 @mark.parametrize(
   "client",
   [
-    ### DynamoDB & Codecs ###
-    [
-      ("backend", "dynamodb"),
-      ("codec", "csv"),
-      ("dynamodb_url", "http://localhost:8000"),
-    ],
-    [
-      ("backend", "dynamodb"),
-      ("codec", "feather"),
-      ("dynamodb_url", "http://localhost:8000"),
-    ],
-    [
-      ("backend", "dynamodb"),
-      ("codec", "parquet"),
-      ("dynamodb_url", "http://localhost:8000"),
-    ],
-    [
-      ("backend", "dynamodb"),
-      ("codec", "pickle"),
-      ("dynamodb_url", "http://localhost:8000"),
-    ],
     ### InMemory & Codecs ###
     [("backend", "inmemory"), ("codec", "csv")],
     [("backend", "inmemory"), ("codec", "feather")],
@@ -164,10 +142,6 @@ def client(request: FixtureRequest) -> TestClient:
     ],
   ],
   ids=[
-    "dynamodb-csv",
-    "dynamodb-feather",
-    "dynamodb-parquet",
-    "dynamodb-pickle",
     "inmemory-csv",
     "inmemory-feather",
     "inmemory-parquet",

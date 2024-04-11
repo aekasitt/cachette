@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining backend subclass used with MongoDB key-value database
-"""
+"""Module defining backend subclass used with MongoDB key-value database"""
 
 ### Standard packages ###
 from typing import Any, Optional, Tuple

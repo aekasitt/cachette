@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Tests for codec implementations on TestClient which can only store string representaions of items
-"""
+"""Tests for codec implementations on TestClient which can only store string representaions of items"""
 
 ### Standard packages ###
 from typing import Any, List, Tuple
@@ -89,8 +88,6 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
 @mark.parametrize(
   "client",
   [
-    ### DynamoDB & No Codec ###
-    [("backend", "dynamodb"), ("dynamodb_url", "http://localhost:8000")],
     ### InMemory & No Codec ###
     [("backend", "inmemory")],
     ### Memcached & No Codec ###
@@ -105,7 +102,6 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
     [("backend", "redis"), ("redis_url", "redis://localhost:6379")],
   ],
   ids=[
-    "dynamodb-vanilla",
     "inmemory-vanilla",
     "memcached-vanilla",
     "mongodb-vanilla",

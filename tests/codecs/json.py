@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Tests for codec implementations on TestClient which serializes, deserializes in JSON format
-"""
+"""Tests for codec implementations on TestClient which serializes, deserializes in JSON format"""
 
 ### Standard packages ###
 from typing import Any, List, Tuple
@@ -85,17 +84,6 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
 @mark.parametrize(
   "client",
   [
-    ### DynamoDB & JSON Codecs ###
-    [
-      ("backend", "dynamodb"),
-      ("codec", "json"),
-      ("dynamodb_url", "http://localhost:8000"),
-    ],
-    [
-      ("backend", "dynamodb"),
-      ("codec", "orjson"),
-      ("dynamodb_url", "http://localhost:8000"),
-    ],
     ### InMemory & JSON Codecs ###
     [("backend", "inmemory"), ("codec", "json")],
     [("backend", "inmemory"), ("codec", "orjson")],
@@ -132,8 +120,6 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
     ],
   ],
   ids=[
-    "dynamodb-json",
-    "dynamodb-orjson",
     "inmemory-json",
     "inmemory-orjson",
     "memcached-json",

@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `ValkeyBackend` backend subclass used with Valkey key-value store
-"""
+"""Module defining `ValkeyBackend` backend subclass used with Valkey key-value store"""
 
 ### Standard packages ###
 from typing import Any, Optional, Tuple

@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module containing `Backend` abstract class to be inherited by implementation-specific backends
-"""
+"""Module containing `Backend` abstract class to be inherited by implementation-specific backends"""
 
 ### Standard packages ###
 from abc import abstractmethod

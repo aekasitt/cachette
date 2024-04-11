@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `ParquetCodec` codec subclass for decoding and encoding parquet dataframes
-"""
+"""Module defining `ParquetCodec` codec subclass for decoding and encoding parquet dataframes"""
 
 ### Standard packages ###
 from io import BytesIO

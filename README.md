@@ -31,9 +31,9 @@ The following are the current available configuration keys that can be set on th
 on startup either by using a method which returns a list of tuples or a Pydantic BaseSettings object
 (See examples below or in `examples/` folder)
 
-    backend -- optional; must be one of ["dynamodb", "inmemory", "memcached", "mongodb", "pickle",
-      "redis"]; defaults to using inmemory option which required no extra package dependencies.
-      To use other listed options; See installation guide on the README.md at
+    backend -- optional; must be one of ["inmemory", "memcached", "mongodb", "pickle", "redis"];
+      defaults to using inmemory option which required no extra package dependencies. To use
+      other listed options; See installation guide on the README.md at
       [Repository Page](https://github.com/aekasitt/cachette).
     codec -- optional; serialization and de-serialization format to have cache values stored in
       the cache backend of choice as a string of selected encoding. once fetched, will have their
@@ -46,15 +46,8 @@ on startup either by using a method which returns a list of tuples or a Pydantic
       "redis://host:port" respectively.
     memcached_host -- required when backend set to "memcached"; the host endpoint to the memcached
       distributed memory caching system.
-    table_name -- required when backend set to "dynamodb" or "mongodb"; name of the cache table or
-      collection in case of "mongodb" backend to have key-value pairs stored; defaults to
-      "cachette".
-    region -- required when backend set to "dynamodb" and "dynamodb_url" not set; one of Amazon
-      Web Services listed Regions which can be found on this Documentation
-      [Page](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones)
-    dynamodb_url -- required when backend set to "dynamodb" and "region" not set; this option is
-      used when setting up your own DynamoDB Local instance according to this
-      [Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal)
+    table_name -- required when backend set to "mongodb"; name of the cache collection in case of
+      "mongodb" backend to have key-value pairs stored; defaults to "cachette". 
     database_name -- required when backend set to "mongodb"; the database name to be automatically
       created if not exists on the MongoDB instance and store the cache table; defaults to
       "cachette-db"
@@ -63,6 +56,9 @@ on startup either by using a method which returns a list of tuples or a Pydantic
       "mongodb://user:password@host:port" and "mongodb://host:port" respectively.
     pickle_path -- required when backend set to "pickle"; the file-system path to create local
       store using python pickling on local directory
+    valkey_url -- required when backend set to "valkey"; the url set to valkey-server instance
+      with or without provided authentication in such formats "valkey://user:password@host:port"
+      and "valkey://host:port" respectively.
 
 ## Examples
 
@@ -130,13 +126,9 @@ async def getter(key: str, cachette: Cachette = Depends()):
 2. Memcached Authentication ([No SASL Support](https://github.com/aio-libs/aiomcache/issues/12))
 Change library?
 
-3. DynamoDB Authentication (Add AWS Access Key ID and AWS Access Secret Key to configuration).
+3. Add behaviors responding to "Cache-Control" request header
 
-4. Boto3 Version Fix; Current version restrictions vulnerable to `aiohttp` bug.
-
-5. Add behaviors responding to "Cache-Control" request header
-
-6. More character validations for URLs and Database/Table/Collection names in configuration options
+4. More character validations for URLs and Database/Table/Collection names in configuration options
 
 ## Installation
 
@@ -160,9 +152,6 @@ poetry add cachette[memcached]
 poetry add cachette[orjson]
 # or Include PyArrow package making DataFrame serialization much easier
 pip install cachette --install-option "--extras-require=dataframe"
-# or MongoDB and DynamoDB supports
-poetry add cachette[mongodb]
-pip install cachette --install-option "--extras-require=dynamodb"
 ```
 
 ## Getting Started
@@ -185,7 +174,7 @@ To run examples, first you must install extra dependencies
 Do all in one go with this command...
 
 ```bash
-pip install aiobotocore aiomcache motor uvicorn redis
+pip install aiomcache motor uvicorn redis
 # or
 poetry install --extras examples
 ```

@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module containing Core implementation for Cachette extension for FastAPI
-"""
+"""Module containing Core implementation for Cachette extension for FastAPI"""
 
 ### Standard packages ###
 from asyncio import run
@@ -66,13 +65,7 @@ class Cachette(CachetteConfig):
 
       codec = VanillaCodec()
 
-    if self._backend == "dynamodb":
-      from cachette.backends.dynamodb import DynamoDBBackend
-
-      self.backend = run(
-        DynamoDBBackend.init(codec, self._table_name, self._ttl, self._region, self._dynamodb_url)
-      )
-    elif self._backend == "inmemory":
+    if self._backend == "inmemory":
       from cachette.backends.inmemory import InMemoryBackend
 
       self.backend = InMemoryBackend(codec=codec, ttl=self._ttl)

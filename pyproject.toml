@@ -30,8 +30,8 @@ classifiers = [
 description = 'Cache extension for ASGI frameworks'
 homepage = 'https://github.com/aekasitt/cachette'
 keywords = [
-  'starlette', 'fastapi', 'cache', 'redis', 'aioredis', 'dynamodb', 'aiobotocore',
-  'asynchronous', 'memcached', 'aiomcache', 'mongodb', 'motor', 'pymongo'
+  'starlette', 'fastapi', 'cache', 'redis', 'aioredis', 'aiobotocore',
+  'asynchronous', 'memcached', 'aiomcache', 'mongodb', 'motor'
 ]
 license = 'MIT'
 name = 'cachette'
@@ -63,15 +63,7 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 mypy = '^1.8.0'
-ruff = '^0.1.15'
-
-
-[tool.poetry.group.dynamodb]
-optional = true
-
-
-[tool.poetry.group.dynamodb.dependencies]
-aiobotocore = '^2.2.0'
+ruff = '^0.3.5'
 
 
 [tool.poetry.group.examples]
@@ -90,29 +82,38 @@ litestar = '^2.3.2'
 [tool.poetry.group.memcached]
 optional = true
 
+
 [tool.poetry.group.memcached.dependencies]
 aiomcache = '^0.7.0'
+
 
 [tool.poetry.group.mongodb]
 optional = true
 
+
 [tool.poetry.group.mongodb.dependencies]
 motor = '^2.5.1'
+
 
 [tool.poetry.group.msgpack]
 optional = true
 
+
 [tool.poetry.group.msgpack.dependencies]
 msgpack = '^1.0.3'
+
 
 [tool.poetry.group.orjson]
 optional = true
 
+
 [tool.poetry.group.orjson.dependencies]
 orjson = '^3.6.7'
 
+
 [tool.poetry.group.redis]
 optional = true
+
 
 [tool.poetry.group.redis.dependencies]
 redis = '^4.2.1'
@@ -138,7 +139,6 @@ optional = true
 
 
 [tool.poetry.group.thewholeshebang.dependencies]
-aiobotocore = '^2.2.0'
 aiomcache = '^0.7.0'
 blacksheep = '^2.0.6'
 fastapi = [
@@ -171,5 +171,5 @@ line-length = 100
 target-version = 'py310'
 
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 '__init__.py' = ['F401'] # Ignore unused imports

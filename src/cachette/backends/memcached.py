@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `MemcachedBackend` backend subclass used with Memcached key-value store
-"""
+"""Module defining `MemcachedBackend` backend subclass used with Memcached key-value store"""
 
 ### Standard packages ###
 from typing import Any, Optional, Tuple

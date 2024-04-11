@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `Codec` abstract class defining subclasses' method schemas
-"""
+"""Module defining `Codec` abstract class defining subclasses' method schemas"""
 
 ### Standard packages ###
 from abc import abstractmethod

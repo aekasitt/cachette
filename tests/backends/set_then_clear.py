@@ -27,7 +27,6 @@ from tests.backends import client, Payload
 @mark.parametrize(
   "client",
   [
-    [("backend", "dynamodb"), ("dynamodb_url", "http://localhost:8000")],
     [("backend", "inmemory")],
     [("backend", "memcached"), ("memcached_host", "localhost")],
     [
@@ -39,7 +38,7 @@ from tests.backends import client, Payload
     [("backend", "redis"), ("redis_url", "redis://localhost:6379")],
     [("backend", "valkey"), ("valkey_url", "valkey://localhost:6380")],
   ],
-  ids=["dynamodb", "inmemory", "memcached", "mongodb", "pickle", "redis", "valkey"],
+  ids=["inmemory", "memcached", "mongodb", "pickle", "redis", "valkey"],
   indirect=True,
 )
 def test_set_then_clear(client: TestClient):

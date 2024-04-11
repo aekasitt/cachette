@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining backend subclass used with In-memory key-value store
-"""
+"""Module defining backend subclass used with In-memory key-value store"""
 
 ### Standard packages ###
 from typing import Any, Dict, List, Optional, Tuple

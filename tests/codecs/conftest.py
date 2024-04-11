@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining `pytest` config overrides regarding codec tests
-"""
+"""Module defining `pytest` config overrides regarding codec tests"""
 
 ### Standard packages ###
 from typing import Any, List, Optional, Tuple

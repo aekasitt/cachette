@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  load_config.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    load_config.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-03 15:31
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
 # *************************************************************
-"""Module containing `LoadConfig` Pydantic model
-"""
+"""Module containing `LoadConfig` Pydantic model"""
 
 ### Standard packages ###
 from typing import Optional
@@ -24,25 +23,19 @@ class LoadConfig(BaseModel):
   codec: Optional[StrictStr] = None
   ttl: Optional[StrictInt] = None
 
-  ### Redis ###
-  redis_url: Optional[StrictStr] = None
-
   ### Memcached ###
   memcached_host: Optional[StrictStr] = None
-
-  ### AWS DynamoDB & MongoDB ###
-  table_name: Optional[StrictStr] = None
-
-  ### AWS DynamoDB ###
-  region: Optional[StrictStr] = None
-  dynamodb_url: Optional[StrictStr] = None
 
   ### MongoDB ###
   database_name: Optional[StrictStr] = None
   mongodb_url: Optional[StrictStr] = None
+  table_name: Optional[StrictStr] = None
 
   ### Pickle ###
   pickle_path: Optional[StrictStr] = None
+
+  ### Redis ###
+  redis_url: Optional[StrictStr] = None
 
   ### Valkey ###
   valkey_url: Optional[StrictStr] = None
@@ -50,7 +43,6 @@ class LoadConfig(BaseModel):
   @validator("backend")
   def validate_backend(cls, value: str) -> str:
     if value.lower() not in {
-      "dynamodb",
       "inmemory",
       "memcached",
       "mongodb",
@@ -59,8 +51,7 @@ class LoadConfig(BaseModel):
       "valkey",
     }:
       raise ValueError(
-        'The "backend" value must be one of "dynamodb", "inmemory", "memcached", "pickle",'
-        '"redis", or "valkey".'
+        'The "backend" value must be one of "inmemory", "memcached", "pickle", "redis" or "valkey".'
       )
     return value.lower()
 
@@ -105,44 +96,8 @@ class LoadConfig(BaseModel):
   @validator("table_name")
   def validate_table_name(cls, value: str, values: dict) -> str:
     backend: str = values["backend"].lower()
-    if backend in ("dynamodb", "mongodb") and not value:
-      raise ValueError('The "table_name" cannot be null when using DynamoDB / MongoDB as backend.')
-    ### TODO: More validations ###
-    return value
-
-  @validator("region")
-  def validate_region(cls, value: str, values: dict) -> str:
-    backend: str = values["backend"].lower()
-    dynamodb_url: str = values.get("dynamodb_url", None)
-    if backend == "dynamodb" and not dynamodb_url and not value:
-      raise ValueError(
-        'The "region" cannot be null when using DynamoDB as backend and no "dynamodb_url" defined.'
-      )
-    if value.lower() not in {
-      "us-east-1",
-      "us-west-2",
-      "us-west-1",
-      "eu-west-1",
-      "eu-central-1",
-      "ap-southeast-1",
-      "ap-southeast-2",
-      "ap-northeast-1",
-      "ap-northeast-2",
-      "sa-east-1",
-      "cn-north-1",
-      "ap-south-1",
-    }:
-      raise ValueError('The "region" provided does not exist under AWS Regions.')
-    return value.lower()
-
-  @validator("dynamodb_url", always=True)
-  def validate_dynamodb_url(cls, value: str, values: dict) -> str:
-    backend: str = values["backend"].lower()
-    region: str = values.get("region", None)
-    if backend == "dynamodb" and not region and not value:
-      raise ValueError(
-        'The "dynamodb_url" cannot be null when using DynamoDB as backend and no region defined.'
-      )
+    if backend == "mongodb" and not value:
+      raise ValueError('The "table_name" cannot be null when using MongoDB as backend.')
     ### TODO: More validations ###
     return value
 

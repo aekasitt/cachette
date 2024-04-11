@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Test suite containing configuration loading tests via `LoadConfig`
-"""
+"""Test suite containing configuration loading tests via `LoadConfig`"""
 
 ### Standard packages ###
 from typing import Any, List, Tuple
@@ -26,21 +25,6 @@ from cachette import Cachette
 @mark.parametrize(
   "configs",
   [
-    ### DynamoDB ###
-    [("backend", "dynamodb"), ("region", "ap-southeast-1")],
-    [("backend", "dynamodb"), ("dynamodb_url", "http://localhost:8000")],
-    [("backend", "dynamodb"), ("region", "ap-southeast-1"), ("ttl", 1)],
-    [("backend", "dynamodb"), ("region", "ap-southeast-1"), ("ttl", 3600)],
-    [
-      ("backend", "dynamodb"),
-      ("dynamodb_url", "http://localhost:8000"),
-      ("ttl", 1),
-    ],
-    [
-      ("backend", "dynamodb"),
-      ("dynamodb_url", "http://localhost:8000"),
-      ("ttl", 3600),
-    ],
     ### InMemory ###
     [("backend", "inmemory")],
     [("backend", "inmemory"), ("ttl", 1)],
@@ -92,55 +76,6 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> None:
 @mark.parametrize(
   "invalid_configs, reason",
   [
-    ### AWS DynamoDB ###
-    (
-      [("backend", "dynamodb")],
-      'The "dynamodb_url" cannot be null when using DynamoDB as backend and no region defined.',
-    ),
-    (
-      [("backend", "dynamodb"), ("region", "ap-southeast-1"), ("ttl", 0)],
-      'The "ttl" value must between 1 or 3600 seconds.',
-    ),
-    (
-      [("backend", "dynamodb"), ("region", "ap-southeast-1"), ("ttl", 3601)],
-      'The "ttl" value must between 1 or 3600 seconds.',
-    ),
-    (
-      [
-        ("backend", "dynamodb"),
-        ("dynamodb_url", "http://localhost:8000"),
-        ("ttl", 0),
-      ],
-      'The "ttl" value must between 1 or 3600 seconds.',
-    ),
-    (
-      [
-        ("backend", "dynamodb"),
-        ("dynamodb_url", "http://localhost:8000"),
-        ("ttl", 3601),
-      ],
-      'The "ttl" value must between 1 or 3600 seconds.',
-    ),
-    (
-      [("backend", "dynamodb"), ("region", "not-valid")],
-      'The "region" provided does not exist under AWS Regions.',
-    ),
-    (
-      [
-        ("backend", "dynamodb"),
-        ("region", "ap-southeast-1"),
-        ("table_name", None),
-      ],
-      'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.',
-    ),
-    (
-      [
-        ("backend", "dynamodb"),
-        ("dynamodb_url", "http://localhost:8000"),
-        ("table_name", None),
-      ],
-      'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.',
-    ),
     ### InMemory ###
     (
       [("backend", "inmemory"), ("ttl", 0)],
@@ -187,7 +122,7 @@ def test_load_valid_configs(configs: List[Tuple[str, Any]]) -> None:
         ("mongodb_url", "http://localhost:27017"),
         ("table_name", None),
       ],
-      'The "table_name" cannot be null when using DynamoDB / MongoDB as backend.',
+      'The "table_name" cannot be null when using MongoDB as backend.',
     ),
     ### Redis ###
     (

@@ -9,8 +9,7 @@
 #
 # HISTORY:
 # *************************************************************
-"""Module defining test methods to be used by different backend-specific tests
-"""
+"""Module defining test methods to be used by different backend-specific tests"""
 
 ### Standard packages ###
 from typing import Any, List, Tuple
