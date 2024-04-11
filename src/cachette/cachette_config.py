@@ -59,18 +59,21 @@ class CachetteConfig(object):
         the cache backend of choice as a string of selected encoding. once fetched, will have their
         decoded values returned of the same format. must be one of ["feather", "msgpack", "parquet",
         "pickle"]; if none is defined, will vanilla codec of basic string conversion will be used.
-      ttl -- optional; the time-to-live or amount before this cache item expires within the cache;
-        defaults to 60 (seconds) and must be between 1 second to 1 hour (3600 seconds).
+      database_name -- required when backend set to "mongodb"; the database name to be automatically
+        created if not exists on the MongoDB instance and store the cache table; defaults to
+        "cachette-db"
       memcached_host -- required when backend set to "memcached"; the host endpoint to the memcached
         distributed memory caching system.
-      table_name -- required when backend set to "dynamodb" or "mongodb"; name of the cache table or
-        collection in case of "mongodb" backend to have key-value pairs stored; defaults to
-        "cachette".
       pickle_path -- required when backend set to "pickle"; the file-system path to create local
         store using python pickling on local directory
       redis_url -- required when backend set to "redis"; the url set to redis-server instance with
         or without provided authentication in such formats "redis://user:password@host:port" and
         "redis://host:port" respectively.
+      table_name -- required when backend set to "dynamodb" or "mongodb"; name of the cache table or
+        collection in case of "mongodb" backend to have key-value pairs stored; defaults to
+        "cachette".
+      ttl -- optional; the time-to-live or amount before this cache item expires within the cache;
+        defaults to 60 (seconds) and must be between 1 second to 1 hour (3600 seconds).
       valkey_url -- required when backend set to "valkey"; the url set to valkey-server instance
         with or without provided authentication in such formats "valkey://user:password@host:port"
         and "valkey://host:port" respectively.
