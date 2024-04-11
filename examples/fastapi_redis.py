@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  examples/fastapi_redis.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-12 11:25
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/examples/fastapi_redis.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-12 11:25
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -28,12 +28,13 @@ def get_cachette_config():
   return [("backend", "redis"), ("redis_url", "redis://localhost:6379")]
 
 
-### Routing ###
+### Schema ###
 class Payload(BaseModel):
   key: str
   value: str
 
 
+### Routing ###
 @app.get("/{key}", response_class=PlainTextResponse, status_code=200)
 def getter(key: str, cachette: Cachette = Depends()):
   """
@@ -52,4 +53,4 @@ def setter(payload: Payload, background_tasks: BackgroundTasks, cachette: Cachet
   return "OK"
 
 
-__all__ = ["app"]
+__all__ = ("app",)

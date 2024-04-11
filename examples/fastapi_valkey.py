@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:    ~~/examples/fastapi_memcached.py
-# VERSION:     0.1.8
-# CREATED:     2022-04-12 11:25
-# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/examples/fastapi_valkey.py
+# VERSION: 	   0.1.8
+# CREATED: 	   2024-04-11 15:34
+# AUTHOR: 	   Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -25,16 +25,15 @@ app = FastAPI()
 ### Cachette Configurations ###
 @Cachette.load_config
 def get_cachette_config():
-  return [("backend", "memcached"), ("memcached_host", "localhost")]
+  return [("backend", "valkey"), ("valkey_url", "valkey://localhost:6379")]
 
 
-### Schema ###
+### Routing ###
 class Payload(BaseModel):
   key: str
   value: str
 
 
-### Routing ###
 @app.get("/{key}", response_class=PlainTextResponse, status_code=200)
 def getter(key: str, cachette: Cachette = Depends()):
   """

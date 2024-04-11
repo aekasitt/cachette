@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  examples/blacksheep_pickle.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/examples/blacksheep_pickle.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-03 15:31
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -33,8 +33,6 @@ app.services.add_scoped(Cachette)
 
 
 ### Routing ###
-
-
 @post("/")
 async def setter(body: FromJSON[Payload], cachette: Cachette) -> str:
   """
@@ -70,4 +68,4 @@ if __name__ == "__main__":
   run(app, lifespan="on")
 
 
-__all__ = ["app"]
+__all__ = ("app",)

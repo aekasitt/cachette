@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  examples/litestar_mongodb.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2024-02-02 23:51
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/examples/litestar_mongodb.py
+# VERSION:     0.1.8
+# CREATED:     2024-02-02 23:51
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -22,16 +22,12 @@ def get_cachette_config():
 
 
 ### Schema ###
-
-
 class Payload(BaseModel):
   key: str
   value: str
 
 
 ### Routing ###
-
-
 @get(
   "/{key:str}",
 )
@@ -58,4 +54,4 @@ app: Litestar = Litestar(
 )
 
 
-__all__ = ["app"]
+__all__ = ("app",)

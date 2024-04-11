@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  examples/starlette_pickle.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2024-02-02 22:27
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/examples/starlette_pickle.py
+# VERSION:     0.1.8
+# CREATED:     2024-02-02 22:27
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -32,8 +32,6 @@ class Payload(BaseModel):
 
 
 ### Routing ###
-
-
 async def setter(request: Request):
   """
   Submit a new cache key-pair value
@@ -74,4 +72,4 @@ routes.append(Route("/", setter, methods=["POST"]))
 app: Starlette = Starlette(on_shutdown=[shutdown], routes=routes)
 
 
-__all__ = ["app"]
+__all__ = ("app",)
