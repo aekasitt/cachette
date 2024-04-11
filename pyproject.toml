@@ -92,7 +92,7 @@ optional = true
 
 
 [tool.poetry.group.mongodb.dependencies]
-motor = '^2.5.1'
+motor = '^3.4.0'
 
 
 [tool.poetry.group.msgpack]
@@ -147,7 +147,7 @@ fastapi = [
 ]
 httpx = '^0.24.1'
 litestar = '^2.3.2'
-motor = '^2.5.1'
+motor = '^3.4.0'
 mypy = '^1.8.0'
 orjson = '^3.6.7'
 pandas = '>=1.4.0'
