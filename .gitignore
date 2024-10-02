@@ -1,6 +1,7 @@
 ### Ignore Workspace Settings ###
 .vscode
 .idea
+.ignore
 
 ### Ignore MacOS Directory Indexer (in nested folders also) ###
 **/.DS_Store
