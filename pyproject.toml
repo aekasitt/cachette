@@ -1,17 +1,12 @@
 [build-system]
-build-backend = 'poetry.core.masonry.api'
-requires = ['poetry-core>=1.0.0']
+build-backend = 'hatchling.build'
+requires = [ 'hatchling' ]
 
 
-[tool.mypy]
-disallow_incomplete_defs = true
-disallow_untyped_calls = true
-disallow_untyped_defs = true
-ignore_missing_imports = true
-
-
-[tool.poetry]
-authors = ['Sitt Guruvanich <aekazitt+github@gmail.com>']
+[project]
+authors = [
+  { email = 'aekazitt+github@gmail.com', name = 'Sitt Guruvanich' },
+]
 classifiers = [
   'Environment :: Web Environment',
   'Intended Audience :: Developers',
@@ -27,6 +22,9 @@ classifiers = [
   'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
   'Topic :: Software Development :: Libraries :: Python Modules'
 ]
+dependencies = [
+  'pydantic >=2.6.0',
+]
 description = 'Cache extension for ASGI frameworks'
 homepage = 'https://github.com/aekasitt/cachette'
 keywords = [
@@ -35,128 +33,73 @@ keywords = [
 ]
 license = 'MIT'
 name = 'cachette'
-packages = [
-  {from='src', include='cachette'},
-]
 readme = 'README.md'
 repository = 'https://github.com/aekasitt/cachette'
+requires-python = '>=3.9.19'
 version = '0.1.9'
 
 
-[tool.poetry.dependencies]
-pydantic = '^2.6.0'
-python = '^3.9'
-
-
-[tool.poetry.group.dataframe]
-optional = true
-
-
-[tool.poetry.group.dataframe.dependencies]
-pandas = '>=1.4.0'
-pyarrow = '^10.0.1'
-
-
-[tool.poetry.group.dev]
-optional = true
-
-
-[tool.poetry.group.dev.dependencies]
-mypy = '^1.8.0'
-ruff = '^0.3.5'
-
-
-[tool.poetry.group.examples]
-optional = true
-
-
-[tool.poetry.group.examples.dependencies]
-aiomcache = '^0.7.0'
-blacksheep = '^2.0.6'
-redis = '^4.2.1'
-types-redis = '^4.1.21'
-uvicorn = '0.15.0'
-litestar = '^2.3.2'
-
-
-[tool.poetry.group.memcached]
-optional = true
-
-
-[tool.poetry.group.memcached.dependencies]
-aiomcache = '^0.7.0'
-
-
-[tool.poetry.group.mongodb]
-optional = true
-
-
-[tool.poetry.group.mongodb.dependencies]
-motor = '^3.4.0'
-
-
-[tool.poetry.group.msgpack]
-optional = true
-
-
-[tool.poetry.group.msgpack.dependencies]
-msgpack = '^1.0.3'
-
-
-[tool.poetry.group.orjson]
-optional = true
-
-
-[tool.poetry.group.orjson.dependencies]
-orjson = '^3.6.7'
-
-
-[tool.poetry.group.redis]
-optional = true
-
-
-[tool.poetry.group.redis.dependencies]
-redis = '^4.2.1'
-types-redis = '^4.1.21'
-
-
-[tool.poetry.group.test]
-optional = true
-
-
-[tool.poetry.group.test.dependencies]
-fastapi = [
-  {version='0.103.2', python='3.9'},
-  {version='^0.104.0', python='^3.10'},
+[project.optional-dependencies]
+dataframe = [
+  'pandas >=1.4.0',
+  'pyarrow >=10.0.1',
 ]
-httpx = '^0.24.1'
-pytest = '^7.1.1'
-starlette = '^0'
-
-
-[tool.poetry.group.thewholeshebang]
-optional = true
-
-
-[tool.poetry.group.thewholeshebang.dependencies]
-aiomcache = '^0.7.0'
-blacksheep = '^2.0.6'
-fastapi = [
-  {version='0.103.2', python='3.9'},
-  {version='^0', python='^3.10'},
+examples = [
+  'aiomcache >=0.7.0',
+  'blacksheep >=2.0.6',
+  'redis >=4.2.1',
+  'types-redis >=4.1.21',
+  'uvicorn >=0.15.0',
+  'litestar >=2.3.2',
 ]
-httpx = '^0.24.1'
-litestar = '^2.3.2'
-motor = '^3.4.0'
-msgpack = '^1.0.3'
-mypy = '^1.8.0'
-orjson = '^3.6.7'
-pandas = '>=1.4.0'
-pyarrow = '^10.0.1'
-pytest = '^7.1.1'
-redis = '^4.2.1'
-types-redis = '^4.1.21'
-uvicorn = '0.15.0'
+memcached = [
+  'aiomcache >=0.7.0',
+]
+mongodb = [
+  'motor >=3.4.0',
+]
+msgpack = [
+  'msgpack >=1.0.3',
+]
+orjson = [
+  'orjson >=3.6.7',
+]
+redis = [
+  'redis >=4.2.1',
+  'types-redis >=4.1.21',
+]
+test = [
+  'fastapi ==0.103.2; python_version == "3.9"',
+  'fastapi >=0.104.0; python_version >= "3.10"',
+  'httpx >=0.24.1',
+  'pytest >=7.1.1',
+  'starlette >=0',
+]
+thewholeshebang = [
+  'aiomcache >=0.7.0',
+  'blacksheep >=2.0.6',
+  'fastapi ==0.103.2; python_version == "3.9"',
+  'fastapi >=0.104.0; python_version >= "3.10"',
+  'httpx >=0.24.1',
+  'litestar >=2.3.2',
+  'motor >=3.4.0',
+  'msgpack >=1.0.3',
+  'mypy >=1.8.0',
+  'orjson >=3.6.7',
+  'pandas >=1.4.0',
+  'pyarrow >=10.0.1',
+  'pytest >=7.1.1',
+  'redis >=4.2.1',
+  'types-redis >=4.1.21',
+  'uvicorn >=0.15.0',
+]
+
+
+[tool.mypy]
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
 
 
 [tool.pytest.ini_options]
@@ -174,3 +117,10 @@ target-version = 'py310'
 
 [tool.ruff.lint.per-file-ignores]
 '__init__.py' = ['F401'] # Ignore unused imports
+
+
+[tool.uv]
+dev-dependencies = [
+  'mypy >=1.8.0',
+  'ruff >=0.3.5',
+]

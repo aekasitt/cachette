@@ -137,7 +137,7 @@ The easiest way to start working with this extension with pip
 ```bash
 pip install cachette
 # or
-poetry add cachette
+uv add cachette
 ```
 
 When you familiarize with the basic structure of how to Dependency Inject Cachette within your
@@ -147,9 +147,9 @@ endpoints, please experiment more of using external backends with `extras` insta
 # Install FastAPI Cachette's extra requirements to Redis support
 pip install cachette --install-option "--extras-require=redis"
 # or Install FastAPI Cachette's support to Memcached
-poetry add cachette[memcached]
+uv add cachette[memcached]
 # or Special JSON Codec written on Rust at lightning speed
-poetry add cachette[orjson]
+uv add cachette[orjson]
 # or Include PyArrow package making DataFrame serialization much easier
 pip install cachette --install-option "--extras-require=dataframe"
 ```
@@ -176,7 +176,9 @@ Do all in one go with this command...
 ```bash
 pip install aiomcache motor uvicorn redis
 # or
-poetry install --extras examples
+uv sync --extra examples
+# or
+uv sync --all-extras
 ```
 
 Do individual example with this command...
@@ -184,12 +186,74 @@ Do individual example with this command...
 ```bash
 pip install redis
 # or
-poetry install --extras redis
+uv sync --extra redis
 ```
 
 ## Contributions
 
-See features and write tests I guess.
+### Prerequisites
+
+- [python](https://www.python.org) version 3.9 or above
+- [uv](https://docs.astral.sh/uv)
+
+### Set up local environment
+
+The following guide walks through setting up your local working environment using `pyenv`
+as Python version manager and `uv` as Python package manager. If you do not have `pyenv`
+installed, run the following command.
+
+<details>
+  <summary> Install using Homebrew (Darwin) </summary>
+  
+  ```sh
+  brew install pyenv --head
+  ```
+</details>
+
+<details>
+  <summary> Install using standalone installer (Darwin and Linux) </summary>
+  
+  ```sh
+  curl https://pyenv.run | bash
+  ```
+</details>
+
+If you do not have `uv` installed, run the following command.
+
+<details>
+  <summary> Install using Homebrew (Darwin) </summary>
+
+  ```sh
+  brew install uv
+  ```
+</details>
+
+<details>
+  <summary> Install using standalone installer (Darwin and Linux) </summary>
+
+  ```sh
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+</details>
+
+
+Once you have `pyenv` Python version manager installed, you can
+install any version of Python above version 3.9 for this project.
+The following commands help you set up and activate a Python virtual
+environment where `uv` can download project dependencies from the `PyPI`
+open-sourced registry defined under `pyproject.toml` file.
+
+<details>
+  <summary> Set up environment and synchronize project dependencies </summary>
+
+  ```sh
+  pyenv install 3.9.19
+  pyenv shell 3.9.19
+  uv venv  --python-preference system
+  source .venv/bin/activate
+  uv sync --dev
+  ```
+</details>
 
 ## Test Environment Setup
 
