@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  codecs/msgpack.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-07 2:08
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/codecs/msgpack.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-07 2:08
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -31,4 +31,4 @@ class MsgpackCodec(Codec):
     return loads(data)
 
 
-__all__ = ["MsgpackCodec"]
+__all__ = ("MsgpackCodec",)

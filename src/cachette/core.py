@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  core.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/core.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-03 15:31
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:

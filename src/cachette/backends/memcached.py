@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  backends/memcached.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/backends/memcached.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-03 15:31
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -60,4 +60,4 @@ class MemcachedBackend(Backend, BaseModel):
     return Client(host=self.memcached_host)
 
 
-__all__ = ["MemcachedBackend"]
+__all__ = ("MemcachedBackend",)

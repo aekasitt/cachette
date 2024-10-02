@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  codecs/json.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-07 12:23
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/codecs/json.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-07 12:23
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -32,4 +32,4 @@ class ORJSONCodec(Codec):
     return loads(data)
 
 
-__all__ = ["ORJSONCodec"]
+__all__ = ("ORJSONCodec",)

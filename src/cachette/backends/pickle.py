@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  backends/pickle.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-11-22 23:29
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/backends/pickle.py
+# VERSION:     0.1.8
+# CREATED:     2022-11-22 23:29
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -116,4 +116,4 @@ class PickleBackend(Backend, BaseModel):
     # remove(pickle_path)
 
 
-__all__ = ["PickleBackend"]
+__all__ = ("PickleBackend",)

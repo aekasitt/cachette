@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  codecs/dataframe/parquet.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-09 13:02
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/codecs/dataframe/parquet.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-09 13:02
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -32,4 +32,4 @@ class ParquetCodec(Codec):
     return read_parquet(bytes_io)
 
 
-__all__ = ["ParquetCodec"]
+__all__ = ("ParquetCodec",)

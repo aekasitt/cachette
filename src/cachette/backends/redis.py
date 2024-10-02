@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  backends/redis.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-03 15:31
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/backends/redis.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-03 15:31
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -62,4 +62,4 @@ class RedisBackend(Backend, BaseModel):
     return Redis.from_url(url=self.redis_url)
 
 
-__all__ = ["RedisBackend"]
+__all__ = ("RedisBackend",)

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  codecs/dataframe/csv.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-09 13:02
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/src/cachette/codecs/dataframe/csv.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-09 13:02
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -24,9 +24,9 @@ from cachette.codecs import Codec
 
 
 class CSVCodec(Codec):
-  def dumps(self, df: DataFrame) -> bytes:
+  def dumps(self, obj: DataFrame) -> bytes:
     bytes_io: BytesIO = BytesIO()
-    df.to_csv(bytes_io)
+    obj.to_csv(bytes_io)
     return bytes_io.getvalue()
 
   def loads(self, data: bytes) -> DataFrame:
@@ -34,4 +34,4 @@ class CSVCodec(Codec):
     return read_csv(string_io, index_col=0)
 
 
-__all__ = ["CSVCodec"]
+__all__ = ("CSVCodec",)
