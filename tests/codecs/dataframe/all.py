@@ -12,13 +12,15 @@
 """Tests for codec implementations on TestClient which can serializ/de-serialize DataFrame objects"""
 
 ### Standard packages ###
-from typing import Any, List, Tuple
+from contextlib import asynccontextmanager
+from typing import Any, AsyncGenerator, List, Tuple
 
 ### Third-party packages ###
 from fastapi import Depends, FastAPI
 from fastapi.responses import PlainTextResponse, Response
 from fastapi.testclient import TestClient
-from pytest import fixture, FixtureRequest, mark
+from pytest import FixtureRequest, mark
+from pytest_asyncio import fixture
 
 try:
   from pandas import DataFrame, get_dummies, Series
@@ -30,11 +32,11 @@ except ImportError:
 from cachette import Cachette
 
 
-### Fixtures ###
-@fixture
-def client(request: FixtureRequest) -> TestClient:
+@asynccontextmanager
+@fixture(scope="function")
+async def client(request: FixtureRequest) -> AsyncGenerator[TestClient, None]:
+  app: FastAPI = FastAPI()
   configs: List[Tuple[str, Any]] = request.param
-  app = FastAPI()
   items: List[DataFrame] = [get_dummies(Series(["income", "age", "gender", "education"]))]
 
   @Cachette.load_config
@@ -66,7 +68,8 @@ def client(request: FixtureRequest) -> TestClient:
         break
     return ("", "OK")[ok]
 
-  return TestClient(app)
+  with TestClient(app) as test_client:
+    yield test_client
 
 
 @mark.parametrize(

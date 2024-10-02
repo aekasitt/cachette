@@ -18,13 +18,12 @@ waited until expired, then have the same key-value fetched again
 from time import sleep
 
 ### Third-party packages ###
-from fastapi.responses import Response
 from fastapi.testclient import TestClient
+from httpx import Response
 from pytest import mark
 
 ### Local modules ###
-from tests import remove_pickles
-from tests.backends import client, Payload
+from tests.backends import Payload, client
 
 
 @mark.parametrize(
@@ -51,7 +50,7 @@ def test_set_and_wait_til_expired(client: TestClient):
   assert response.text == ""
   ### Setting key-value pair with Payload ###
   payload: Payload = Payload(key="cache", value="cachable")
-  response = client.post("/", data=payload.json())
+  response = client.post("/", content=payload.model_dump_json())
   assert response.text == "OK"
   ### Getting cached value within TTL ###
   response = client.get("/cache")

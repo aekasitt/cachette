@@ -15,13 +15,12 @@ before fetching the same key-value pair again
 """
 
 ### Third-party packages ###
-from fastapi.responses import Response
 from fastapi.testclient import TestClient
+from httpx import Response
 from pytest import mark
 
 ### Local modules ###
-from tests import remove_pickles
-from tests.backends import client, Payload
+from tests.backends import Payload, client
 
 
 @mark.parametrize(

@@ -15,7 +15,7 @@
 from typing import Any, List, Optional, Tuple
 
 ### Third-party packages ###
-from pytest import fixture, FixtureRequest, skip
+from pytest import FixtureRequest, fixture, skip
 
 
 def get_config_value_from_client_configs(key: str, request: FixtureRequest) -> Optional[str]:

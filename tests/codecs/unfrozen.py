@@ -12,20 +12,21 @@
 """Tests for codec implementations on TestClient which can encode/decode frozen objects fully"""
 
 ### Standard packages ###
+from contextlib import asynccontextmanager
 from datetime import date, datetime
 from decimal import Decimal
-from typing import Any, List, Tuple
+from typing import Any, AsyncGenerator, List, Tuple
 
 ### Third-party packages ###
 from fastapi import Depends, FastAPI
-from fastapi.responses import PlainTextResponse, Response
+from fastapi.responses import PlainTextResponse
 from fastapi.testclient import TestClient
-from pytest import fixture, FixtureRequest, mark
+from httpx import Response
+from pytest import FixtureRequest, fixture, mark
+from pytest_asyncio import fixture as asyncfixture
 
 ### Local modules ###
 from cachette import Cachette
-
-### Fixtures ###
 
 
 @fixture(scope="module")
@@ -58,11 +59,12 @@ def items() -> List[Any]:
   ]
 
 
-@fixture
-def client(items: List[Any], request: FixtureRequest) -> TestClient:
+@asynccontextmanager
+@asyncfixture(scope="function")
+async def client(items: List[Any], request: FixtureRequest) -> AsyncGenerator[TestClient, None]:
   configs: List[Tuple[str, Any]] = request.param
 
-  app = FastAPI()
+  app: FastAPI = FastAPI()
 
   @Cachette.load_config
   def get_cachette_config():
@@ -91,7 +93,8 @@ def client(items: List[Any], request: FixtureRequest) -> TestClient:
         break
     return ("", "OK")[ok]
 
-  return TestClient(app)
+  with TestClient(app) as test_client:
+    yield test_client
 
 
 @mark.parametrize(

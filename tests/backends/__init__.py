@@ -12,14 +12,15 @@
 """Module defining test methods to be used by different backend-specific tests"""
 
 ### Standard packages ###
-from typing import Any, List, Tuple
+from contextlib import asynccontextmanager
+from typing import Any, AsyncGenerator, List, Tuple
 
 ### Third-party packages ###
 from fastapi import FastAPI, Depends
 from fastapi.responses import PlainTextResponse
 from fastapi.testclient import TestClient
 from pydantic import BaseModel
-from pytest import fixture
+from pytest_asyncio import fixture
 
 ### Local modules ###
 from cachette import Cachette
@@ -30,8 +31,9 @@ class Payload(BaseModel):
   value: str
 
 
-@fixture
-def client(request) -> TestClient:
+@asynccontextmanager
+@fixture(scope="function")
+async def client(request) -> AsyncGenerator[TestClient, None]:
   assert isinstance(request.param, list)
   assert len(request.param) > 0
   configs: List[Tuple[str, Any]] = request.param
@@ -67,4 +69,5 @@ def client(request) -> TestClient:
     cleared: int = await cachette.clear(key=key)
     return ("", "OK")[cleared > 0]
 
-  return TestClient(app)
+  with TestClient(app) as test_client:
+    yield test_client
