@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  tests/load_config.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-03 20:34
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/tests/load_config.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-03 20:34
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:

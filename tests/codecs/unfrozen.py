@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 # Copyright (C) 2022-2024, All rights reserved.
-# FILENAME:  tests/codecs/unfrozen.py
-# VERSION: 	 0.1.8
-# CREATED: 	 2022-04-06 22:03
-# AUTHOR: 	 Sitt Guruvanich <aekazitt+github@gmail.com>
+# FILENAME:    ~~/tests/codecs/unfrozen.py
+# VERSION:     0.1.8
+# CREATED:     2022-04-06 22:03
+# AUTHOR:      Sitt Guruvanich <aekazitt+github@gmail.com>
 # DESCRIPTION:
 #
 # HISTORY:
